@@ -1,0 +1,52 @@
+new MissionGroup() {
+
+
+new ScriptObject() {
+"name" = "Example Mission";
+"game" = "PQ";
+"author" = "Your name here";
+"type" = "Custom";
+"level" = "1";
+"desc" = "Example description";
+"startHelpText" = "Example start help text";
+"gameMode" = "Normal";
+"parTime" = "0";
+"platinumTime" = "5000";
+"ultimateTime" = "4000";
+"awesomeTime" = "3000";
+};
+
+new Sky() {
+"position" = "336 136 0";
+"rotation" = "1 0 0 0";
+"scale" = "1 1 1";
+"visibleDistance" = "500";
+"useSkyTextures" = "1";
+"renderBottomTexture" = "1";
+"skySolidColor" = "0.6 0.6 0.6 1";
+"materialList" = "~/data/skies/sky_day.dml";
+"windVelocity" = "1 0 0";
+"windEffectPrecipitation" = "0";
+"noRenderBans" = "1";
+};
+
+new Sun() {
+"direction" = "0.5 0.5 -0.5";
+"color" = "1.4 1.2 0.4 1";
+"ambient" = "0.3 0.3 0.4 1";
+};
+
+new StaticShape(StartPoint) {
+"position" = "0.0 0.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "1 1 1";
+"datablock" = "StartPad";
+};
+
+new StaticShape(EndPoint) {
+"position" = "8 0 0";
+"rotation" = "0 0 1 180";
+"scale" = "1 1 1";
+"datablock" = "EndPad";
+};
+};
