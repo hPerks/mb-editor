@@ -47,6 +47,9 @@ class MovingInterior(SimGroup):
 
     @classmethod
     def make(cls, pathedInterior, *markers, **fields):
+        if markers[-1].position != markers[0].position:
+            markers = list(markers) + [markers[0].copy()]
+
         return cls(
             pathedInterior,
             Path(*(marker.set(seqNum=seqNum) for seqNum, marker in enumerate(markers))),
@@ -56,7 +59,16 @@ class MovingInterior(SimGroup):
 
 if __name__ == '__main__':
     print(MovingInterior.make(
-        PathedInterior.local("foundationRepair.dif", basePosition="4 2 0"),
+        PathedInterior.local("foundationRepair.dif", 0, basePosition="4 2 0"),
         Marker(position="0 0 0", msToNext=1000),
         Marker(position="3 1 4", msToNext=1000),
+    ))
+
+    print(MovingInterior.make(
+        PathedInterior.local("foundationRepair.dif", 0, basePosition="4 2 0"),
+        *Marker().copies(
+            ("position", "msToNext"),
+            "0 0 0", 1000,
+            "3 1 4", 1000,
+        )
     ))

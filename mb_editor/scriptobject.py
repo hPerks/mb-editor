@@ -63,7 +63,7 @@ class ScriptObject:
 
     def copy(self, name="(name)_copy", **fields):
         copy = self.__class__(
-            name=name.replace("(name)", self.name),
+            name="" if self.name == "" else name.replace("(name)", self.name),
             **self.fields
         )
         copy.set(**fields)
@@ -73,6 +73,11 @@ class ScriptObject:
         if not isinstance(keys_tuple, tuple):
             keys_tuple = tuple(keys_tuple)
             values_tuples = map(tuple, values_tuples)
+        elif not isinstance(values_tuples[0], tuple):
+            values_tuples = [
+                values_tuples[index * len(keys_tuple): (index + 1) * len(keys_tuple)]
+                for index in range(len(values_tuples) // len(keys_tuple))
+            ]
 
         return [
             self.copy(
@@ -101,9 +106,9 @@ if __name__ == '__main__':
 
     copies = s.copies(
         ("some_random_property", "catchphrase"),
-        ("0001", "we no longer care about customer satisfaction"),
-        ("0002", "and my guys no longer care about the joj and doing the joj right"),
-        ("0003", "i'm going to take a sh!t on the house"),
+        "0001", "we no longer care about customer satisfaction",
+        "0002", "and my guys no longer care about the joj and doing the joj right",
+        "0003", "i'm going to take a sh!t on the house",
     )
 
     assert len(copies) == 3
