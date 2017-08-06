@@ -2,20 +2,7 @@ from mb_editor.numberlists.rotation3d import Rotation3D
 from mb_editor.numberlists.vector3d import Vector3D
 from mb_editor.simgroup import SimGroup
 from mb_editor.physicalobject import PhysicalObject
-
-
-class Marker(PhysicalObject):
-    classname = "Marker"
-
-    defaults = dict(
-        seqNum=0,
-        msToNext=0,
-        smoothingType="Linear"
-    )
-
-
-class Path(SimGroup):
-    classname = "Path"
+from mb_editor.path import Marker, Path
 
 
 class PathedInterior(PhysicalObject):
@@ -46,13 +33,14 @@ class PathedInterior(PhysicalObject):
 class MovingInterior(SimGroup):
 
     @classmethod
-    def make(cls, pathedInterior, *markers, **fields):
-        if markers[-1].position != markers[0].position:
-            markers = list(markers) + [markers[0].copy()]
+    def make(cls, pathedInterior, *args, **fields):
+        markers = filter(lambda a: isinstance(a, Marker), args)
+        others = filter(lambda a: not isinstance(a, Marker), args)
 
         return cls(
             pathedInterior,
-            Path(*(marker.set(seqNum=seqNum) for seqNum, marker in enumerate(markers))),
+            Path(*markers),
+            *others,
             **fields
         )
 
@@ -62,6 +50,7 @@ if __name__ == '__main__':
         PathedInterior.local("foundationRepair.dif", 0, basePosition="4 2 0"),
         Marker(position="0 0 0", msToNext=1000),
         Marker(position="3 1 4", msToNext=1000),
+        Marker(position="0 0 0")
     ))
 
     print(MovingInterior.make(
@@ -70,5 +59,15 @@ if __name__ == '__main__':
             ("position", "msToNext"),
             "0 0 0", 1000,
             "3 1 4", 1000,
+            "0 0 0"
+        )
+    ))
+
+    print(MovingInterior.make(
+        PathedInterior.local("foundationRepair.dif", 0, basePosition="4 2 0"),
+        Path.make_linear(
+            "0 0 0", 1000,
+            "3 1 4", 1000,
+            "0 0 0"
         )
     ))

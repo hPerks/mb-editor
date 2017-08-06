@@ -35,13 +35,13 @@ if __name__ == '__main__':
                 ("8 8 0", "GemItemGreen"),
                 ("8 4 0", "GemItemBlue"),
             ),
-            MovingInterior.make(
+            MovingInterior(
                 PathedInterior.local("exampleMission.dif", 0),
-                *Marker(smoothingType="Accelerate").copies(
-                    ("position", "msToNext"),
+                Path.make_linear(
                     "0 0 0", 5000,
                     "0 -4 0", 500,
                     "0 2 0", 1000,
+                    "0 0 0"
                 ),
             ),
         ).write("missions/exampleMission.mis")

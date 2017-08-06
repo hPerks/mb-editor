@@ -15,7 +15,8 @@ from .staticshapes import StaticShape, StartPad, EndPad, FinishSign, Bumper, Duc
 from .items import Item, Gem, TimeTravel, SuperJump, SuperSpeed, Gyrocopter, SuperBounce, ShockAbsorber
 
 from .interior import Interior
-from .movinginterior import Marker, Path, PathedInterior, MovingInterior
+from .path import Marker, Path
+from .movinginterior import PathedInterior, MovingInterior
 
 from .missioninfo import MissionInfo
 from .sky import Sky

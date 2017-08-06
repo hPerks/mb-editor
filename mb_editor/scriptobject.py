@@ -74,17 +74,18 @@ class ScriptObject:
             keys_tuple = tuple(keys_tuple)
             values_tuples = map(tuple, values_tuples)
         elif not isinstance(values_tuples[0], tuple):
+            num_complete_tuples = len(values_tuples) // len(keys_tuple)
             values_tuples = [
                 values_tuples[index * len(keys_tuple): (index + 1) * len(keys_tuple)]
-                for index in range(len(values_tuples) // len(keys_tuple))
-            ]
+                for index in range(num_complete_tuples)
+            ] + [values_tuples[num_complete_tuples * len(keys_tuple):]]
 
         return [
             self.copy(
                 name=name.replace("(i)", str(values_tuple_index)),
                 **{
-                    key: values_tuple[key_index]
-                    for key_index, key in enumerate(keys_tuple)
+                    keys_tuple[value_index]: value
+                    for value_index, value in enumerate(values_tuple)
                 }
             )
             for values_tuple_index, values_tuple in enumerate(values_tuples)
@@ -109,10 +110,12 @@ if __name__ == '__main__':
         "0001", "we no longer care about customer satisfaction",
         "0002", "and my guys no longer care about the joj and doing the joj right",
         "0003", "i'm going to take a sh!t on the house",
+        "0004"
     )
 
-    assert len(copies) == 3
+    assert len(copies) == 4
     assert copies[1].name == "EdBeacham_1"
     assert "!" in copies[2].catchphrase
+    assert copies[3].catchphrase == "do it all over again"
 
     print(*copies, sep="\n")
