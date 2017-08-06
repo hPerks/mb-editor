@@ -24,7 +24,7 @@ new Sun() {
 
 new Sky() {
 "position" = "336 136 0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "1 1 1";
 "visibleDistance" = "500";
 "useSkyTextures" = "1";
@@ -38,28 +38,28 @@ new Sky() {
 
 new StaticShape(StartPoint) {
 "position" = "0.0 0.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "1 1 1";
 "datablock" = "StartPad";
 };
 
 new StaticShape(EndPoint) {
 "position" = "8 0 0";
-"rotation" = "0 0 1 180";
+"rotation" = "0.0 0.0 1.0 180";
 "scale" = "1 1 1";
 "datablock" = "EndPad";
 };
 
 new InteriorInstance() {
 "position" = "0.0 0.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "1 1 1";
 "interiorFile" = "~/data/interiors/exampleMission.dif";
 };
 
 new Item(ThisIsJustTheNameBtw_0) {
 "position" = "0.0 4.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "2 2 2";
 "collideable" = "0";
 "static" = "1";
@@ -69,7 +69,7 @@ new Item(ThisIsJustTheNameBtw_0) {
 
 new Item(ThisIsJustTheNameBtw_1) {
 "position" = "0.0 8.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "2 2 2";
 "collideable" = "0";
 "static" = "1";
@@ -79,7 +79,7 @@ new Item(ThisIsJustTheNameBtw_1) {
 
 new Item(ThisIsJustTheNameBtw_2) {
 "position" = "4.0 8.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "2 2 2";
 "collideable" = "0";
 "static" = "1";
@@ -89,7 +89,7 @@ new Item(ThisIsJustTheNameBtw_2) {
 
 new Item(ThisIsJustTheNameBtw_3) {
 "position" = "8.0 8.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "2 2 2";
 "collideable" = "0";
 "static" = "1";
@@ -99,7 +99,7 @@ new Item(ThisIsJustTheNameBtw_3) {
 
 new Item(ThisIsJustTheNameBtw_4) {
 "position" = "8.0 4.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "2 2 2";
 "collideable" = "0";
 "static" = "1";
@@ -112,14 +112,14 @@ new SimGroup() {
 
 new PathedInterior() {
 "position" = "0 0 0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "1 1 1";
 "datablock" = "PathedDefault";
 "interiorResource" = "platinum/data/interiors/exampleMission.dif";
 "interiorIndex" = "0";
 "initialTargetPosition" = "-1";
 "basePosition" = "0 0 0";
-"baseRotation" = "1 0 0 0";
+"baseRotation" = "1.0 0.0 0.0 0";
 "baseScale" = "1 1 1";
 };
 
@@ -128,7 +128,7 @@ new Path() {
 
 new Marker() {
 "position" = "0.0 0.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "1 1 1";
 "seqNum" = "0";
 "msToNext" = "5000";
@@ -137,29 +137,29 @@ new Marker() {
 
 new Marker() {
 "position" = "0.0 -4.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "1 1 1";
 "seqNum" = "1";
 "msToNext" = "500";
-"smoothingType" = "Linear";
+"smoothingType" = "Accelerate";
 };
 
 new Marker() {
 "position" = "0.0 2.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "1 1 1";
 "seqNum" = "2";
 "msToNext" = "1000";
-"smoothingType" = "Linear";
+"smoothingType" = "Accelerate";
 };
 
 new Marker() {
 "position" = "0.0 0.0 0.0";
-"rotation" = "1 0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
 "scale" = "1 1 1";
 "seqNum" = "3";
-"msToNext" = "0";
-"smoothingType" = "Linear";
+"msToNext" = "5000";
+"smoothingType" = "Accelerate";
 };
 };
 };

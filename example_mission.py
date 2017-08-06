@@ -37,9 +37,11 @@ if __name__ == '__main__':
             ),
             MovingInterior.make(
                 PathedInterior.local("exampleMission.dif", 0),
-                Marker(position="0 0 0", msToNext=5000, smoothingType="Accelerate"),
-                Marker(position="0 -4 0", msToNext=500),
-                Marker(position="0 2 0", msToNext=1000),
-                Marker(position="0 0 0")
+                *Marker(smoothingType="Accelerate").copies(
+                    ("position", "msToNext"),
+                    "0 0 0", 5000,
+                    "0 -4 0", 500,
+                    "0 2 0", 1000,
+                ),
             ),
         ).write("missions/exampleMission.mis")
