@@ -1,4 +1,4 @@
-from .numberlist import NumberList
+from mb_editor.numberlists.numberlist import NumberList
 
 
 class Vector3D(NumberList):
@@ -27,9 +27,21 @@ class Vector3D(NumberList):
     def z(self, value):
         self[2] = value
 
+    def __abs__(self):
+        return pow(sum(map(lambda i: i ** 2, self)), 0.5)
+
+    def normalized(self):
+        return self / abs(self)
+
+
 Vector3D.i = Vector3D(1, 0, 0)
 Vector3D.j = Vector3D(0, 1, 0)
 Vector3D.k = Vector3D(0, 0, 1)
 
 Vector3D.zero = Vector3D(0, 0, 0)
 Vector3D.one = Vector3D(1, 1, 1)
+
+if __name__ == '__main__':
+    v = Vector3D("3 4 0")
+    assert abs(v) == 5
+    assert v.normalized() == "0.6 0.8 0"

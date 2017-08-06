@@ -1,5 +1,5 @@
-from .numberlist import NumberList
-from .vector3d import Vector3D
+from mb_editor.numberlists.numberlist import NumberList
+from mb_editor.numberlists.vector3d import Vector3D
 
 
 class Polyhedron3D(NumberList):
