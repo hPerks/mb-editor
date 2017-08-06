@@ -5,12 +5,10 @@ from mb_editor.sun import Sun
 
 
 class Mission(SimGroup):
-    classname = "MissionGroup"
-
     local_dir = "~/data/missions"
 
     def __init__(self, **fields):
-        super().__init__(**fields)
+        super().__init__(name="MissionGroup", **fields)
 
         self._info, self._sky, self._sun = MissionInfo(), Sky(), Sun()
         self.add(self.info, self.sky, self.sun)

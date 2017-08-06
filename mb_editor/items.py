@@ -13,13 +13,13 @@ class Item(PhysicalObject):
 
 class Gem(Item):
     defaults = dict(
-        datablock="GemItem"
+        datablock="GemItem_PQ"
     )
 
     datablocks = {
-        1: "GemItemRed",
-        2: "GemItemYellow",
-        5: "GemItemBlue",
+        1: "GemItemRed_PQ",
+        2: "GemItemYellow_PQ",
+        5: "GemItemBlue_PQ",
         10: "kys"
     }
 
@@ -30,26 +30,34 @@ class Gem(Item):
 
 class TimeTravel(Item):
     defaults = dict(
-        datablock="TimeTravelItem",
+        datablock="TimeTravelItem_PQ",
         timeBonus=5000
     )
 
 
 class SuperJump(Item):
-    defaults = dict(datablock="SuperJumpItem")
+    defaults = dict(datablock="SuperJumpItem_PQ")
 
 
 class SuperSpeed(Item):
-    defaults = dict(datablock="SuperSpeedItem")
+    defaults = dict(datablock="SuperSpeedItem_PQ")
 
 
 class Gyrocopter(Item):
-    defaults = dict(datablock="HelicopterItem")
+    defaults = dict(datablock="HelicopterItem_PQ")
 
 
 class SuperBounce(Item):
-    defaults = dict(datablock="SuperBounceItem")
+    defaults = dict(datablock="SuperBounceItem_PQ")
 
 
 class ShockAbsorber(Item):
-    defaults = dict(datablock="ShockAbsorberItem")
+    defaults = dict(datablock="ShockAbsorberItem_PQ")
+
+
+class GravityModifier(Item):
+    defaults = dict(datablock="AntiGravityItem_PQ")
+
+
+class NestEgg(Item):
+    defaults = dict(datablock="NestEgg_PQ")

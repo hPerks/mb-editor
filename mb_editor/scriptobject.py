@@ -77,9 +77,9 @@ class ScriptObject:
         return copy
 
     def copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
-        if not isinstance(keys_tuple, tuple):
-            keys_tuple = tuple(keys_tuple)
-            values_tuples = map(tuple, values_tuples)
+        if isinstance(keys_tuple, str):
+            keys_tuple = tuple([keys_tuple])
+            values_tuples = [tuple([values_tuple]) for values_tuple in values_tuples]
         elif not isinstance(values_tuples[0], tuple):
             num_complete_tuples = len(values_tuples) // len(keys_tuple)
             values_tuples = [

@@ -4,7 +4,7 @@ from mb_editor.physicalobject import PhysicalObject
 class Interior(PhysicalObject):
     classname = "InteriorInstance"
 
-    local_dir = "~/data/interiors"
+    local_dir = "~/data/interiors_pq"
 
     defaults = dict(
         interiorFile=""

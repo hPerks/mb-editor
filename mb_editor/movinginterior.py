@@ -8,7 +8,7 @@ from mb_editor.path import Marker, Path
 class PathedInterior(PhysicalObject):
     classname = "PathedInterior"
 
-    local_dir = "platinum/data/interiors"
+    local_dir = "platinum/data/interiors_pq"
 
     defaults = dict(
         datablock="PathedDefault",

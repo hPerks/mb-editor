@@ -29,6 +29,10 @@ class TeleportTrigger(Trigger):
         silent=0,
     )
 
+    def and_destination(self, name, position, **fields):
+        self.destination = name
+        return [self, DestinationTrigger(name, position=position, **fields)]
+
 
 class RelativeTPTrigger(TeleportTrigger):
     defaults = dict(

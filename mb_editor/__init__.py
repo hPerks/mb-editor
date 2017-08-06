@@ -11,9 +11,10 @@ from mb_editor.scriptobject import ScriptObject
 from mb_editor.simgroup import SimGroup
 from mb_editor.physicalobject import PhysicalObject, BoundedObject
 
-from mb_editor.triggers import Trigger, SpawnTrigger, HelpTrigger, TeleportTrigger, RelativeTPTrigger, DestinationTrigger
-from mb_editor.staticshapes import StaticShape, StartPad, EndPad, FinishSign, Bumper, DuctFan, Mine, TrapDoor, Tornado
-from mb_editor.items import Item, Gem, TimeTravel, SuperJump, SuperSpeed, Gyrocopter, SuperBounce, ShockAbsorber
+from mb_editor.triggers import *
+from mb_editor.staticshapes import *
+from mb_editor.items import *
+from mb_editor.tsstatics import *
 
 from mb_editor.interior import Interior
 from mb_editor.path import Marker, Path

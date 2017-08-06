@@ -5,7 +5,7 @@ class Field:
         self.value = value
 
     def __repr__(self):
-        return '"{}" = "{}";'.format(self.key, self.value)
+        return '{} = "{}";'.format(self.key, self.value)
 
     @property
     def value(self):
