@@ -57,6 +57,27 @@ class ScriptObject:
             self.__setattr__(key, value)
         return self
 
+    def copy(self, name="(name)_copy", **fields):
+        return self.__class__(
+            name=name.replace("(name)", self.name),
+            **fields
+        )
+
+    def copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
+        if not isinstance(keys_tuple, tuple):
+            keys_tuple = tuple(keys_tuple)
+            values_tuples = map(tuple, values_tuples)
+
+        return [
+            self.copy(
+                name=name.replace("(i)", str(values_tuple_index)),
+                **{
+                    key: values_tuple[key_index]
+                    for key_index, key in enumerate(keys_tuple)
+                }
+            )
+            for values_tuple_index, values_tuple in enumerate(values_tuples)
+        ]
 
 if __name__ == '__main__':
     s = ScriptObject(
@@ -66,7 +87,18 @@ if __name__ == '__main__':
 
     assert s.catchphrase == "do it all over again"
 
-    s.name = "EdBeacham"
+    s._name = "EdBeacham"
     assert s.name == "EdBeacham"
+
+    copies = s.copies(
+        ("some_random_property", "catchphrase"),
+        ("0001", "we no longer care about customer satisfaction"),
+        ("0002", "and my guys no longer care about the joj and doing the joj right"),
+        ("0003", "i'm going to take a sh!t on the house"),
+    )
+
+    assert len(copies) == 3
+    assert copies[1].name == "EdBeacham_1"
+    assert "!" in copies[2].catchphrase
 
     print(s)

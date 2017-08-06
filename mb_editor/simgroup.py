@@ -7,14 +7,18 @@ class SimGroup(ScriptObject):
     def __init__(self, *children, **fields):
         super().__init__(**fields)
 
-        self._children = children
+        self._children = list(children)
 
     @property
     def children(self):
         return list(self._children)
 
     def add(self, *children):
-        self._children += children
+        try:
+            self._children += children[0]
+        except TypeError:
+            self._children += children
+
         return self
 
     def remove(self, *children):
@@ -41,7 +45,31 @@ if __name__ == '__main__':
         name="HohSisGroup",
         mission="to get the joj done",
     )
+    assert len(s.children) == 2
 
-    assert list(map(lambda j: j.catchphrase, s.children))[0] == "do it all over again"
+    s.remove(s.children[0])
+    assert len(s.children) == 1
+
+    s.add(
+        ScriptObject(
+            name="JudithMiller",
+            catchphrase="i would recommend them to anybody"
+        )
+    )
+    assert s.children[1].catchphrase == "i would recommend them to anybody"
+
+    s.add(
+        ScriptObject(
+            name="JojIteration",
+            rating="A+",
+        ).copies(
+            ("numTimesAllOverAgain", "percentSatisfaction", "isDone"),
+            *[(i, float(i) * 100 / 15, i == 15) for i in range(16)]
+        )
+    )
+
+    assert len(s.children) == 18
+    assert not s.children[-2].isDone
+    assert s.children[-1].isDone
 
     print(s)
