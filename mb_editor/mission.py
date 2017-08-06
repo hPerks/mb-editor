@@ -27,15 +27,30 @@ class Mission(SimGroup):
     def sun(self):
         return self._sun
 
-    def set_missionInfo(self, **fields):
+    def set_missionInfo(self, missionInfo=None, **fields):
+        if missionInfo is not None:
+            self.remove(self.missionInfo)
+            self._missionInfo = missionInfo
+            self.add(missionInfo)
+
         self.missionInfo.set(**fields)
         return self
 
-    def set_sky(self, **fields):
+    def set_sky(self, sky=None, **fields):
+        if sky is not None:
+            self.remove(self.sky)
+            self._sky = sky
+            self.add(sky)
+
         self.sky.set(**fields)
         return self
 
-    def set_sun(self, **fields):
+    def set_sun(self, sun=None, **fields):
+        if sun is not None:
+            self.remove(self.sun)
+            self._sun = sun
+            self.add(sun)
+
         self.sun.set(**fields)
         return self
 

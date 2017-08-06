@@ -16,6 +16,12 @@ new ScriptObject() {
 "awesomeTime" = "3000";
 };
 
+new Sun() {
+"direction" = "0.5 0.5 -0.5";
+"color" = "1.4 1.2 0.4 1";
+"ambient" = "0.3 0.3 0.4 1";
+};
+
 new Sky() {
 "position" = "336 136 0";
 "rotation" = "1 0 0 0";
@@ -30,12 +36,6 @@ new Sky() {
 "noRenderBans" = "1";
 };
 
-new Sun() {
-"direction" = "0.5 0.5 -0.5";
-"color" = "1.4 1.2 0.4 1";
-"ambient" = "0.3 0.3 0.4 1";
-};
-
 new StaticShape(StartPoint) {
 "position" = "0.0 0.0 0.0";
 "rotation" = "1 0 0 0";
@@ -48,5 +48,119 @@ new StaticShape(EndPoint) {
 "rotation" = "0 0 1 180";
 "scale" = "1 1 1";
 "datablock" = "EndPad";
+};
+
+new InteriorInstance() {
+"position" = "0.0 0.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "1 1 1";
+"interiorFile" = "~/data/interiors/exampleMission.dif";
+};
+
+new Item(ThisIsJustTheNameBtw_0) {
+"position" = "0.0 4.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "2 2 2";
+"collideable" = "0";
+"static" = "1";
+"rotate" = "1";
+"datablock" = "GemItemRed";
+};
+
+new Item(ThisIsJustTheNameBtw_1) {
+"position" = "0.0 8.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "2 2 2";
+"collideable" = "0";
+"static" = "1";
+"rotate" = "1";
+"datablock" = "GemItemOrange";
+};
+
+new Item(ThisIsJustTheNameBtw_2) {
+"position" = "4.0 8.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "2 2 2";
+"collideable" = "0";
+"static" = "1";
+"rotate" = "1";
+"datablock" = "GemItemYellow";
+};
+
+new Item(ThisIsJustTheNameBtw_3) {
+"position" = "8.0 8.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "2 2 2";
+"collideable" = "0";
+"static" = "1";
+"rotate" = "1";
+"datablock" = "GemItemGreen";
+};
+
+new Item(ThisIsJustTheNameBtw_4) {
+"position" = "8.0 4.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "2 2 2";
+"collideable" = "0";
+"static" = "1";
+"rotate" = "1";
+"datablock" = "GemItemBlue";
+};
+
+new SimGroup() {
+
+
+new PathedInterior() {
+"position" = "0 0 0";
+"rotation" = "1 0 0 0";
+"scale" = "1 1 1";
+"datablock" = "PathedDefault";
+"interiorResource" = "platinum/data/interiors/exampleMission.dif";
+"interiorIndex" = "0";
+"initialTargetPosition" = "-1";
+"basePosition" = "0 0 0";
+"baseRotation" = "1 0 0 0";
+"baseScale" = "1 1 1";
+};
+
+new Path() {
+
+
+new Marker() {
+"position" = "0.0 0.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "1 1 1";
+"seqNum" = "0";
+"msToNext" = "5000";
+"smoothingType" = "Accelerate";
+};
+
+new Marker() {
+"position" = "0.0 -4.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "1 1 1";
+"seqNum" = "1";
+"msToNext" = "500";
+"smoothingType" = "Linear";
+};
+
+new Marker() {
+"position" = "0.0 2.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "1 1 1";
+"seqNum" = "2";
+"msToNext" = "1000";
+"smoothingType" = "Linear";
+};
+
+new Marker() {
+"position" = "0.0 0.0 0.0";
+"rotation" = "1 0 0 0";
+"scale" = "1 1 1";
+"seqNum" = "3";
+"msToNext" = "0";
+"smoothingType" = "Linear";
+};
+};
 };
 };

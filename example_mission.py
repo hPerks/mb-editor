@@ -12,13 +12,34 @@ if __name__ == '__main__':
             ultimateTime=4000,
             awesomeTime=3000,
         ).set_sky(
-            materialList="~/data/skies/sky_day.dml"
+            Sky.local("sky_day.dml")
+        ).set_sun(
+            ambient=(0.3, 0.3, 0.4, 1)
         ).add(
             StartPad("StartPoint").set(
                 position="0 0 0"
             ),
             EndPad("EndPoint").set(
                 position=[8, 0, 0],
-                rotation=[0, 0, 1, 180]
+                rotation=[0, 0, 1, 180],
+            ),
+            Interior.local(
+                "exampleMission.dif",
+                position="0 0 0",
+            ),
+            *Gem("ThisIsJustTheNameBtw", scale=(Vector3D.one * 2)).copies(
+                ("position", "datablock"),
+                ("0 4 0", "GemItemRed"),
+                ("0 8 0", "GemItemOrange"),
+                ("4 8 0", "GemItemYellow"),
+                ("8 8 0", "GemItemGreen"),
+                ("8 4 0", "GemItemBlue"),
+            ),
+            MovingInterior.make(
+                PathedInterior.local("exampleMission.dif", 0),
+                Marker(position="0 0 0", msToNext=5000, smoothingType="Accelerate"),
+                Marker(position="0 -4 0", msToNext=500),
+                Marker(position="0 2 0", msToNext=1000),
+                Marker(position="0 0 0")
             ),
         ).write("missions/exampleMission.mis")

@@ -35,8 +35,12 @@ class PathedInterior(PhysicalObject):
     )
 
     @classmethod
-    def local(cls, interiorResource, **fields):
-        return cls(interiorResource="{}/{}".format(cls.local_dir, interiorResource), **fields)
+    def local(cls, interiorResource, interiorIndex, **fields):
+        return cls(
+            interiorResource="{}/{}".format(cls.local_dir, interiorResource),
+            interiorIndex=interiorIndex,
+            **fields
+        )
 
 
 class MovingInterior(SimGroup):

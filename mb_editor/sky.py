@@ -26,3 +26,5 @@ class Sky(ScriptObject):
     @classmethod
     def local(cls, materialList, **fields):
         return cls(materialList="{}/{}".format(cls.local_dir, materialList), **fields)
+
+Sky.day = Sky.local("sky_day.dml")

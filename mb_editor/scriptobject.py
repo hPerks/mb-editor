@@ -46,6 +46,10 @@ class ScriptObject:
             return cls.defaults
 
     @property
+    def fields(self):
+        return { field.key: field.value for field in self._fields }
+
+    @property
     def name(self):
         return self._name
 
@@ -58,10 +62,12 @@ class ScriptObject:
         return self
 
     def copy(self, name="(name)_copy", **fields):
-        return self.__class__(
+        copy = self.__class__(
             name=name.replace("(name)", self.name),
-            **fields
+            **self.fields
         )
+        copy.set(**fields)
+        return copy
 
     def copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
         if not isinstance(keys_tuple, tuple):
@@ -90,6 +96,9 @@ if __name__ == '__main__':
     s._name = "EdBeacham"
     assert s.name == "EdBeacham"
 
+    copy = s.copy(catchphrase="lift the house", rating="A+")
+    assert copy.fields["catchphrase"] == "lift the house"
+
     copies = s.copies(
         ("some_random_property", "catchphrase"),
         ("0001", "we no longer care about customer satisfaction"),
@@ -101,4 +110,4 @@ if __name__ == '__main__':
     assert copies[1].name == "EdBeacham_1"
     assert "!" in copies[2].catchphrase
 
-    print(s)
+    print(*copies, sep="\n")
