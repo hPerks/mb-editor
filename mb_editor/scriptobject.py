@@ -7,6 +7,7 @@ class ScriptObject:
     def __init__(self, name="", **fields):
         self._name = name
         self._fields = []
+        self._group = None
 
         self.set(**self.__defaults())
         self.set(**fields)
@@ -47,11 +48,17 @@ class ScriptObject:
 
     @property
     def fields(self):
-        return { field.key: field.value for field in self._fields }
+        return {
+            field.key: field.value for field in self._fields
+        }
 
     @property
     def name(self):
         return self._name
+
+    @property
+    def group(self):
+        return self._group
 
     def inner_str(self):
         return "\n".join(map(repr, self._fields))
@@ -90,6 +97,22 @@ class ScriptObject:
             )
             for values_tuple_index, values_tuple in enumerate(values_tuples)
         ]
+
+    def root(self):
+        return self if self.group is None else self.group.root()
+
+    def descendants(self):
+        return []
+
+    def descendant_named(self, name):
+        return next(filter(lambda d: d.name == name, self.descendants()))
+
+    def object_named(self, name):
+        return self.root().descendant_named(name)
+
+    def deref(self, field_name):
+        return self.object_named(self.fields[field_name].name)
+
 
 if __name__ == '__main__':
     s = ScriptObject(

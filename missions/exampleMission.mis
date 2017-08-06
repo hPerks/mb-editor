@@ -16,12 +16,6 @@ new ScriptObject() {
 "awesomeTime" = "3000";
 };
 
-new Sun() {
-"direction" = "0.5 0.5 -0.5";
-"color" = "1.4 1.2 0.4 1";
-"ambient" = "0.3 0.3 0.4 1";
-};
-
 new Sky() {
 "position" = "336 136 0";
 "rotation" = "1.0 0.0 0.0 0";
@@ -34,6 +28,12 @@ new Sky() {
 "windVelocity" = "1 0 0";
 "windEffectPrecipitation" = "0";
 "noRenderBans" = "1";
+};
+
+new Sun() {
+"direction" = "0.5 0.5 -0.5";
+"color" = "1.4 1.2 0.4 1";
+"ambient" = "0.3 0.3 0.4 1";
 };
 
 new StaticShape(StartPoint) {
@@ -132,7 +132,7 @@ new Marker() {
 "scale" = "1 1 1";
 "seqNum" = "0";
 "msToNext" = "5000";
-"smoothingType" = "Accelerate";
+"smoothingType" = "Linear";
 };
 
 new Marker() {
@@ -141,7 +141,7 @@ new Marker() {
 "scale" = "1 1 1";
 "seqNum" = "1";
 "msToNext" = "500";
-"smoothingType" = "Accelerate";
+"smoothingType" = "Linear";
 };
 
 new Marker() {
@@ -150,7 +150,7 @@ new Marker() {
 "scale" = "1 1 1";
 "seqNum" = "2";
 "msToNext" = "1000";
-"smoothingType" = "Accelerate";
+"smoothingType" = "Linear";
 };
 
 new Marker() {
@@ -159,8 +159,41 @@ new Marker() {
 "scale" = "1 1 1";
 "seqNum" = "3";
 "msToNext" = "0";
-"smoothingType" = "Accelerate";
+"smoothingType" = "Linear";
 };
 };
+};
+
+new Trigger() {
+"position" = "0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
+"scale" = "1 1 1";
+"polyhedron" = "0 0 0 1 0 0 0 1 0 0 0 1";
+"triggerOnce" = "0";
+"datablock" = "TeleportTrigger";
+"destination" = "Destination";
+"delay" = "1000";
+"silent" = "0";
+};
+
+new Trigger(Destination) {
+"position" = "0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
+"scale" = "1 1 1";
+"polyhedron" = "0 0 0 1 0 0 0 1 0 0 0 1";
+"triggerOnce" = "0";
+"datablock" = "DestinationTrigger";
+};
+
+new Trigger() {
+"position" = "0 0 0";
+"rotation" = "1.0 0.0 0.0 0";
+"scale" = "1 1 1";
+"polyhedron" = "0 0 0 1 0 0 0 1 0 0 0 1";
+"triggerOnce" = "0";
+"datablock" = "RelativeTPTrigger";
+"destination" = "Destination";
+"delay" = "0";
+"silent" = "1";
 };
 };

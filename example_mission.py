@@ -3,7 +3,7 @@ if __name__ == '__main__':
     from mb_editor import *
 
     mission = Mission.normal()\
-        .set_missionInfo(
+        .set_info(
             name="Example Mission",
             author="Your name here",
             desc="Example description",
@@ -43,5 +43,13 @@ if __name__ == '__main__':
                     "0 2 0", 1000,
                     "0 0 0"
                 ),
+            ),
+            TeleportTrigger(
+                delay=1000,
+                destination="Destination",
+            ),
+            DestinationTrigger("Destination"),
+            RelativeTPTrigger(
+                destination="Destination",
             ),
         ).write("missions/exampleMission.mis")

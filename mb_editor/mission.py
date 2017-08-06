@@ -12,12 +12,12 @@ class Mission(SimGroup):
     def __init__(self, **fields):
         super().__init__(**fields)
 
-        self._missionInfo, self._sky, self._sun = MissionInfo(), Sky(), Sun()
-        self.add(self.missionInfo, self.sky, self.sun)
+        self._info, self._sky, self._sun = MissionInfo(), Sky(), Sun()
+        self.add(self.info, self.sky, self.sun)
 
     @property
-    def missionInfo(self):
-        return self._missionInfo
+    def info(self):
+        return self._info
 
     @property
     def sky(self):
@@ -27,30 +27,21 @@ class Mission(SimGroup):
     def sun(self):
         return self._sun
 
-    def set_missionInfo(self, missionInfo=None, **fields):
-        if missionInfo is not None:
-            self.remove(self.missionInfo)
-            self._missionInfo = missionInfo
-            self.add(missionInfo)
-
-        self.missionInfo.set(**fields)
+    def set_info(self, info=None, **fields):
+        if info is not None:
+            self.info.set(**info.fields)
+        self.info.set(**fields)
         return self
 
     def set_sky(self, sky=None, **fields):
         if sky is not None:
-            self.remove(self.sky)
-            self._sky = sky
-            self.add(sky)
-
+            self.sky.set(**sky.fields)
         self.sky.set(**fields)
         return self
 
     def set_sun(self, sun=None, **fields):
         if sun is not None:
-            self.remove(self.sun)
-            self._sun = sun
-            self.add(sun)
-
+            self.sun.set(**sun.fields)
         self.sun.set(**fields)
         return self
 
@@ -61,7 +52,7 @@ class Mission(SimGroup):
 
     @classmethod
     def normal(cls, **fields):
-        return cls(**fields).set_missionInfo(
+        return cls(**fields).set_info(
             gameMode="Normal",
             parTime=0,
             platinumTime=0,
@@ -71,7 +62,7 @@ class Mission(SimGroup):
 
     @classmethod
     def hunt(cls, **fields):
-        return cls(**fields).set_missionInfo(
+        return cls(**fields).set_info(
             gameMode="Hunt",
             radiusFromGem=30,
             maxGemsPerSpawn=6,

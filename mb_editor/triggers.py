@@ -1,4 +1,5 @@
 from mb_editor.physicalobject import BoundedObject
+from mb_editor.field import ObjectName
 
 
 class Trigger(BoundedObject):
@@ -20,10 +21,18 @@ class HelpTrigger(Trigger):
     )
 
 
-class RelativeTPTrigger(Trigger):
+class TeleportTrigger(Trigger):
+    defaults = dict(
+        datablock="TeleportTrigger",
+        destination=ObjectName.none,
+        delay=2000,
+        silent=0,
+    )
+
+
+class RelativeTPTrigger(TeleportTrigger):
     defaults = dict(
         datablock="RelativeTPTrigger",
-        destination="",
         delay=0,
         silent=1,
     )

@@ -21,6 +21,27 @@ class Field:
         return self
 
 
+class ObjectName:
+
+    def __init__(self, arg):
+        if isinstance(arg, str):
+            self._name = arg
+        else:
+            self._name = arg.name
+
+    @property
+    def name(self):
+        return self._name
+
+    def __repr__(self):
+        return self.name
+
+    def __eq__(self, other):
+        return self.name == other or self.name == other.name
+
+ObjectName.none = ObjectName("")
+
+
 if __name__ == '__main__':
     f = Field("name", "Icy Tightrope Battlecube", str)
     assert f.key == "name"
@@ -28,11 +49,18 @@ if __name__ == '__main__':
     assert repr(f) == '"name" = "Icy Tightrope Battlecube";'
 
     f.key = "position"
-
     from mb_editor.numberlists.vector3d import Vector3D
     f.type = Vector3D
     f.value = [3, 1, 4]
     assert f.value == "3 1 4"
     assert repr(f) == '"position" = "3 1 4";'
+
+    f.key = "target"
+    f.type = ObjectName
+    f.value = "ReferencedObject"
+    assert type(f.value) == ObjectName
+    assert f.value == "ReferencedObject"
+    from mb_editor.scriptobject import ScriptObject
+    assert f.value == ScriptObject("ReferencedObject")
 
     print(f)

@@ -1,5 +1,8 @@
 from mb_editor.scriptobject import ScriptObject
 
+from functools import reduce
+from operator import add
+
 
 class SimGroup(ScriptObject):
     classname = "SimGroup"
@@ -7,7 +10,8 @@ class SimGroup(ScriptObject):
     def __init__(self, *children, **fields):
         super().__init__(**fields)
 
-        self._children = list(children)
+        self._children = []
+        self.add(children)
 
     @property
     def children(self):
@@ -19,12 +23,19 @@ class SimGroup(ScriptObject):
         except TypeError:
             self._children += children
 
+        for child in self._children:
+            child._group = self
+
         return self
 
     def remove(self, *children):
         for child in children:
             self._children.remove(child)
+            child._group = None
         return self
+
+    def descendants(self):
+        return self.children + list(reduce(add, [child.descendants() for child in self.children]))
 
     def inner_str(self):
         return super().inner_str() + "\n\n" + "\n\n".join(map(repr, self.children))
@@ -72,4 +83,23 @@ if __name__ == '__main__':
     assert not s.children[-2].isDone
     assert s.children[-1].isDone
 
-    print(s)
+    from mb_editor.field import ObjectName
+    m = SimGroup(
+        ScriptObject(
+            name="SaintLouis",
+            primary_export="drugs",
+        ),
+
+        ScriptObject(
+            name="noby",
+            hometown=ObjectName("SaintLouis")
+        ),
+
+        name="MemesGroup",
+    ).add(s)
+
+    assert all(name in map(lambda d: d.name, m.descendants()) for name in ["SaintLouis", "HohSisGroup", "EdBeacham"])
+    assert m.descendant_named("JojIteration_15").percentSatisfaction == 100
+    assert m.descendant_named("noby").deref("hometown").primary_export == "drugs"
+
+    print(m)

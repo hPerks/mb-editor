@@ -4,13 +4,13 @@ from .numberlists.rotation3d import Rotation3D
 from .numberlists.polyhedron3d import Polyhedron3D
 from .numberlists.color import Color
 
-from .field import Field
+from .field import Field, ObjectName
 
 from .scriptobject import ScriptObject
 from .simgroup import SimGroup
 from .physicalobject import PhysicalObject, BoundedObject
 
-from .triggers import Trigger, SpawnTrigger, HelpTrigger, RelativeTPTrigger, DestinationTrigger
+from .triggers import Trigger, SpawnTrigger, HelpTrigger, TeleportTrigger, RelativeTPTrigger, DestinationTrigger
 from .staticshapes import StaticShape, StartPad, EndPad, FinishSign, Bumper, DuctFan, Mine, TrapDoor, Tornado
 from .items import Item, Gem, TimeTravel, SuperJump, SuperSpeed, Gyrocopter, SuperBounce, ShockAbsorber
 
