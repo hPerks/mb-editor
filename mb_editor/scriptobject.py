@@ -114,31 +114,30 @@ class ScriptObject:
         return self.object_named(self.fields[field_name].name)
 
 
+    @staticmethod
+    def tests():
+        w = ScriptObject("WesleySeeton", catchphrase="do it all over again")
+        assert w.catchphrase == "do it all over again"
+
+        e = ScriptObject("EdBeacham", catchphrase="lift the house", rating="A+")
+        c = e.copy(catchphrase="i'm beaming up")
+        assert (e.catchphrase, c.catchphrase, c.rating) == ("lift the house", "i'm beaming up", "A+")
+
+        cc = c.copies(
+            ("satisfaction", "catchphrase"),
+            "75", "we no longer care about customer satisfaction",
+            "50", "and my guys no longer care about the joj and doing the joj right",
+            "25", "i'm going to take a sh!t on the house",
+            "0",
+
+            name="(name)_dialogue(i)",
+        )
+
+        assert len(cc) == 4
+        assert cc[0].rating == "A+"
+        assert cc[1].name == "EdBeacham_copy_dialogue1"
+        assert "!" in cc[2].catchphrase
+        assert cc[3].catchphrase == "i'm beaming up"
+
 if __name__ == '__main__':
-    s = ScriptObject(
-        name="WesleySeeton",
-        catchphrase="do it all over again",
-    )
-
-    assert s.catchphrase == "do it all over again"
-
-    s._name = "EdBeacham"
-    assert s.name == "EdBeacham"
-
-    copy = s.copy(catchphrase="lift the house", rating="A+")
-    assert copy.fields["catchphrase"] == "lift the house"
-
-    copies = s.copies(
-        ("some_random_property", "catchphrase"),
-        "0001", "we no longer care about customer satisfaction",
-        "0002", "and my guys no longer care about the joj and doing the joj right",
-        "0003", "i'm going to take a sh!t on the house",
-        "0004"
-    )
-
-    assert len(copies) == 4
-    assert copies[1].name == "EdBeacham_1"
-    assert "!" in copies[2].catchphrase
-    assert copies[3].catchphrase == "do it all over again"
-
-    print(*copies, sep="\n")
+    ScriptObject.tests()

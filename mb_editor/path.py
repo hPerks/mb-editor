@@ -18,6 +18,10 @@ class Path(SimGroup):
     def __init__(self, *markers, **fields):
         super().__init__(*[marker.set(seqNum=seqNum) for seqNum, marker in enumerate(markers)], **fields)
 
+    @property
+    def markers(self):
+        return self.children
+
     @classmethod
     def make(cls, *args, **fields):
         return cls(
@@ -44,3 +48,18 @@ class Path(SimGroup):
                 *args
             )
         )
+
+
+    @staticmethod
+    def tests():
+        p = Path.make_accelerate(
+            "0 0 0", "1000",
+            "0 0 4", "1000",
+            "0 0 0"
+        )
+
+        assert len(p.markers) == 3
+        assert p.markers[2].seqNum == 2
+
+if __name__ == '__main__':
+    Path.tests()

@@ -14,6 +14,11 @@ class Interior(PhysicalObject):
     def local(cls, interiorFile, **fields):
         return cls(interiorFile="{}/{}".format(cls.local_dir, interiorFile), **fields)
 
+
+    @staticmethod
+    def tests():
+        i = Interior.local("foundationRepair.dif")
+        return i.interiorFile == "~/data/interiors/foundationRepair.dif"
+
 if __name__ == '__main__':
-    i = Interior.local("foundationRepair.dif")
-    print(i)
+    Interior.tests()

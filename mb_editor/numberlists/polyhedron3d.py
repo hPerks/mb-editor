@@ -43,4 +43,16 @@ class Polyhedron3D(NumberList):
         self[9:12] = Vector3D(value)
 
 
+    @staticmethod
+    def tests():
+        p = Polyhedron3D.make("0 0 0", "1 1 0", "0 1 0", "0 0 1")
+        assert p == "0 0 0 1 1 0 0 1 0 0 0 1"
+
+        p.i = Vector3D.i
+        p.k += p.j
+        assert p == "0 0 0 1 0 0 0 1 0 0 1 1"
+
 Polyhedron3D.identity = Polyhedron3D.make()
+
+if __name__ == '__main__':
+    Polyhedron3D.tests()

@@ -16,11 +16,3 @@ class BoundedObject(PhysicalObject):
     defaults = dict(
         polyhedron=Polyhedron3D.identity
     )
-
-
-if __name__ == '__main__':
-    b = BoundedObject()
-    assert b.position.x == 0
-    assert b.polyhedron.i == "1 0 0"
-
-    print(b)

@@ -21,46 +21,20 @@ class Field:
         return self
 
 
-class ObjectName:
+    @staticmethod
+    def tests():
+        f = Field("name", "EdBeacham", str)
+        assert (f.key, f.value, f.type) == ("name", "EdBeacham", str)
 
-    def __init__(self, arg):
-        if isinstance(arg, str):
-            self._name = arg
-        else:
-            self._name = arg.name
+        from mb_editor.numberlists.vector3d import Vector3D
+        f.key, f.type, f.value = "areaCode", Vector3D, [2, 1, 4]
+        assert f.value == "2 1 4"
 
-    @property
-    def name(self):
-        return self._name
-
-    def __repr__(self):
-        return self.name
-
-    def __eq__(self, other):
-        return self.name == other or self.name == other.name
-
-ObjectName.none = ObjectName("")
+        from mb_editor.objectname import ObjectName
+        f.key, f.type, f.value = "client", ObjectName, "RichardSwiney"
+        from mb_editor.scriptobject import ScriptObject
+        assert f.value == ScriptObject("RichardSwiney")
 
 
 if __name__ == '__main__':
-    f = Field("name", "Icy Tightrope Battlecube", str)
-    assert f.key == "name"
-    assert f.value == "Icy Tightrope Battlecube"
-    assert repr(f) == '"name" = "Icy Tightrope Battlecube";'
-
-    f.key = "position"
-    from mb_editor.numberlists.vector3d import Vector3D
-    f.type = Vector3D
-    f.value = [3, 1, 4]
-    assert f.value == "3 1 4"
-    assert repr(f) == '"position" = "3 1 4";'
-
-    f.key = "target"
-    f.type = ObjectName
-    f.value = "ReferencedObject"
-    assert type(f.value) == ObjectName
-    assert f.value == "ReferencedObject"
-    from mb_editor.scriptobject import ScriptObject
-    assert f.value == ScriptObject("ReferencedObject")
-
-    print(f)
+    Field.tests()

@@ -18,13 +18,14 @@ class SimGroup(ScriptObject):
         return list(self._children)
 
     def add(self, *children):
-        try:
-            self._children += children[0]
-        except TypeError:
-            self._children += children
+        if len(children) > 0:
+            try:
+                self._children += children[0]
+            except TypeError:
+                self._children += children
 
-        for child in self._children:
-            child._group = self
+            for child in self._children:
+                child._group = self
 
         return self
 
@@ -34,6 +35,11 @@ class SimGroup(ScriptObject):
             child._group = None
         return self
 
+    def removeall(self):
+        for child in self.children:
+            self.remove(child)
+        return self
+
     def descendants(self):
         return self.children + list(reduce(add, [child.descendants() for child in self.children]))
 
@@ -41,65 +47,72 @@ class SimGroup(ScriptObject):
         return super().inner_str() + "\n\n" + "\n\n".join(map(repr, self.children))
 
 
+    @staticmethod
+    def tests():
+        g = SimGroup(
+            ScriptObject(
+                name="WesleySeeton",
+                catchphrase="do it all over again",
+            ),
+
+            ScriptObject(
+                name="EdBeacham",
+                catchphrase="take a shit on the house",
+            ),
+
+            name="HohSisGroup",
+            mission="to get the joj done",
+        )
+
+        assert len(g.children) == 2
+        assert g.children[1].group.mission == "to get the joj done"
+
+        g.remove(g.children[0])
+        assert len(g.children) == 1
+
+        g.add(
+            ScriptObject(
+                name="JudithMiller",
+                catchphrase="i would recommend them to anybody",
+            )
+        )
+        g.children[1].speed = "slow"
+        assert (g.children[1].catchphrase, g.children[1].speed) == ("i would recommend them to anybody", "slow")
+
+        g.add(
+            ScriptObject(
+                name="JojIteration",
+                rating="A+",
+            ).copies(
+                ("numTimesAllOverAgain", "satisfaction", "isDone"),
+                *[(i, i * 100 / 15, i == 15) for i in range(16)],
+            )
+        )
+
+        assert len(g.children) == 18
+        assert not g.children[-2].isDone
+        assert g.children[-1].isDone
+
+        from mb_editor.objectname import ObjectName
+        m = SimGroup(
+            ScriptObject(
+                name="SaintLouis",
+                primary_export="drugs",
+            ),
+
+            ScriptObject(
+                name="noby",
+                hometown=ObjectName("SaintLouis")
+            ),
+
+            name="MemesGroup",
+        ).add(g)
+
+        descendant_names = [descendant.name for descendant in m.descendants()]
+        assert all(name in descendant_names for name in ["SaintLouis", "HohSisGroup", "EdBeacham"])
+        assert m.descendant_named("JojIteration_15").satisfaction == 100
+        assert m.descendant_named("noby").deref("hometown").primary_export == "drugs"
+
+
 if __name__ == '__main__':
-    s = SimGroup(
-        ScriptObject(
-            name="WesleySeeton",
-            catchphrase="do it all over again",
-        ),
-
-        ScriptObject(
-            name="EdBeacham",
-            catchphrase="take a shit on the house",
-        ),
-
-        name="HohSisGroup",
-        mission="to get the joj done",
-    )
-    assert len(s.children) == 2
-
-    s.remove(s.children[0])
-    assert len(s.children) == 1
-
-    s.add(
-        ScriptObject(
-            name="JudithMiller",
-            catchphrase="i would recommend them to anybody"
-        )
-    )
-    assert s.children[1].catchphrase == "i would recommend them to anybody"
-
-    s.add(
-        ScriptObject(
-            name="JojIteration",
-            rating="A+",
-        ).copies(
-            ("numTimesAllOverAgain", "percentSatisfaction", "isDone"),
-            *[(i, float(i) * 100 / 15, i == 15) for i in range(16)]
-        )
-    )
-
-    assert len(s.children) == 18
-    assert not s.children[-2].isDone
-    assert s.children[-1].isDone
-
-    from mb_editor.field import ObjectName
-    m = SimGroup(
-        ScriptObject(
-            name="SaintLouis",
-            primary_export="drugs",
-        ),
-
-        ScriptObject(
-            name="noby",
-            hometown=ObjectName("SaintLouis")
-        ),
-
-        name="MemesGroup",
-    ).add(s)
-
-    assert all(name in map(lambda d: d.name, m.descendants()) for name in ["SaintLouis", "HohSisGroup", "EdBeacham"])
-    assert m.descendant_named("JojIteration_15").percentSatisfaction == 100
-    assert m.descendant_named("noby").deref("hometown").primary_export == "drugs"
-
-    print(m)
+    SimGroup.tests()

@@ -35,7 +35,7 @@ if __name__ == '__main__':
                 ("8 8 0", "GemItemGreen"),
                 ("8 4 0", "GemItemBlue"),
             ),
-            MovingInterior(
+            MovingInterior.make(
                 PathedInterior.local("exampleMission.dif", 0),
                 Path.make_linear(
                     "0 0 0", 5000,

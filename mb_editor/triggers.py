@@ -1,5 +1,5 @@
 from mb_editor.physicalobject import BoundedObject
-from mb_editor.field import ObjectName
+from mb_editor.objectname import ObjectName
 
 
 class Trigger(BoundedObject):
@@ -40,3 +40,4 @@ class RelativeTPTrigger(TeleportTrigger):
 
 class DestinationTrigger(Trigger):
     defaults = dict(datablock="DestinationTrigger")
+

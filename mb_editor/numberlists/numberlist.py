@@ -1,4 +1,4 @@
-from operator import *
+from operator import eq, add, sub
 
 
 class NumberList:
@@ -38,23 +38,27 @@ class NumberList:
     def __truediv__(self, other):
         return self.__class__(map(lambda x: x / other, self))
 
+
+    @staticmethod
+    def tests():
+        n = NumberList(3, 1, 4)
+        assert n == [3, 1, 4] and n == (3, 1, 4) and n == "3 1 4"
+
+        n[2] = 3
+        assert n == "3 1 3"
+
+        from copy import copy
+        m = copy(n)
+        assert m == n
+
+        m[1] = 4
+        assert m != n
+
+        assert m + n == "6 5 6"
+        assert m - n == "0 3 0"
+        assert n * 2 == "6 2 6"
+        assert n / 0.5 == "6 2 6"
+
+
 if __name__ == '__main__':
-    n = NumberList(3, 1, 4)
-    assert n == (3, 1, 4)
-    assert n == [3, 1, 4]
-    assert n == "3 1 4"
-
-    n[2] = 3
-    assert n == [3, 1, 3]
-
-    from copy import copy
-    m = copy(n)
-    assert m == n
-
-    m[1] = 4
-    assert m != n
-
-    assert m + n == "6 5 6"
-    assert m - n == (0, 3, 0)
-    assert n * 2 == [6, 2, 6]
-    assert n / 0.5 == [6, 2, 6]
+    NumberList.tests()

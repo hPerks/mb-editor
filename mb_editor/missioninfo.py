@@ -11,3 +11,4 @@ class MissionInfo(ScriptObject):
         desc="No description set.",
         startHelpText="No start help text.",
     )
+    
