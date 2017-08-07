@@ -43,7 +43,7 @@ class SimGroup(ScriptObject):
         return self.children + flatlist([child.descendants() for child in self.children])
 
     def inner_str(self):
-        return super().inner_str() + "\n\n" + "\n\n".join(map(repr, self.children))
+        return super().inner_str() + "\n" + "\n\n".join(map(repr, self.children))
 
 
     @staticmethod

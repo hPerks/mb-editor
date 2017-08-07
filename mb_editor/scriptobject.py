@@ -1,6 +1,8 @@
 from mb_editor.field import Field
 from mb_editor.utils.lists import flatlist
 
+from textwrap import indent
+
 
 class ScriptObject:
     classname = "ScriptObject"
@@ -42,7 +44,7 @@ class ScriptObject:
         return 'new {classname}({name}) {{\n{fields}\n}};'.format(
             classname=self.classname,
             name=self._name,
-            fields=self.inner_str()
+            fields=indent(self.inner_str(), "   ")
         )
 
     defaults = {}

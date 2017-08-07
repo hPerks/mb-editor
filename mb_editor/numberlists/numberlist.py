@@ -1,3 +1,5 @@
+from mb_editor.utils.numbers import int_or_float
+
 from operator import eq, add, sub
 
 
@@ -7,7 +9,7 @@ class NumberList:
         if len(args) > 1:
             self.values = list(args)
         elif isinstance(args[0], str):
-            self.values = list(map(float, args[0].split(" ")))
+            self.values = list(map(int_or_float, args[0].split(" ")))
         else:
             self.values = list(args[0])
 

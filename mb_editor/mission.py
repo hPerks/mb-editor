@@ -15,6 +15,9 @@ class Mission(SimGroup):
         self._info, self._sky, self._sun = MissionInfo(), Sky(), Sun()
         self.add(self.info, self.sky, self.sun)
 
+    def __repr__(self):
+        return "//--- OBJECT WRITE BEGIN ---\n" + super().__repr__()
+
     @property
     def info(self):
         return self._info
