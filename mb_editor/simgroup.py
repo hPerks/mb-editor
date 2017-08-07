@@ -20,12 +20,18 @@ class SimGroup(ScriptObject):
             self._children.append(child)
             child._group = self
 
+            for friend in child.friends:
+                self.add(friend)
+
         return self
 
     def remove(self, *children):
         for child in flatlist(*children):
             self._children.remove(child)
             child._group = None
+
+            for friend in child.friends:
+                self.remove(friend)
 
         return self
 

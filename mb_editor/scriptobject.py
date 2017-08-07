@@ -9,6 +9,7 @@ class ScriptObject:
         self._name = name
         self._fields = []
         self._group = None
+        self._friends = []
 
         self.set(**self.__defaults())
         self.set(**fields)
@@ -57,10 +58,6 @@ class ScriptObject:
     def name(self):
         return self._name
 
-    @property
-    def group(self):
-        return self._group
-
     def inner_str(self):
         return "\n".join(map(repr, self._fields))
 
@@ -69,12 +66,14 @@ class ScriptObject:
             self.__setattr__(key, value)
         return self
 
+
     def copy(self, name="(name)_copy", **fields):
         copy = self.__class__(
             name="" if self.name == "" else name.replace("(name)", self.name),
             **self.fields
         )
         copy.set(**fields)
+        copy._friends = self._friends
         return copy
 
     def copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
@@ -100,6 +99,11 @@ class ScriptObject:
             for values_tuple_index, values_tuple in enumerate(values_tuples)
         ]
 
+
+    @property
+    def group(self):
+        return self._group
+
     def root(self):
         return self if self.group is None else self.group.root()
 
@@ -114,6 +118,16 @@ class ScriptObject:
 
     def deref(self, field_name):
         return self.object_named(self.fields[field_name].name)
+
+
+    @property
+    def friends(self):
+        return list(self._friends)
+
+    def with_friend(self, friend):
+        copy = self.copy("{name}")
+        copy._friends.append(friend)
+        return copy
 
 
     @staticmethod
@@ -140,6 +154,10 @@ class ScriptObject:
         assert cc[1].name == "EdBeacham_copy_dialogue1"
         assert "!" in cc[2].catchphrase
         assert cc[3].catchphrase == "i'm beaming up"
+
+        we = w.with_friend(e)
+        wer = we.with_friend(c)
+        assert len(we.friends) == 2
 
 if __name__ == '__main__':
     ScriptObject.tests()

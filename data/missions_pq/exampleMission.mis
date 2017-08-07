@@ -512,13 +512,6 @@ datablock = "HelpTrigger";
 text = "This help trigger is skewed so as to align with the ramp. You can't activate it from below!";
 };
 
-new TSStatic() {
-position = "24.0 6.0 36.0";
-rotation = "1.0 0.0 0.0 0";
-scale = "0.25 0.25 0.25";
-shapeName = "~/data/shapes/teleportpad.dts";
-};
-
 new Trigger() {
 position = "22.5 4.5 36.0";
 rotation = "1.0 0.0 0.0 0";
@@ -540,6 +533,13 @@ triggerOnce = "0";
 datablock = "DestinationTrigger";
 };
 
+new TSStatic() {
+position = "24.0 6.0 36.0";
+rotation = "1.0 0.0 0.0 0";
+scale = "0.25 0.25 0.25";
+shapeName = "~/data/shapes/teleportpad.dts";
+};
+
 new Trigger() {
 position = "20.0 4.0 36.0";
 rotation = "1.0 0.0 0.0 0";
@@ -547,7 +547,7 @@ scale = "8.5 12.5 4.0";
 polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
 triggerOnce = "0";
 datablock = "HelpTrigger";
-text = "The ObjectName type facilitates linking objects, like teleports and destinations. Instance methods such as TeleportTrigger.and_destination() and EndPad.and_sign() make this even simpler.";
+text = "Friends and the ObjectName type facilitate linking objects, like teleports and destinations. Additional methods such as TeleportTrigger.with_destination() make this even simpler.";
 };
 
 new Item() {
@@ -560,15 +560,8 @@ rotate = "1";
 datablock = "NestEgg_PQ";
 };
 
-new TSStatic() {
-position = "24.0 -12.0 40.0";
-rotation = "1.0 0.0 0.0 0";
-scale = "0.25 0.25 0.25";
-shapeName = "~/data/shapes/teleportpad.dts";
-};
-
 new Trigger() {
-position = "22.5 -14.5 40.0";
+position = "22.5 -13.5 40.0";
 rotation = "1.0 0.0 0.0 0";
 scale = "3.0 3.0 2.0";
 polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
@@ -577,6 +570,13 @@ datablock = "TeleportTrigger";
 destination = "destination";
 delay = "2000";
 silent = "0";
+};
+
+new TSStatic() {
+position = "24.0 -12.0 40.0";
+rotation = "1.0 0.0 0.0 0";
+scale = "0.25 0.25 0.25";
+shapeName = "~/data/shapes/teleportpad.dts";
 };
 
 new StaticShape() {

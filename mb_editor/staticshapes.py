@@ -12,8 +12,8 @@ class StartPad(StaticShape):
 class EndPad(StaticShape):
     defaults = dict(datablock="EndPad")
 
-    def and_sign(self, offset="0 0 4", **fields):
-        return [self, FinishSign(position=self.position + offset, **fields)]
+    def with_sign(self, offset="0 0 4", **fields):
+        return self.with_friend(FinishSign(position=self.position + offset, **fields))
 
 
 class FinishSign(StaticShape):
