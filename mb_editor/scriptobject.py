@@ -1,4 +1,5 @@
 from mb_editor.field import Field
+from mb_editor.utils.lists import flatlist
 
 
 class ScriptObject:
@@ -77,6 +78,7 @@ class ScriptObject:
         return copy
 
     def copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
+        values_tuples = flatlist(*values_tuples)
         if isinstance(keys_tuple, str):
             keys_tuple = tuple([keys_tuple])
             values_tuples = [tuple([values_tuple]) for values_tuple in values_tuples]
@@ -126,7 +128,7 @@ class ScriptObject:
         cc = c.copies(
             ("satisfaction", "catchphrase"),
             "75", "we no longer care about customer satisfaction",
-            "50", "and my guys no longer care about the joj and doing the joj right",
+            ["50", "and my guys no longer care about the joj and doing the joj right"],
             "25", "i'm going to take a sh!t on the house",
             "0",
 

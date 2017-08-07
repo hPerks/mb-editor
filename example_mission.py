@@ -36,7 +36,7 @@ if __name__ == '__main__':
                      "(finally) combine rotations with a simple * sign!"
             ),
 
-            *Bumper(scale="1.5 1.5 1.5").copies(
+            Bumper(scale="1.5 1.5 1.5").copies(
                 "position",
                 "21 -3 18", "25 -3 18",
                 "23 -1 18", "27 -1 18",
@@ -54,12 +54,12 @@ if __name__ == '__main__':
                 Path.make_accelerate("0 0 0", 3500, "0 0 12", 1500, "0 0 0")
             ),
             HelpTrigger(
-                position="12 -16.5 18", scale="8 8.5 4",
+                position="12 -16.5 18", scale="8 8.5 12",
                 text="There are quite a few convenient ways to build moving platforms. This one uses the "
                      "MovingInterior.make() and Path.make_accelerate() builders."
             ),
 
-            *[SimGroup(*TrapDoor().copies("position", *[(x,y,30) for x in range(-3,5,2)])) for y in range(-7,9,2)],
+            [SimGroup(TrapDoor().copies("position", [(x,y,30) for x in range(-3,5,2)])) for y in range(-7,9,2)],
             HelpTrigger(
                 position="-4.5 -8 30", scale="8.5 16 4",
                 text="These trapdoors would take ages to make and tweak using either the LE or a normal text editor. "
@@ -72,7 +72,7 @@ if __name__ == '__main__':
             ),
 
             TeleportPad(position="24 6 36", scale=".25 .25 .25"),
-            *TeleportTrigger(position="22.5 4.5 36", scale="3 3 2").and_destination("destination", "24 0 48"),
+            TeleportTrigger(position="22.5 4.5 36", scale="3 3 2").and_destination("destination", "24 0 48"),
             HelpTrigger(
                 position="20 4 36", scale="8.5 12.5 4",
                 text="The ObjectName type facilitates linking objects, like teleports and destinations. Instance "
@@ -83,6 +83,6 @@ if __name__ == '__main__':
             TeleportPad(position="24 -12 40", scale=".25 .25 .25"),
             TeleportTrigger(position="22.5 -14.5 40", scale="3 3 2", destination="destination"),
 
-            *EndPad(position="12 0 48", rotation="0 0 -1 90").and_sign(),
+            EndPad(position="12 0 48", rotation="0 0 -1 90").and_sign(),
 
         ).write("data/missions_pq/exampleMission.mis")

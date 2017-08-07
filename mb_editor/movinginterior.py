@@ -81,7 +81,7 @@ class MovingInterior(SimGroup):
             path = args[0]
             other_children = args[1:]
         else:
-            path = Path(*filter(lambda a: isinstance(a, Marker), args))
+            path = Path(filter(lambda a: isinstance(a, Marker), args))
             other_children = filter(lambda a: not isinstance(a, Marker), args)
 
         return cls(**fields).set_interior(pathedInterior).set_path(path).add(*other_children)

@@ -1,7 +1,5 @@
 from mb_editor.scriptobject import ScriptObject
-
-from functools import reduce
-from operator import add
+from mb_editor.utils.lists import flatlist
 
 
 class SimGroup(ScriptObject):
@@ -11,37 +9,32 @@ class SimGroup(ScriptObject):
         super().__init__(**fields)
 
         self._children = []
-        self.add(children)
+        self.add(*children)
 
     @property
     def children(self):
         return list(self._children)
 
     def add(self, *children):
-        if len(children) > 0:
-            try:
-                self._children += children[0]
-            except TypeError:
-                self._children += children
-
-            for child in self._children:
-                child._group = self
+        for child in flatlist(*children):
+            self._children.append(child)
+            child._group = self
 
         return self
 
     def remove(self, *children):
-        for child in children:
+        for child in flatlist(*children):
             self._children.remove(child)
             child._group = None
+
         return self
 
     def removeall(self):
-        for child in self.children:
-            self.remove(child)
+        self.remove(self.children)
         return self
 
     def descendants(self):
-        return self.children + list(reduce(add, [child.descendants() for child in self.children]))
+        return self.children + flatlist([child.descendants() for child in self.children])
 
     def inner_str(self):
         return super().inner_str() + "\n\n" + "\n\n".join(map(repr, self.children))
@@ -70,12 +63,12 @@ class SimGroup(ScriptObject):
         g.remove(g.children[0])
         assert len(g.children) == 1
 
-        g.add(
+        g.add([
             ScriptObject(
                 name="JudithMiller",
                 catchphrase="i would recommend them to anybody",
             )
-        )
+        ])
         g.children[1].speed = "slow"
         assert (g.children[1].catchphrase, g.children[1].speed) == ("i would recommend them to anybody", "slow")
 
@@ -95,10 +88,10 @@ class SimGroup(ScriptObject):
 
         from mb_editor.objectname import ObjectName
         m = SimGroup(
-            ScriptObject(
+            [ScriptObject(
                 name="SaintLouis",
                 primary_export="drugs",
-            ),
+            )],
 
             ScriptObject(
                 name="noby",

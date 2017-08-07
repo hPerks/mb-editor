@@ -13,7 +13,7 @@ gameMode = "Normal";
 parTime = "0";
 platinumTime = "25000";
 ultimateTime = "18000";
-awesomeTime = "16000";
+awesomeTime = "15500";
 music = "Good To Jump To.ogg";
 };
 
@@ -229,7 +229,7 @@ smoothingType = "Accelerate";
 new Trigger() {
 position = "12.0 -16.5 18.0";
 rotation = "1.0 0.0 0.0 0";
-scale = "8.0 8.5 4.0";
+scale = "8.0 8.5 12.0";
 polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
 triggerOnce = "0";
 datablock = "HelpTrigger";

@@ -1,5 +1,6 @@
 from mb_editor.simgroup import SimGroup
 from mb_editor.physicalobject import PhysicalObject
+from mb_editor.utils.lists import flatlist
 
 
 class Marker(PhysicalObject):
@@ -16,7 +17,7 @@ class Path(SimGroup):
     classname = "Path"
 
     def __init__(self, *markers, **fields):
-        super().__init__(*[marker.set(seqNum=seqNum) for seqNum, marker in enumerate(markers)], **fields)
+        super().__init__([marker.set(seqNum=seqNum) for seqNum, marker in enumerate(flatlist(*markers))], **fields)
 
     @property
     def markers(self):
@@ -25,7 +26,7 @@ class Path(SimGroup):
     @classmethod
     def make(cls, *args, **fields):
         return cls(
-            *Marker(**fields).copies(
+            Marker(**fields).copies(
                 ("position", "msToNext", "smoothingType"),
                 *args
             )
@@ -34,7 +35,7 @@ class Path(SimGroup):
     @classmethod
     def make_linear(cls, *args, **fields):
         return cls(
-            *Marker(smoothingType="Linear", **fields).copies(
+            Marker(smoothingType="Linear", **fields).copies(
                 ("position", "msToNext"),
                 *args
             )
@@ -43,7 +44,7 @@ class Path(SimGroup):
     @classmethod
     def make_accelerate(cls, *args, **fields):
         return cls(
-            *Marker(smoothingType="Accelerate", **fields).copies(
+            Marker(smoothingType="Accelerate", **fields).copies(
                 ("position", "msToNext"),
                 *args
             )
