@@ -11,8 +11,22 @@ class PhysicalObject(ScriptObject):
         scale=Vector3D.one,
     )
 
+    @staticmethod
+    def tests():
+        cc = PhysicalObject().copies(
+            ("position.x", "position.y"),
+            1, 3,
+            3, 7,
+        )
+        assert len(cc) == 2
+        assert cc[0].position == "1 3"
+
 
 class BoundedObject(PhysicalObject):
     defaults = dict(
         polyhedron=Polyhedron3D.identity
     )
+
+
+if __name__ == '__main__':
+    PhysicalObject.tests()

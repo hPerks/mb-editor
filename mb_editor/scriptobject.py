@@ -28,6 +28,11 @@ class ScriptObject:
             object.__setattr__(self, key, value)
             return
 
+        if "." in key:
+            before_dot, after_dot = tuple(key.split(".", 1))
+            self.__fieldwithkey(before_dot).value.__setattr__(after_dot, value)
+            return
+
         try:
             self.__fieldwithkey(key).value = value
         except StopIteration:
@@ -81,15 +86,23 @@ class ScriptObject:
 
     def copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
         values_tuples = flatlist(*values_tuples)
+
         if isinstance(keys_tuple, str):
             keys_tuple = tuple([keys_tuple])
             values_tuples = [tuple([values_tuple]) for values_tuple in values_tuples]
+
         elif not isinstance(values_tuples[0], tuple):
-            num_complete_tuples = len(values_tuples) // len(keys_tuple)
-            values_tuples = [
-                values_tuples[index * len(keys_tuple): (index + 1) * len(keys_tuple)]
+            tuple_size = len(keys_tuple)
+            num_complete_tuples = len(values_tuples) // tuple_size
+
+            complete_tuples = [
+                values_tuples[index * tuple_size: (index + 1) * tuple_size]
                 for index in range(num_complete_tuples)
-            ] + [values_tuples[num_complete_tuples * len(keys_tuple):]]
+            ]
+            if len(values_tuples) > num_complete_tuples * tuple_size:
+                values_tuples = complete_tuples + [values_tuples[num_complete_tuples * tuple_size:]]
+            else:
+                values_tuples = complete_tuples
 
         return [
             self.copy(
@@ -144,10 +157,10 @@ class ScriptObject:
 
         cc = c.copies(
             ("satisfaction", "catchphrase"),
-            "75", "we no longer care about customer satisfaction",
-            ["50", "and my guys no longer care about the joj and doing the joj right"],
-            "25", "i'm going to take a sh!t on the house",
-            "0",
+            75, "we no longer care about customer satisfaction",
+            [50, "and my guys no longer care about the joj and doing the joj right"],
+            25, "i'm going to take a sh!t on the house",
+            0,
 
             name="(name)_dialogue(i)",
         )
@@ -156,7 +169,7 @@ class ScriptObject:
         assert cc[0].rating == "A+"
         assert cc[1].name == "EdBeacham_copy_dialogue1"
         assert "!" in cc[2].catchphrase
-        assert cc[3].catchphrase == "i'm beaming up"
+        assert (cc[3].satisfaction, cc[3].catchphrase) == (0, "i'm beaming up")
 
         we = w.with_friend(e)
         wer = we.with_friend(c)
