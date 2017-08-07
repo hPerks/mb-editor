@@ -11,6 +11,10 @@ class Trigger(BoundedObject):
     )
 
 
+class InBoundsTrigger(Trigger):
+    defaults = dict(datablock="InBoundsTrigger")
+
+
 class SpawnTrigger(Trigger):
     defaults = dict(datablock="SpawnTrigger")
 

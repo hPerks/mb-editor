@@ -5,7 +5,7 @@ if __name__ == '__main__':
         name="Example Mission",
         author="hPerks",
         desc="Showcasing some of the features in my text-based MB level maker.",
-        startHelpText="Here's some start help text.",
+        startHelpText="",
         platinumTime=25000,
         ultimateTime=18000,
         awesomeTime=15500,
@@ -15,19 +15,19 @@ if __name__ == '__main__':
     ).set_sun(
         ambient=(0.3, 0.3, 0.4, 1)
     ).add(
-        StartPad("StartPoint", position=Vector3D.zero),
+        StartPad("StartPoint", position=vec.zero),
         Interior.local("exampleMission.dif", position="0 0 0"),
 
         SuperJump(position="0 3 0"),
         HelpTrigger(
-            position="-4.5 2 0", scale="8.5 2 4",
+            position="-4.5 -4.5 0", scale="8.5 8.5 4",
             text="Items are placed with a single tiny line of code, and customized however much you want."
         ),
 
         TimeTravel(position="-4 16 6.5", timeBonus=2000),
 
         GravityModifier(position="11 12 7", rotation="0 -1 0 90"),
-        GravityModifier(position="13 12 19", rotation="0 -1 0 180"),
+        GravityModifier(position="13 12 19", rotation=rot("0 -1 0 90") * "0 -1 0 90"),
         HelpTrigger(
             position="10 8 6", scale="2 8.5 4",
             text="There are many tools for handling lists of numbers like positions and rotations. You can even "
@@ -65,7 +65,7 @@ if __name__ == '__main__':
         ),
 
         HelpTrigger(
-            polyhedron=Polyhedron3D.make(o="4 8 30", i="16 0 6", j="0 8 0", k="0 0 4"),
+            polyhedron=polyhedron.make(o="4 8 30", i="16 0 6", j="0 8 0", k="0 0 4"),
             text="This help trigger is skewed so as to align with the ramp. You can't activate it from below!",
         ),
 
@@ -85,4 +85,10 @@ if __name__ == '__main__':
 
         EndPad(position="12 0 48", rotation="0 0 -1 90").with_sign(),
 
-    ).write("data/missions_pq/exampleMission.mis"))
+        HelpTrigger(
+            position="4 -8 48", scale="24 16 4",
+            text="Finally, the autobounds() function adds a bounds trigger to your level automatically. Trying to save "
+                 "your level without a bounds trigger throws an error!"
+        ),
+
+    ).autobounds().write("data/missions_pq/exampleMission.mis"))

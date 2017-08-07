@@ -47,7 +47,7 @@ class Rotation3D(Vector3D):
         return cls(q[1] / sine, q[2] / sine, q[3] / sine, 2 * degrees(atan2(sine, cosine)))
 
     def __mul__(self, other):
-        return self.__class__.from_quaternion(self.to_quaternion() * other.to_quaternion())
+        return self.__class__.from_quaternion(self.to_quaternion() * self.__class__(other).to_quaternion())
 
 
     @staticmethod
@@ -59,7 +59,7 @@ class Rotation3D(Vector3D):
         s.angle = s.angle - 90
         assert s.angle == 90
 
-        p = r * s
+        p = r * repr(s)
         assert abs(p.axis - Vector3D.one.normalized()) < 0.01
         assert abs(p.angle - 120) < 0.01
 

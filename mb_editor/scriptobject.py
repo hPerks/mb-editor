@@ -18,7 +18,10 @@ class ScriptObject:
         return next(filter(lambda f: f.key == key, self._fields))
 
     def __getattr__(self, item):
-        return self.__fieldwithkey(item).value
+        try:
+            return self.__fieldwithkey(item).value
+        except StopIteration:
+            return None
 
     def __setattr__(self, key, value):
         if key[0] == "_":

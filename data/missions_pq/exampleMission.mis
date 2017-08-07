@@ -8,7 +8,7 @@ author = "hPerks";
 type = "Custom";
 level = "1";
 desc = "Showcasing some of the features in my text-based MB level maker.";
-startHelpText = "Here's some start help text.";
+startHelpText = "";
 gameMode = "Normal";
 parTime = "0";
 platinumTime = "25000";
@@ -62,9 +62,9 @@ datablock = "SuperJumpItem_PQ";
 };
 
 new Trigger() {
-position = "-4.5 2.0 0.0";
+position = "-4.5 -4.5 0.0";
 rotation = "1.0 0.0 0.0 0";
-scale = "8.5 2.0 4.0";
+scale = "8.5 8.5 4.0";
 polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
 triggerOnce = "0";
 datablock = "HelpTrigger";
@@ -94,7 +94,7 @@ datablock = "AntiGravityItem_PQ";
 
 new Item() {
 position = "13.0 12.0 19.0";
-rotation = "0.0 -1.0 0.0 180.0";
+rotation = "0.0 -1.0 0.0 179.99999999999997";
 scale = "1 1 1";
 collideable = "0";
 static = "1";
@@ -591,5 +591,24 @@ position = "12.0 0.0 52.0";
 rotation = "1.0 0.0 0.0 0";
 scale = "1 1 1";
 datablock = "RegularFinishLineSign";
+};
+
+new Trigger() {
+position = "4.0 -8.0 48.0";
+rotation = "1.0 0.0 0.0 0";
+scale = "24.0 16.0 4.0";
+polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+triggerOnce = "0";
+datablock = "HelpTrigger";
+text = "Finally, the autobounds() function adds a bounds trigger to your level automatically. Trying to save your level without a bounds trigger throws an error!";
+};
+
+new Trigger(Bounds) {
+position = "-24.5 -36.5 -20";
+rotation = "1.0 0.0 0.0 0";
+scale = "71.5 72.5 172.0";
+polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+triggerOnce = "0";
+datablock = "InBoundsTrigger";
 };
 };

@@ -42,6 +42,14 @@ class Polyhedron3D(NumberList):
     def k(self, value):
         self[9:12] = Vector3D(value)
 
+    def with_offset_faces(self, right=0, left=0, front=0, back=0, top=0, bottom=0):
+        return Polyhedron3D.make(
+            o=self.o + (left, back, bottom),
+            i=self.i + (right-left, 0, 0),
+            j=self.j + (0, front-back, 0),
+            k=self.k + (0, 0, top-bottom),
+        )
+
 
     @staticmethod
     def tests():
@@ -51,6 +59,9 @@ class Polyhedron3D(NumberList):
         p.i = Vector3D.i
         p.k += p.j
         assert p == "0 0 0 1 0 0 0 1 0 0 1 1"
+
+        q = p.with_offset_faces(right=1, left=-1, bottom=-1)
+        assert q == "-1 0 -1 3 0 0 0 1 0 0 1 2"
 
 Polyhedron3D.identity = Polyhedron3D.make()
 

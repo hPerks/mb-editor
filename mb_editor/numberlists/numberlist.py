@@ -26,17 +26,20 @@ class NumberList:
     def __repr__(self):
         return " ".join(map(repr, self))
 
+    def map(self, function, *others):
+        return self.__class__(map(function, *([self] + [NumberList(other) for other in others])))
+
     def __add__(self, other):
-        return self.__class__(map(add, self, NumberList(other)))
+        return self.map(add, other)
 
     def __sub__(self, other):
-        return self.__class__(map(sub, self, NumberList(other)))
+        return self.map(sub, other)
 
     def __mul__(self, other):
-        return self.__class__(map(lambda x: x * other, self))
+        return self.map(lambda x: x * other)
 
     def __truediv__(self, other):
-        return self.__class__(map(lambda x: x / other, self))
+        return self.map(lambda x: x / other)
 
 
     @staticmethod
