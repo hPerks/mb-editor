@@ -6,7 +6,7 @@ from operator import eq, add, sub
 class NumberList:
 
     def __init__(self, *args):
-        if len(args) > 1:
+        if len(args) > 1 or len(args) == 0:
             self.values = list(args)
         elif isinstance(args[0], str):
             self.values = list(map(int_or_float, args[0].split(" ")))

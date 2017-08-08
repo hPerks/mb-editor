@@ -59,5 +59,9 @@ class GravityModifier(Item):
     defaults = dict(datablock="AntiGravityItem_PQ")
 
 
+class Anvil(Item):
+    defaults = dict(datablock="AnvilItem")
+
+
 class NestEgg(Item):
     defaults = dict(datablock="NestEgg_PQ")

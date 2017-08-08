@@ -38,3 +38,12 @@ class TrapDoor(StaticShape):
 
 class Tornado(StaticShape):
     defaults = dict(datablock="Tornado_PQ")
+
+
+class FadePlatform(StaticShape):
+    defaults = dict(
+        datablock="FadePlatform",
+        fadeStyle="fade",
+        functionality="trapdoor",
+        permanent=0,
+    )

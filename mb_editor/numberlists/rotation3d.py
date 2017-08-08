@@ -64,6 +64,12 @@ class Rotation3D(Vector3D):
         assert abs(p.angle - 120) < 0.01
 
 Rotation3D.identity = Rotation3D(1, 0, 0, 0)
+Rotation3D.up = Rotation3D(1, 0, 0, 0)
+Rotation3D.down = Rotation3D(1, 0, 0, 180)
+Rotation3D.right = Rotation3D(0, -1, 0, 90)
+Rotation3D.left = Rotation3D(0, 1, 0, 90)
+Rotation3D.towards = Rotation3D(-1, 0, 0, 90)
+Rotation3D.away = Rotation3D(1, 0, 0, 90)
 
 
 if __name__ == '__main__':

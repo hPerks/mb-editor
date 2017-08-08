@@ -4,6 +4,8 @@ from mb_editor.sky import Sky
 from mb_editor.sun import Sun
 from mb_editor.physicalobject import PhysicalObject
 from mb_editor.triggers import InBoundsTrigger
+from mb_editor.utils.lists import flatlist
+from mb_editor.triggers import LapsCheckpointTrigger
 
 
 class Mission(SimGroup):
@@ -72,9 +74,12 @@ class Mission(SimGroup):
         f.write(repr(self))
         f.close()
 
-    @classmethod
-    def normal(cls, **fields):
-        return cls(**fields).set_info(
+
+class NormalMission(Mission):
+
+    def __init__(self, **fields):
+        super().__init__(**fields)
+        self.set_info(
             gameMode="Normal",
             parTime=0,
             platinumTime=0,
@@ -82,9 +87,12 @@ class Mission(SimGroup):
             awesomeTime=0,
         )
 
-    @classmethod
-    def hunt(cls, **fields):
-        return cls(**fields).set_info(
+
+class HuntMission(Mission):
+
+    def __init__(self, **fields):
+        super().__init__(**fields)
+        self.set_info(
             gameMode="Hunt",
             radiusFromGem=30,
             maxGemsPerSpawn=6,
@@ -95,3 +103,19 @@ class Mission(SimGroup):
             ultimateScore=0,
             awesomeScore=0,
         )
+
+
+class LapsMission(NormalMission):
+
+    def __init__(self, **fields):
+        super().__init__(**fields)
+        self.set_info(
+            gameMode="Laps",
+            lapsNumber=3
+        )
+
+    def add_laps_checkpoint_triggers(self, *laps_checkpoint_triggers):
+        return super().add([
+            trigger.set(checkpointNum=checkpointNum)
+            for checkpointNum, trigger in enumerate(flatlist(*laps_checkpoint_triggers))
+        ])

@@ -1,6 +1,6 @@
 from mb_editor import *
 
-(Mission.normal().set_info(
+NormalMission().set_info(
     name="Example Mission",
     author="hPerks",
     desc="Showcasing some of the features in my text-based MB level maker.",
@@ -90,4 +90,4 @@ from mb_editor import *
              "your level without a bounds trigger throws an error!"
     ),
 
-).autobounds().write("data/missions_pq/exampleMission.mis"))
+).autobounds().write("data/missions_pq/exampleMission.mis")

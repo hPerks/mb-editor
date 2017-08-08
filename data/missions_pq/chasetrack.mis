@@ -1,0 +1,467 @@
+//--- OBJECT WRITE BEGIN ---
+new SimGroup(MissionGroup) {
+
+   new ScriptObject(MissionInfo) {
+      name = "Chasetrack [WIP]";
+      game = "PQ";
+      author = "hPerks";
+      type = "Custom";
+      level = "1";
+      desc = "Chase after the gems around the track. Can you get them all in 3 laps?";
+      startHelpText = "No cheating - you still have to do 3 laps!";
+      gameMode = "Laps";
+      parTime = "150000";
+      platinumTime = "90000";
+      ultimateTime = "70000";
+      awesomeTime = "55000";
+      lapsNumber = "3";
+   };
+
+   new Sky() {
+      position = "336 136 0";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      visibleDistance = "500";
+      useSkyTextures = "1";
+      renderBottomTexture = "1";
+      skySolidColor = "0.6 0.6 0.6 1";
+      materialList = "~/data/skies_pq/wave.dml";
+      windVelocity = "1 0 0";
+      windEffectPrecipitation = "0";
+      noRenderBans = "1";
+   };
+
+   new Sun() {
+      direction = "0.5 0.5 -0.5";
+      color = "1.4 1.2 0.4 1";
+      ambient = "0.3 0.3 0.4 1";
+   };
+
+   new StaticShape() {
+      position = "8 2 0";
+      rotation = "0.0 0.0 -1.0 90";
+      scale = "1 1 1";
+      datablock = "StartPad";
+   };
+
+   new InteriorInstance() {
+      position = "0 0 0";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      interiorFile = "~/data/interiors_pq/chasetrack.dif";
+   };
+
+   new InteriorInstance() {
+      position = "6 25 -22";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "0.125 14 0";
+      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+   };
+
+   new InteriorInstance() {
+      position = "-1.25 -32 0";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1.5 0.125 0";
+      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+   };
+
+   new InteriorInstance() {
+      position = "-2 -22 0";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "0.125 20.125 0";
+      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+   };
+
+   new InteriorInstance() {
+      position = "-1.25 -12 0";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1.5 0.125 0";
+      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+   };
+
+   new InteriorInstance() {
+      position = "5.25 -32 0";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1.5 0.125 0";
+      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+   };
+
+   new InteriorInstance() {
+      position = "6 -22 0";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "0.125 20.125 0";
+      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+   };
+
+   new InteriorInstance() {
+      position = "5.25 -12 0";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1.5 0.125 0";
+      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+   };
+
+   new Trigger() {
+      position = "-44 50 -8";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "3 3 1";
+      polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+      triggerOnce = "0";
+      datablock = "LapsCheckpointTrigger";
+      checkpointNumber = "0";
+      checkpointNum = "0";
+   };
+
+   new Trigger() {
+      position = "-2 46 -43";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "12 1 20";
+      polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+      triggerOnce = "0";
+      datablock = "LapsCheckpointTrigger";
+      checkpointNumber = "0";
+      checkpointNum = "1";
+   };
+
+   new Trigger() {
+      position = "-10 -116 -44";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "24 1 20";
+      polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+      triggerOnce = "0";
+      datablock = "LapsCheckpointTrigger";
+      checkpointNumber = "0";
+      checkpointNum = "2";
+   };
+
+   new Trigger() {
+      position = "-0.5 5.5 0";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "7 0.5 10";
+      polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+      triggerOnce = "0";
+      datablock = "LapsCounterTrigger";
+   };
+
+   new Item() {
+      position = "-9 14.75 0.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "-19 15 -1.25";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "-19 3 -1.25";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "-29 3.25 -2.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "-36.5 69 -16.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "-34 71 -16.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "-1 25 -26.25";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "5000";
+   };
+
+   new Item() {
+      position = "13 25 -26.25";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "5000";
+   };
+
+   new Item() {
+      position = "11.25 -12 -23.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "4000";
+   };
+
+   new Item() {
+      position = "2.5 -23.25 -23.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "4000";
+   };
+
+   new Item() {
+      position = "10 -46 -23.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "6 -54 -23.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "2 -58 -23.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "10 -62 -23.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "6 -66 -23.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "TimeTravelItem_PQ";
+      timeBonus = "2000";
+   };
+
+   new Item() {
+      position = "-42.5 49 1";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "AnvilItem";
+   };
+
+   new Item() {
+      position = "-42.5 51.5 -6";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "2.5 2.5 2.5";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "AntiGravityItem_PQ";
+   };
+
+   new StaticShape() {
+      position = "5 82 -15";
+      rotation = "-1.0 0.0 0.0 90";
+      scale = "1 1 1";
+      datablock = "DuctFan_PQ";
+   };
+
+   new StaticShape() {
+      position = "7 82 -15";
+      rotation = "-1.0 0.0 0.0 90";
+      scale = "1 1 1";
+      datablock = "DuctFan_PQ";
+   };
+
+   new Trigger() {
+      position = "-7 -146 -43";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "20 30 30";
+      polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+      triggerOnce = "0";
+      datablock = "GravityWellTrigger";
+      axis = "1 0 0";
+      customPoint = "3 -116 -13";
+      invert = "0";
+      restoreGravity = "";
+      useRadius = "0";
+      radius = "0";
+   };
+
+   new Item() {
+      position = "2 -127 -3";
+      rotation = "-1.0 0.0 0.0 90";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "AnvilItem";
+   };
+
+   new Item() {
+      position = "2 -124.5 -1";
+      rotation = "1.0 0.0 0.0 180";
+      scale = "1 1 1";
+      collideable = "0";
+      static = "1";
+      rotate = "1";
+      datablock = "AntiGravityItem_PQ";
+   };
+
+   new StaticShape() {
+      position = "3 -29 -0.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      datablock = "FadePlatform";
+      fadeStyle = "fade";
+      functionality = "trapdoor";
+      permanent = "1";
+   };
+
+   new StaticShape() {
+      position = "1 -27 -0.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      datablock = "FadePlatform";
+      fadeStyle = "fade";
+      functionality = "trapdoor";
+      permanent = "1";
+   };
+
+   new StaticShape() {
+      position = "3 -25 -0.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      datablock = "FadePlatform";
+      fadeStyle = "fade";
+      functionality = "trapdoor";
+      permanent = "1";
+   };
+
+   new StaticShape() {
+      position = "1 -23 -0.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      datablock = "FadePlatform";
+      fadeStyle = "fade";
+      functionality = "trapdoor";
+      permanent = "1";
+   };
+
+   new StaticShape() {
+      position = "3 -21 -0.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      datablock = "FadePlatform";
+      fadeStyle = "fade";
+      functionality = "trapdoor";
+      permanent = "1";
+   };
+
+   new StaticShape() {
+      position = "1 -19 -0.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      datablock = "FadePlatform";
+      fadeStyle = "fade";
+      functionality = "trapdoor";
+      permanent = "1";
+   };
+
+   new StaticShape() {
+      position = "3 -17 -0.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      datablock = "FadePlatform";
+      fadeStyle = "fade";
+      functionality = "trapdoor";
+      permanent = "1";
+   };
+
+   new StaticShape() {
+      position = "1 -15 -0.5";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      datablock = "FadePlatform";
+      fadeStyle = "fade";
+      functionality = "trapdoor";
+      permanent = "1";
+   };
+
+   new Trigger(Bounds) {
+      position = "-64 -166 -64";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "97 268 165";
+      polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+      triggerOnce = "0";
+      datablock = "InBoundsTrigger";
+   };
+};

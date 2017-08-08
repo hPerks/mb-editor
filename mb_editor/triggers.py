@@ -1,6 +1,8 @@
 from mb_editor.physicalobject import BoundedObject
 from mb_editor.objectname import ObjectName
 from mb_editor.tsstatics import TeleportPad
+from mb_editor.numberlists.vector3d import Vector3D
+from mb_editor.numberlists.rotation3d import Rotation3D
 
 
 class Trigger(BoundedObject):
@@ -61,6 +63,36 @@ class RelativeTPTrigger(TeleportTrigger):
 
 class DestinationTrigger(Trigger):
     defaults = dict(datablock="DestinationTrigger")
+
+
+class LapsCheckpointTrigger(Trigger):
+    defaults = dict(
+        datablock="LapsCheckpointTrigger",
+        checkpointNumber=0,
+    )
+
+
+class LapsCounterTrigger(Trigger):
+    defaults = dict(datablock="LapsCounterTrigger")
+
+
+class TriggerGotoTarget(Trigger):
+    defaults = dict(
+        datablock="TriggerGotoTarget",
+        targetTime=-1,
+    )
+
+
+class GravityWellTrigger(Trigger):
+    defaults = dict(
+        datablock="GravityWellTrigger",
+        axis=Vector3D.i,
+        customPoint=Vector3D(),
+        invert=0,
+        restoreGravity=Rotation3D(),
+        useRadius=0,
+        radius=0,
+    )
 
 
 if __name__ == '__main__':
