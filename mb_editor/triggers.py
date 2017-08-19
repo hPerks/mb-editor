@@ -1,3 +1,4 @@
+from mb_editor.field import Field, Fields
 from mb_editor.physicalobject import BoundedObject
 from mb_editor.objectname import ObjectName
 from mb_editor.tsstatics import TeleportPad
@@ -95,5 +96,45 @@ class GravityWellTrigger(Trigger):
     )
 
 
+class PhysModTrigger(Trigger):
+    defaults = dict(
+        datablock="MarblePhysModTrigger",
+    )
+
+    physics_field_names = [
+        "maxRollVelocity", "angularAcceleration", "brakingAcceleration", "airAcceleration", "gravity", "staticFriction",
+        "kineticFriction", "bounceKineticFriction", "maxDotSlide", "bounceRestitution", "jumpImpulse", "maxForceRadius",
+        "mass"
+    ]
+
+    def written_fields(self):
+        fields_list = list(filter(
+            lambda field: field.key not in self.physics_field_names,
+            super().written_fields().list
+        ))
+
+        index = 0
+        for name in self.physics_field_names:
+            value = self.fields.get(name)
+            if value is not None:
+                fields_list += [
+                    Field("marbleAttribute{}".format(index), name, str),
+                    Field("value{}".format(index), value, type(value))
+                ]
+
+                index += 1
+
+        return Fields(fields_list)
+
+
+    @staticmethod
+    def tests():
+        t = PhysModTrigger(gravity=4, jumpImpulse=20)
+        assert t.gravity == 4
+        assert t.written_fields().get("jumpImpulse") is None
+        assert t.written_fields().get("value1") == 20
+
+
 if __name__ == '__main__':
     TeleportTrigger.tests()
+    PhysModTrigger.tests()

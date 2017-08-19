@@ -56,7 +56,7 @@ class MovingInterior(SimGroup):
 
     def set_interior(self, interior=None, **fields):
         if interior is not None:
-            self.interior.set(**interior.fields)
+            self.interior.set(**interior.fields.dict)
         self.interior.set(**fields)
         return self
 

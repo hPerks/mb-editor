@@ -1,4 +1,4 @@
-from mb_editor.field import Field
+from mb_editor.field import Field, Fields
 from mb_editor.utils.lists import flatlist, is_list_of_tuples
 
 from textwrap import indent
@@ -9,36 +9,22 @@ class ScriptObject:
 
     def __init__(self, name="", **fields):
         self._name = name
-        self._fields = []
+        self._fields = Fields()
         self._group = None
         self._friends = []
 
         self.set(**self.__defaults())
         self.set(**fields)
 
-    def __fieldwithkey(self, key):
-        return next(filter(lambda f: f.key == key, self._fields))
-
     def __getattr__(self, item):
-        try:
-            return self.__fieldwithkey(item).value
-        except StopIteration:
-            return None
+        return self.fields.get(item)
 
     def __setattr__(self, key, value):
         if key[0] == "_":
             object.__setattr__(self, key, value)
             return
 
-        if "." in key:
-            before_dot, after_dot = tuple(key.split(".", 1))
-            self.__fieldwithkey(before_dot).value.__setattr__(after_dot, value)
-            return
-
-        try:
-            self.__fieldwithkey(key).value = value
-        except StopIteration:
-            self._fields.append(Field(key, value, type(value)))
+        self.fields.set(key, value)
 
     def __repr__(self):
         return 'new {classname}({name}) {{\n{fields}\n}};'.format(
@@ -60,27 +46,28 @@ class ScriptObject:
 
     @property
     def fields(self):
-        return {
-            field.key: field.value for field in self._fields
-        }
+        return self._fields
 
     @property
     def name(self):
         return self._name
 
+    def written_fields(self):
+        return self.fields
+
     def inner_str(self):
-        return "\n".join(map(repr, self._fields))
+        return repr(self.written_fields())
 
     def set(self, **fields):
         for key, value in fields.items():
-            self.__setattr__(key, value)
+            self.fields.set(key, value)
         return self
 
 
     def copy(self, name="(name)_copy", **fields):
         copy = self.__class__(
             name="" if self.name == "" else name.replace("(name)", self.name),
-            **self.fields
+            **self.fields.dict
         )
         copy.set(**fields)
         copy._friends = self._friends
@@ -135,7 +122,7 @@ class ScriptObject:
         return self.root().descendant_named(name)
 
     def deref(self, field_name):
-        return self.object_named(self.fields[field_name].name)
+        return self.object_named(self.fields.get(field_name).name)
 
 
     @property
