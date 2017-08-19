@@ -17,7 +17,7 @@ class Path(SimGroup):
     classname = "Path"
 
     def __init__(self, *markers, **fields):
-        super().__init__([marker.set(seqNum=seqNum) for seqNum, marker in enumerate(flatlist(*markers))], **fields)
+        super().__init__([marker.copy(seqNum=seqNum) for seqNum, marker in enumerate(flatlist(*markers))], **fields)
 
     @property
     def markers(self):
@@ -50,17 +50,30 @@ class Path(SimGroup):
             )
         )
 
+    def start_at_index(self, index, loop=True):
+        if loop:
+            return Path(self.markers[index:-1] + self.markers[:index] + [self.markers[index]])
+        else:
+            return Path(self.markers[index:])
+
 
     @staticmethod
     def tests():
         p = Path.make_accelerate(
             "0 0 0", "1000",
+            "0 0 4", "200",
+            "0 0 6", "200",
             "0 0 4", "1000",
             "0 0 0"
         )
 
-        assert len(p.markers) == 3
+        assert len(p.markers) == 5
         assert p.markers[2].seqNum == 2
+
+        q = p.start_at_index(2)
+        assert len(q.markers) == 5
+        assert q.markers[2].position == "0 0 0"
+        assert q.markers[2].seqNum == 2
 
 if __name__ == '__main__':
     Path.tests()

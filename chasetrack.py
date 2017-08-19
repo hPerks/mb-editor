@@ -25,12 +25,21 @@ mission = LapsMission().set_info(
         "5.25 -12 0", "1.5 0.125 0",
     ),
 
-    MovingInterior.make(
-        PathedInterior.local("chasetrack.dif", 0, initialTargetPosition=0),
-        TriggerGotoTarget(position="7 1 0", scale="2 2 1", targetTime=-1),
-    ).copies(
-        ""
-    ),
+    [
+        MovingInterior.make(
+            PathedInterior.local("chasetrack.dif", 0, basePosition=(0, y, 0), initialTargetPosition=0),
+            TriggerGotoTarget(position="7 1 0", scale="2 2 1", targetTime=-1),
+        ).set_path(
+            Path.make_linear(
+                (0, y, 0), 62.5 * (40 - y),
+                (0, 40, 0), 0,
+                (0, -8, 0), 62.5 * (y + 8),
+                (0, y, 0)
+            )
+        )
+
+        for y in range(-8, 40, 8)
+    ],
 ).add_laps_checkpoint_triggers(
     LapsCheckpointTrigger().copies(
         ("position", "scale"),
@@ -67,6 +76,6 @@ mission = LapsMission().set_info(
     Anvil(position="2 -127 -3", rotation=rot.towards),
     GravityModifier(position="2 -124.5 -1", rotation=rot.down),
 
-    FadePlatform(fadeStyle="fade", permanent=1).copies("position", *[(p % 4, p, -0.5) for p in range(-29, -13, 2)]),
+    FadePlatform(fadeStyle="fade", permanent=1).copies("position", [(p % 4, p, -0.5) for p in range(-29, -13, 2)]),
 
 ).autobounds().set_info(name="Chasetrack [WIP]").write("data/missions_pq/chasetrack.mis")

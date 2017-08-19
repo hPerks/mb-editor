@@ -25,8 +25,8 @@ NormalMission().set_info(
 
     TimeTravel(position="-4 16 6.5", timeBonus=2000),
 
-    GravityModifier(position="11 12 7", rotation="0 -1 0 90"),
-    GravityModifier(position="13 12 19", rotation=rot("0 -1 0 90") * "0 -1 0 90"),
+    GravityModifier(position="11 12 7", rotation=rot.right),
+    GravityModifier(position="13 12 19", rotation=rot.right * rot.right),
     HelpTrigger(
         position="10 8 6", scale="2 8.5 4",
         text="There are many tools for handling lists of numbers like positions and rotations. You can even "

@@ -1,5 +1,5 @@
 from mb_editor.field import Field
-from mb_editor.utils.lists import flatlist
+from mb_editor.utils.lists import flatlist, is_list_of_tuples
 
 from textwrap import indent
 
@@ -93,7 +93,7 @@ class ScriptObject:
             keys_tuple = tuple([keys_tuple])
             values_tuples = [tuple([values_tuple]) for values_tuple in values_tuples]
 
-        elif not isinstance(values_tuples[0], tuple):
+        elif not is_list_of_tuples(values_tuples):
             tuple_size = len(keys_tuple)
             num_complete_tuples = len(values_tuples) // tuple_size
 

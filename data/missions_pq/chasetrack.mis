@@ -25,7 +25,7 @@ new SimGroup(MissionGroup) {
       useSkyTextures = "1";
       renderBottomTexture = "1";
       skySolidColor = "0.6 0.6 0.6 1";
-      materialList = "~/data/skies_pq/wave.dml";
+      materialList = "~/data/skies_pq/Wave/wave.dml";
       windVelocity = "1 0 0";
       windEffectPrecipitation = "0";
       noRenderBans = "1";
@@ -98,6 +98,396 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 0.125 0";
       interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+   };
+
+   new SimGroup() {
+
+      new PathedInterior() {
+         position = "0 0 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "1 1 1";
+         datablock = "PathedDefault";
+         interiorResource = "platinum/data/interiors_pq/chasetrack.dif";
+         interiorIndex = "0";
+         initialTargetPosition = "0";
+         basePosition = "0 -8 0";
+         baseRotation = "1.0 0.0 0.0 0";
+         baseScale = "1 1 1";
+      };
+
+      new Path() {
+
+         new Marker() {
+            position = "0 -8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "0";
+            msToNext = "3000";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 40 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "1";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 -8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "2";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 -8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "3";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+      };
+
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         triggerOnce = "0";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
+      };
+   };
+
+   new SimGroup() {
+
+      new PathedInterior() {
+         position = "0 0 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "1 1 1";
+         datablock = "PathedDefault";
+         interiorResource = "platinum/data/interiors_pq/chasetrack.dif";
+         interiorIndex = "0";
+         initialTargetPosition = "0";
+         basePosition = "0 0 0";
+         baseRotation = "1.0 0.0 0.0 0";
+         baseScale = "1 1 1";
+      };
+
+      new Path() {
+
+         new Marker() {
+            position = "0 0 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "0";
+            msToNext = "2500";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 40 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "1";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 -8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "2";
+            msToNext = "500";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 0 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "3";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+      };
+
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         triggerOnce = "0";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
+      };
+   };
+
+   new SimGroup() {
+
+      new PathedInterior() {
+         position = "0 0 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "1 1 1";
+         datablock = "PathedDefault";
+         interiorResource = "platinum/data/interiors_pq/chasetrack.dif";
+         interiorIndex = "0";
+         initialTargetPosition = "0";
+         basePosition = "0 8 0";
+         baseRotation = "1.0 0.0 0.0 0";
+         baseScale = "1 1 1";
+      };
+
+      new Path() {
+
+         new Marker() {
+            position = "0 8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "0";
+            msToNext = "2000";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 40 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "1";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 -8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "2";
+            msToNext = "1000";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "3";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+      };
+
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         triggerOnce = "0";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
+      };
+   };
+
+   new SimGroup() {
+
+      new PathedInterior() {
+         position = "0 0 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "1 1 1";
+         datablock = "PathedDefault";
+         interiorResource = "platinum/data/interiors_pq/chasetrack.dif";
+         interiorIndex = "0";
+         initialTargetPosition = "0";
+         basePosition = "0 16 0";
+         baseRotation = "1.0 0.0 0.0 0";
+         baseScale = "1 1 1";
+      };
+
+      new Path() {
+
+         new Marker() {
+            position = "0 16 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "0";
+            msToNext = "1500";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 40 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "1";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 -8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "2";
+            msToNext = "1500";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 16 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "3";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+      };
+
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         triggerOnce = "0";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
+      };
+   };
+
+   new SimGroup() {
+
+      new PathedInterior() {
+         position = "0 0 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "1 1 1";
+         datablock = "PathedDefault";
+         interiorResource = "platinum/data/interiors_pq/chasetrack.dif";
+         interiorIndex = "0";
+         initialTargetPosition = "0";
+         basePosition = "0 24 0";
+         baseRotation = "1.0 0.0 0.0 0";
+         baseScale = "1 1 1";
+      };
+
+      new Path() {
+
+         new Marker() {
+            position = "0 24 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "0";
+            msToNext = "1000";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 40 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "1";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 -8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "2";
+            msToNext = "2000";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 24 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "3";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+      };
+
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         triggerOnce = "0";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
+      };
+   };
+
+   new SimGroup() {
+
+      new PathedInterior() {
+         position = "0 0 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "1 1 1";
+         datablock = "PathedDefault";
+         interiorResource = "platinum/data/interiors_pq/chasetrack.dif";
+         interiorIndex = "0";
+         initialTargetPosition = "0";
+         basePosition = "0 32 0";
+         baseRotation = "1.0 0.0 0.0 0";
+         baseScale = "1 1 1";
+      };
+
+      new Path() {
+
+         new Marker() {
+            position = "0 32 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "0";
+            msToNext = "500";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 40 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "1";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 -8 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "2";
+            msToNext = "2500";
+            smoothingType = "Linear";
+         };
+
+         new Marker() {
+            position = "0 32 0";
+            rotation = "1.0 0.0 0.0 0";
+            scale = "1 1 1";
+            seqNum = "3";
+            msToNext = "0";
+            smoothingType = "Linear";
+         };
+      };
+
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         triggerOnce = "0";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
+      };
    };
 
    new Trigger() {
