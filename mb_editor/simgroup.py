@@ -93,15 +93,22 @@ class SimGroup(ScriptObject):
         assert g.children[-1].isDone
 
         from mb_editor.objectname import ObjectName
+
+        class Person(ScriptObject):
+            defaults = dict(
+                name="",
+                hometown=ObjectName.none
+            )
+
         m = SimGroup(
             [ScriptObject(
                 name="SaintLouis",
                 primary_export="drugs",
             )],
 
-            ScriptObject(
+            Person(
                 name="noby",
-                hometown=ObjectName("SaintLouis")
+                hometown="SaintLouis"
             ),
 
             name="MemesGroup",

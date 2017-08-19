@@ -43,6 +43,9 @@ class NumberList:
     def __truediv__(self, other):
         return self.map(lambda x: x / other)
 
+    def __pow__(self, power, modulo=None):
+        return self.map(lambda x: pow(x, power, modulo))
+
 
     @staticmethod
     def tests():

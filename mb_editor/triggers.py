@@ -88,9 +88,9 @@ class GravityWellTrigger(Trigger):
     defaults = dict(
         datablock="GravityWellTrigger",
         axis=Vector3D.i,
-        customPoint=Vector3D(),
+        customPoint=Vector3D.none,
         invert=0,
-        restoreGravity=Rotation3D(),
+        restoreGravity=Rotation3D.none,
         useRadius=0,
         radius=0,
     )

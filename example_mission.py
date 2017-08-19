@@ -26,11 +26,11 @@ NormalMission().set_info(
     TimeTravel(position="-4 16 6.5", timeBonus=2000),
 
     GravityModifier(position="11 12 7", rotation=rot.right),
-    GravityModifier(position="13 12 19", rotation=rot.right * rot.right),
+    GravityModifier(position="13 12 19", rotation=rot.right + rot.right),
     HelpTrigger(
         position="10 8 6", scale="2 8.5 4",
         text="There are many tools for handling lists of numbers like positions and rotations. You can even "
-             "(finally) combine rotations with a simple * sign!"
+             "(finally) combine rotations with a simple + sign!"
     ),
 
     Bumper(scale="1.5 1.5 1.5").copies(

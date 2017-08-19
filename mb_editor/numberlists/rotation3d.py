@@ -44,10 +44,26 @@ class Rotation3D(Vector3D):
     @classmethod
     def from_quaternion(cls, q):
         cosine, sine = q[0], abs(Vector3D(q[1:4]))
+        if sine == 0:
+            return cls("1 0 0 0")
+
         return cls(q[1] / sine, q[2] / sine, q[3] / sine, 2 * degrees(atan2(sine, cosine)))
 
-    def __mul__(self, other):
+
+    def __eq__(self, other):
+        return Vector3D.__eq__(self, other) or self.to_quaternion() == other.to_quaternion()
+
+    def __add__(self, other):
         return self.__class__.from_quaternion(self.to_quaternion() * self.__class__(other).to_quaternion())
+
+    def __sub__(self, other):
+        return self + (other * -1)
+
+    def __mul__(self, other):
+        return self.__class__(self.x, self.y, self.z, self.angle * other)
+
+    def __truediv__(self, other):
+        return self * (1 / other)
 
 
     @staticmethod
@@ -59,9 +75,11 @@ class Rotation3D(Vector3D):
         s.angle = s.angle - 90
         assert s.angle == 90
 
-        p = r * repr(s)
+        p = r + repr(s)
         assert abs(p.axis - Vector3D.one.normalized()) < 0.01
         assert abs(p.angle - 120) < 0.01
+
+Rotation3D.none = Rotation3D()
 
 Rotation3D.identity = Rotation3D(1, 0, 0, 0)
 Rotation3D.up = Rotation3D(1, 0, 0, 0)

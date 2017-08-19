@@ -45,6 +45,8 @@ class Vector3D(NumberList):
         assert abs(v) == 3
         assert v.normalized() == (2/3, 1/3, 2/3)
 
+Vector3D.none = Vector3D()
+
 Vector3D.i = Vector3D(1, 0, 0)
 Vector3D.j = Vector3D(0, 1, 0)
 Vector3D.k = Vector3D(0, 0, 1)
