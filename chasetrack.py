@@ -162,5 +162,19 @@ mission.add(
     [
         Gem(path=[path, path2][index % 2].path_node_at_time((index + GEM_OFFSET) * TOTAL_PATH_TIME / NUM_GEMS))
         for index in range(NUM_GEMS)
-    ]
+    ],
+
+    PathNode(
+        "CameraPath1",
+        position="10 -12 10", rotation="0.57 0.2 -0.8 45", timeToNext=5500
+    ).with_path_of_copies(
+        ("position", "rotation", "timeToNext"),
+        "-22 -5 2", "0.65 0.1 -0.75 25", 1,
+        "-22 60 -33", "-0.95 -0.1 -0.3 45", 3500,
+        "-12 56 -33", "-0.5 0.25 0.8 65", 3000,
+        "-10 48 -36", "0 0.2 0.95 145", 1,
+        "-1 -92 1", "0 -0.15 0.98 160", 7000,
+        "-1 -56 1", "0 -0.15 0.98 160", 1,
+    ).path_loop()
+
 ).autobounds().set_info(name="Chasetrack [WIP]").write("data/missions_pq/chasetrack.mis")

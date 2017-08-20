@@ -3252,10 +3252,80 @@ new SimGroup(MissionGroup) {
       datablock = "GemItem_PQ";
    };
 
+   new StaticShape(CameraPath1) {
+      position = "10 -12 10";
+      rotation = "0.5686086112707271 0.19951179342832534 -0.7980471737133014 45";
+      scale = "1 1 1";
+      path = "";
+      datablock = "PathNode";
+      nextNode = "CameraPath1_0";
+      timeToNext = "5500";
+   };
+
+   new StaticShape(CameraPath1_0) {
+      position = "-22 -5 2";
+      rotation = "0.6516311192522112 0.1002509414234171 -0.7518820606756282 25";
+      scale = "1 1 1";
+      path = "";
+      datablock = "PathNode";
+      nextNode = "CameraPath1_1";
+      timeToNext = "1";
+   };
+
+   new StaticShape(CameraPath1_1) {
+      position = "-22 60 -33";
+      rotation = "-0.9488147219339524 -0.09987523388778448 -0.29962570166335345 45";
+      scale = "1 1 1";
+      path = "";
+      datablock = "PathNode";
+      nextNode = "CameraPath1_2";
+      timeToNext = "3500";
+   };
+
+   new StaticShape(CameraPath1_2) {
+      position = "-12 56 -33";
+      rotation = "-0.5123155195785599 0.25615775978927996 0.8197048313256959 65";
+      scale = "1 1 1";
+      path = "";
+      datablock = "PathNode";
+      nextNode = "CameraPath1_3";
+      timeToNext = "3000";
+   };
+
+   new StaticShape(CameraPath1_3) {
+      position = "-10 48 -36";
+      rotation = "0.0 0.20601048104984193 0.978549784986749 145";
+      scale = "1 1 1";
+      path = "";
+      datablock = "PathNode";
+      nextNode = "CameraPath1_4";
+      timeToNext = "1";
+   };
+
+   new StaticShape(CameraPath1_4) {
+      position = "-1 -92 1";
+      rotation = "0.0 -0.15129918600920672 0.9884880152601505 160";
+      scale = "1 1 1";
+      path = "";
+      datablock = "PathNode";
+      nextNode = "CameraPath1_5";
+      timeToNext = "7000";
+   };
+
+   new StaticShape(CameraPath1_5) {
+      position = "-1 -56 1";
+      rotation = "0.0 -0.15129918600920672 0.9884880152601505 160";
+      scale = "1 1 1";
+      path = "";
+      datablock = "PathNode";
+      nextNode = "CameraPath1";
+      timeToNext = "1";
+   };
+
    new Trigger(Bounds) {
       position = "-64 -166 -64";
       rotation = "1.0 0.0 0.0 0";
-      scale = "97 268 168";
+      scale = "97 268 174";
       path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
