@@ -89,6 +89,10 @@ Rotation3D.left = Rotation3D(0, 1, 0, 90)
 Rotation3D.towards = Rotation3D(-1, 0, 0, 90)
 Rotation3D.away = Rotation3D(1, 0, 0, 90)
 
+Rotation3D.i = lambda angle: Rotation3D(1, 0, 0, angle)
+Rotation3D.j = lambda angle: Rotation3D(0, 1, 0, angle)
+Rotation3D.k = lambda angle: Rotation3D(0, 0, 1, angle)
+
 
 if __name__ == '__main__':
     Rotation3D.tests()

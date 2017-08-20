@@ -62,7 +62,7 @@ class MovingInterior(SimGroup):
 
     def set_path(self, path=None, **fields):
         if path is not None:
-            self.path.removeall()
+            self.path.remove_all()
             self.path.add(*path.children)
         self.path.set(**fields)
         return self

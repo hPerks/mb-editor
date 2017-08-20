@@ -1,4 +1,5 @@
 from mb_editor.field import Field, Fields
+from mb_editor.friends import Friends
 from mb_editor.utils.lists import flatlist, is_list_of_tuples
 
 from textwrap import indent
@@ -11,7 +12,7 @@ class ScriptObject:
         self._name = name
         self._fields = Fields()
         self._group = None
-        self._friends = []
+        self._friends = Friends(self)
 
         self.set(**self.__defaults())
         self.set(**fields)
@@ -22,6 +23,11 @@ class ScriptObject:
     def __setattr__(self, key, value):
         if key[0] == "_":
             object.__setattr__(self, key, value)
+            return
+
+        prop = getattr(self.__class__, key, None)
+        if isinstance(prop, property):
+            prop.fset(self, value)
             return
 
         self.fields.set(key, value)
@@ -52,6 +58,10 @@ class ScriptObject:
     def name(self):
         return self._name
 
+    @name.setter
+    def name(self, value):
+        self._name = value
+
     def written_fields(self):
         return self.fields
 
@@ -70,7 +80,6 @@ class ScriptObject:
             **self.fields.dict
         )
         copy.set(**fields)
-        copy._friends = self._friends
         return copy
 
     def copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
@@ -116,10 +125,13 @@ class ScriptObject:
         return []
 
     def descendant_named(self, name):
-        return next(filter(lambda d: d.name == name, self.descendants()))
+        if name == "":
+            return None
+
+        return next(filter(lambda d: d.name == name, self.descendants()), None)
 
     def object_named(self, name):
-        return self.root().descendant_named(name)
+        return self.root().descendant_named(name) or self.friends[name]
 
     def deref(self, field_name):
         return self.object_named(self.fields.get(field_name).name)
@@ -127,12 +139,14 @@ class ScriptObject:
 
     @property
     def friends(self):
-        return list(self._friends)
+        return self._friends
 
-    def with_friend(self, friend):
-        copy = self.copy("{name}")
-        copy._friends.append(friend)
-        return copy
+    def with_friends(self, *friends):
+        self.friends.add(*friends)
+        return self
+
+    def with_copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
+        return self.with_friends(self.copies(keys_tuple, *values_tuples, name=name))
 
 
     @staticmethod
@@ -160,9 +174,9 @@ class ScriptObject:
         assert "!" in cc[2].catchphrase
         assert (cc[3].satisfaction, cc[3].catchphrase) == (0, "i'm beaming up")
 
-        we = w.with_friend(e)
-        wer = we.with_friend(c)
-        assert len(we.friends) == 2
+        we = w.with_friends(e)
+        wer = w.with_friends(c)
+        assert len(we.friends.list) == 2
 
 if __name__ == '__main__':
     ScriptObject.tests()

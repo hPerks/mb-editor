@@ -25,7 +25,7 @@ new SimGroup(MissionGroup) {
       useSkyTextures = "1";
       renderBottomTexture = "1";
       skySolidColor = "0.6 0.6 0.6 1";
-      materialList = "~/data/skies_pq/blender1.dml";
+      materialList = "~/data/skies_pq/Blender1/blender1.dml";
       windVelocity = "1 0 0";
       windEffectPrecipitation = "0";
       noRenderBans = "1";
@@ -41,6 +41,7 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "StartPad";
    };
 
@@ -48,6 +49,7 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       interiorFile = "~/data/interiors_pq/exampleMission.dif";
    };
 
@@ -55,6 +57,7 @@ new SimGroup(MissionGroup) {
       position = "0 3 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -65,6 +68,7 @@ new SimGroup(MissionGroup) {
       position = "-4.5 -4.5 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "8.5 8.5 4";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "HelpTrigger";
@@ -75,6 +79,7 @@ new SimGroup(MissionGroup) {
       position = "-4 16 6.5";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -86,6 +91,7 @@ new SimGroup(MissionGroup) {
       position = "11 12 7";
       rotation = "0.0 -1.0 0.0 90";
       scale = "1 1 1";
+      path = "";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -96,6 +102,7 @@ new SimGroup(MissionGroup) {
       position = "13 12 19";
       rotation = "0.0 -1.0 0.0 179.99999999999997";
       scale = "1 1 1";
+      path = "";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -106,16 +113,18 @@ new SimGroup(MissionGroup) {
       position = "10 8 6";
       rotation = "1.0 0.0 0.0 0";
       scale = "2 8.5 4";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "HelpTrigger";
-      text = "There are many tools for handling lists of numbers like positions and rotations. You can even (finally) combine rotations with a simple * sign!";
+      text = "There are many tools for handling lists of numbers like positions and rotations. You can even (finally) combine rotations with a simple + sign!";
    };
 
    new StaticShape() {
       position = "21 -3 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 1.5 1.5";
+      path = "";
       datablock = "RoundBumper_PQ";
    };
 
@@ -123,6 +132,7 @@ new SimGroup(MissionGroup) {
       position = "25 -3 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 1.5 1.5";
+      path = "";
       datablock = "RoundBumper_PQ";
    };
 
@@ -130,6 +140,7 @@ new SimGroup(MissionGroup) {
       position = "23 -1 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 1.5 1.5";
+      path = "";
       datablock = "RoundBumper_PQ";
    };
 
@@ -137,6 +148,7 @@ new SimGroup(MissionGroup) {
       position = "27 -1 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 1.5 1.5";
+      path = "";
       datablock = "RoundBumper_PQ";
    };
 
@@ -144,6 +156,7 @@ new SimGroup(MissionGroup) {
       position = "21 1 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 1.5 1.5";
+      path = "";
       datablock = "RoundBumper_PQ";
    };
 
@@ -151,6 +164,7 @@ new SimGroup(MissionGroup) {
       position = "25 1 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 1.5 1.5";
+      path = "";
       datablock = "RoundBumper_PQ";
    };
 
@@ -158,6 +172,7 @@ new SimGroup(MissionGroup) {
       position = "23 3 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 1.5 1.5";
+      path = "";
       datablock = "RoundBumper_PQ";
    };
 
@@ -165,6 +180,7 @@ new SimGroup(MissionGroup) {
       position = "27 3 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 1.5 1.5";
+      path = "";
       datablock = "RoundBumper_PQ";
    };
 
@@ -172,6 +188,7 @@ new SimGroup(MissionGroup) {
       position = "20 -8 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "8.5 16 4";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "HelpTrigger";
@@ -184,6 +201,7 @@ new SimGroup(MissionGroup) {
          position = "0 0 0";
          rotation = "1.0 0.0 0.0 0";
          scale = "1 1 1";
+         path = "";
          datablock = "PathedDefault";
          interiorResource = "platinum/data/interiors_pq/exampleMission.dif";
          interiorIndex = "0";
@@ -199,6 +217,7 @@ new SimGroup(MissionGroup) {
             position = "0 0 0";
             rotation = "1.0 0.0 0.0 0";
             scale = "1 1 1";
+            path = "";
             seqNum = "0";
             msToNext = "3500";
             smoothingType = "Accelerate";
@@ -208,6 +227,7 @@ new SimGroup(MissionGroup) {
             position = "0 0 12";
             rotation = "1.0 0.0 0.0 0";
             scale = "1 1 1";
+            path = "";
             seqNum = "1";
             msToNext = "1500";
             smoothingType = "Accelerate";
@@ -217,6 +237,7 @@ new SimGroup(MissionGroup) {
             position = "0 0 0";
             rotation = "1.0 0.0 0.0 0";
             scale = "1 1 1";
+            path = "";
             seqNum = "2";
             msToNext = "0";
             smoothingType = "Accelerate";
@@ -228,6 +249,7 @@ new SimGroup(MissionGroup) {
       position = "12 -16.5 18";
       rotation = "1.0 0.0 0.0 0";
       scale = "8 8.5 12";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "HelpTrigger";
@@ -238,6 +260,7 @@ new SimGroup(MissionGroup) {
       position = "-3 -7 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -245,6 +268,7 @@ new SimGroup(MissionGroup) {
       position = "-3 -5 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -252,6 +276,7 @@ new SimGroup(MissionGroup) {
       position = "-3 -3 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -259,6 +284,7 @@ new SimGroup(MissionGroup) {
       position = "-3 -1 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -266,6 +292,7 @@ new SimGroup(MissionGroup) {
       position = "-3 1 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -273,6 +300,7 @@ new SimGroup(MissionGroup) {
       position = "-3 3 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -280,6 +308,7 @@ new SimGroup(MissionGroup) {
       position = "-3 5 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -287,6 +316,7 @@ new SimGroup(MissionGroup) {
       position = "-3 7 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -294,6 +324,7 @@ new SimGroup(MissionGroup) {
       position = "-1 -7 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -301,6 +332,7 @@ new SimGroup(MissionGroup) {
       position = "-1 -5 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -308,6 +340,7 @@ new SimGroup(MissionGroup) {
       position = "-1 -3 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -315,6 +348,7 @@ new SimGroup(MissionGroup) {
       position = "-1 -1 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -322,6 +356,7 @@ new SimGroup(MissionGroup) {
       position = "-1 1 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -329,6 +364,7 @@ new SimGroup(MissionGroup) {
       position = "-1 3 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -336,6 +372,7 @@ new SimGroup(MissionGroup) {
       position = "-1 5 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -343,6 +380,7 @@ new SimGroup(MissionGroup) {
       position = "-1 7 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -350,6 +388,7 @@ new SimGroup(MissionGroup) {
       position = "1 -7 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -357,6 +396,7 @@ new SimGroup(MissionGroup) {
       position = "1 -5 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -364,6 +404,7 @@ new SimGroup(MissionGroup) {
       position = "1 -3 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -371,6 +412,7 @@ new SimGroup(MissionGroup) {
       position = "1 -1 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -378,6 +420,7 @@ new SimGroup(MissionGroup) {
       position = "1 1 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -385,6 +428,7 @@ new SimGroup(MissionGroup) {
       position = "1 3 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -392,6 +436,7 @@ new SimGroup(MissionGroup) {
       position = "1 5 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -399,6 +444,7 @@ new SimGroup(MissionGroup) {
       position = "1 7 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -406,6 +452,7 @@ new SimGroup(MissionGroup) {
       position = "3 -7 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -413,6 +460,7 @@ new SimGroup(MissionGroup) {
       position = "3 -5 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -420,6 +468,7 @@ new SimGroup(MissionGroup) {
       position = "3 -3 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -427,6 +476,7 @@ new SimGroup(MissionGroup) {
       position = "3 -1 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -434,6 +484,7 @@ new SimGroup(MissionGroup) {
       position = "3 1 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -441,6 +492,7 @@ new SimGroup(MissionGroup) {
       position = "3 3 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -448,6 +500,7 @@ new SimGroup(MissionGroup) {
       position = "3 5 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -455,6 +508,7 @@ new SimGroup(MissionGroup) {
       position = "3 7 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "TrapDoor_PQ";
    };
 
@@ -462,6 +516,7 @@ new SimGroup(MissionGroup) {
       position = "-4.5 -8 30";
       rotation = "1.0 0.0 0.0 0";
       scale = "8.5 16 4";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "HelpTrigger";
@@ -472,6 +527,7 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       polyhedron = "4 8 30 16 0 6 0 8 0 0 0 4";
       triggerOnce = "0";
       datablock = "HelpTrigger";
@@ -482,6 +538,7 @@ new SimGroup(MissionGroup) {
       position = "22.5 4.5 36";
       rotation = "1.0 0.0 0.0 0";
       scale = "3 3 2";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "TeleportTrigger";
@@ -494,6 +551,7 @@ new SimGroup(MissionGroup) {
       position = "24 0 48";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "DestinationTrigger";
@@ -503,6 +561,7 @@ new SimGroup(MissionGroup) {
       position = "24.0 6.0 36";
       rotation = "1.0 0.0 0.0 0";
       scale = "0.25 0.25 0.25";
+      path = "";
       shapeName = "~/data/shapes/teleportpad.dts";
    };
 
@@ -510,6 +569,7 @@ new SimGroup(MissionGroup) {
       position = "20 4 36";
       rotation = "1.0 0.0 0.0 0";
       scale = "8.5 12.5 4";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "HelpTrigger";
@@ -520,6 +580,7 @@ new SimGroup(MissionGroup) {
       position = "24 -6 40";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -530,6 +591,7 @@ new SimGroup(MissionGroup) {
       position = "22.5 -13.5 40";
       rotation = "1.0 0.0 0.0 0";
       scale = "3 3 2";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "TeleportTrigger";
@@ -542,6 +604,7 @@ new SimGroup(MissionGroup) {
       position = "24.0 -12.0 40";
       rotation = "1.0 0.0 0.0 0";
       scale = "0.25 0.25 0.25";
+      path = "";
       shapeName = "~/data/shapes/teleportpad.dts";
    };
 
@@ -549,6 +612,7 @@ new SimGroup(MissionGroup) {
       position = "12 0 48";
       rotation = "0.0 0.0 -1.0 90";
       scale = "1 1 1";
+      path = "";
       datablock = "EndPad";
    };
 
@@ -556,6 +620,7 @@ new SimGroup(MissionGroup) {
       position = "12 0 52";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
+      path = "";
       datablock = "RegularFinishLineSign";
    };
 
@@ -563,6 +628,7 @@ new SimGroup(MissionGroup) {
       position = "4 -8 48";
       rotation = "1.0 0.0 0.0 0";
       scale = "24 16 4";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "HelpTrigger";
@@ -573,6 +639,7 @@ new SimGroup(MissionGroup) {
       position = "-24.5 -36.5 -20";
       rotation = "1.0 0.0 0.0 0";
       scale = "71.5 72.5 172";
+      path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
       datablock = "InBoundsTrigger";

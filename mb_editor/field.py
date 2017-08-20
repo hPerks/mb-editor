@@ -50,12 +50,12 @@ class Fields:
         }
 
     def field_with_key(self, key):
-        return next(filter(lambda field: field.key == key, self.list))
+        return next(filter(lambda field: field.key == key, self.list), None)
 
     def get(self, key):
         try:
             return self.field_with_key(key).value
-        except StopIteration:
+        except AttributeError:
             return None
 
     def set(self, key, value, field_type=None):
@@ -66,7 +66,7 @@ class Fields:
 
         try:
             self.field_with_key(key).value = value
-        except StopIteration:
+        except AttributeError:
             self.list.append(Field(key, value, type(value) if field_type is None else field_type))
 
 

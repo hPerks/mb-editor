@@ -1,4 +1,11 @@
 from mb_editor import *
+from mb_editor.utils.lists import drange
+
+from math import sin, cos, radians
+
+TOTAL_PATH_TIME = 64000
+NUM_GEMS = 12
+GEM_OFFSET = 0.5
 
 mission = LapsMission().set_info(
     name="Chasetrack",
@@ -78,4 +85,74 @@ mission = LapsMission().set_info(
 
     FadePlatform(fadeStyle="fade", permanent=1).copies("position", [(p % 4, p, -0.5) for p in range(-29, -13, 2)]),
 
+)
+
+path = PathNode("path1_up", position="3 9 0", rotation=rot.up).with_path_of_copies(
+    "position",
+    "0 9 0", "-4 8.75 0", "-8 8.75 0", "-12 9 0", "-24 9 -3", "-26 9 -3", "-42 10 -3", "-44 10 -3",
+    "-44 27.75 -3", "-44 27.75 0", "-44 29 1", "-44 30 1", "-43 42 1", "-42.5 46 1", "-42.5 51.5 1"
+).path_add(
+    PathNode("path1_down", position="-42.5 51.5 -16", rotation=rot.down).with_path_of_copies(
+        "position",
+        "-42.5 57 -16", "-42 65 -16", "-41.5 73.5 -16", "-41.5 77.5 -16", "-39 77 -16", "-30 77 -16",
+        "-13 68 -16", "-10 68 -16", "-4 68 -17.5", "5 68 -17.5", "8 68 -17", "8 66 -17", "8 60 -20",
+        "7 54 -23", "6 48 -23", "6 42 -23", "6 38 -22", "6 4 -22", "8 -4 -22", "4.5 -13 -22", "4.5 -17 -22",
+        "8.5 -19 -22", "7.5 -23 -22", "7 -26 -22", "6.5 -28 -22", "7 -32 -22", "6 -40 -22", "6 -50 -22",
+        "10 -50 -22", "10 -58 -22", "6 -58 -22", "6 -62 -22", "2 -62 -22", "2 -80 -22", "3 -88 -22",
+        "3 -92 -22", "3 -100 -24"
+    )
+).path_add(
+    PathNode("path1_well", position="3 -116 -24", rotation=rot.down).with_path_of_copies(
+        ("position", "rotation"),
+        [
+            (
+                (3, -116 + 11 * sin(radians(angle)), -13 + 11 * cos(radians(angle))),
+                rot.i(angle)
+            )
+            for angle in drange(180 + 90/16, 270, 90/16)  # angle: 180 to 270, excluding endpoints
+        ]
+    )
+).path_add(
+    PathNode("path1_sideways", position="3 -127 -13", rotation=rot.away).with_path_of_copies(
+        "position",
+        "3 -127 -13", "3 -127 -11", "2 -127 -3", "2 -127 -1", "2 -124.5 -1"
+    )
+).path_add(
+    PathNode("path1_back_up", position="2 -122 -2", rotation=rot.up).with_path_of_copies(
+        "position",
+        "2 -122 -2", "2 -118 -2", "3 -110 -2", "2 -102 -2", "2 -101.75 -2.25", "2 -62.25 -2.25", "2 -62 -2",
+        "2 -52 -2", "1.5 -46 -4", "2 -42 -4", "2 -40.25 -4", "2 -40.25 -1", "2 -39 0", "2 -32 0", "-2 -32 0",
+        "-2 -12 0", "2 -12 0", "2 -10 0", "3 -2 0"
+    )
+).path_loop()
+
+path2 = path.copy("path2_up").with_path_of_copies(
+    ("position", "rotation"),
+    [(node.position, node.rotation) for node in path.path()]
+).path_loop()
+
+path2.path_add(
+    PathNode("path2_down_split", position="-26 77 -16", rotation=rot.down).with_path_of_copies(
+        "position",
+        "-17 80 -16", "-8 80 -16", "-2 80 -14.5", "1.5 80 -14.5", "6 80 -14", "6 76 -14", "7 70 -17"
+    ),
+    after=path2.path_node_at_position("-39 77 -16"),
+    before=path2.path_node_at_position("8 66 -17"),
+).path_add(
+    PathNode("path2_back_up_split", position="6 -32 0", rotation=rot.up).with_path_of_copies(
+        "position", "6 -12 0"
+    ),
+    after=path2.path_node_at_position("2 -32 0"),
+    before=path2.path_node_at_position("2 -12 0"),
+)
+
+path.path_set_time(TOTAL_PATH_TIME)
+path2.path_set_time(TOTAL_PATH_TIME)
+
+mission.add(
+    path, path2,
+    [
+        Gem(path=[path, path2][index % 2].path_node_at_time((index + GEM_OFFSET) * TOTAL_PATH_TIME / NUM_GEMS))
+        for index in range(NUM_GEMS)
+    ]
 ).autobounds().set_info(name="Chasetrack [WIP]").write("data/missions_pq/chasetrack.mis")

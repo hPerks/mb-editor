@@ -13,7 +13,7 @@ class EndPad(StaticShape):
     defaults = dict(datablock="EndPad")
 
     def with_sign(self, offset="0 0 4", **fields):
-        return self.with_friend(FinishSign(position=self.position + offset, **fields))
+        return self.with_friends(FinishSign(position=self.position + offset, **fields))
 
 
 class FinishSign(StaticShape):

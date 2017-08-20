@@ -39,10 +39,10 @@ class TeleportTrigger(Trigger):
 
     def with_destination(self, name, position, **fields):
         self.destination = name
-        return self.with_friend(DestinationTrigger(name, position=position, **fields))
+        return self.with_friends(DestinationTrigger(name, position=position, **fields))
 
     def with_pad(self, offset="8 8 0", **fields):
-        return self.with_friend(TeleportPad(position=self.position + offset, **fields))
+        return self.with_friends(TeleportPad(position=self.position + offset, **fields))
 
 
     @staticmethod
@@ -87,7 +87,7 @@ class TriggerGotoTarget(Trigger):
 class GravityWellTrigger(Trigger):
     defaults = dict(
         datablock="GravityWellTrigger",
-        axis=Vector3D.i,
+        axis="x",
         customPoint=Vector3D.none,
         invert=0,
         restoreGravity=Rotation3D.none,

@@ -20,8 +20,10 @@ class SimGroup(ScriptObject):
             self._children.append(child)
             child._group = self
 
-            for friend in child.friends:
-                self.add(friend)
+            for friend in child.friends.list:
+                if friend.group != self:
+                    self._children.append(friend)
+                    friend._group = self
 
         return self
 
@@ -30,12 +32,14 @@ class SimGroup(ScriptObject):
             self._children.remove(child)
             child._group = None
 
-            for friend in child.friends:
-                self.remove(friend)
+            for friend in child.friends.list:
+                if friend.group == self:
+                    self._children.remove(friend)
+                    friend._group = None
 
         return self
 
-    def removeall(self):
+    def remove_all(self):
         self.remove(self.children)
         return self
 

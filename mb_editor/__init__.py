@@ -10,6 +10,7 @@ from mb_editor.tsstatics import *
 
 from mb_editor.interior import *
 from mb_editor.movinginterior import *
+from mb_editor.pathnodes import *
 
 from mb_editor.mission import *
 
