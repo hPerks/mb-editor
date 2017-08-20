@@ -1,3 +1,4 @@
+from mb_editor.implicit import Implicit
 from mb_editor.simgroup import SimGroup
 from mb_editor.missioninfo import MissionInfo
 from mb_editor.sky import Sky
@@ -5,7 +6,6 @@ from mb_editor.sun import Sun
 from mb_editor.physicalobject import PhysicalObject
 from mb_editor.triggers import InBoundsTrigger
 from mb_editor.utils.lists import flatlist
-from mb_editor.triggers import LapsCheckpointTrigger
 
 
 class Mission(SimGroup):
@@ -81,7 +81,7 @@ class NormalMission(Mission):
         super().__init__(**fields)
         self.set_info(
             gameMode="Normal",
-            parTime=0,
+            parTime=Implicit(0),
             platinumTime=0,
             ultimateTime=0,
             awesomeTime=0,
@@ -96,7 +96,7 @@ class HuntMission(Mission):
             gameMode="Hunt",
             radiusFromGem=30,
             maxGemsPerSpawn=6,
-            gemGroups=0,
+            gemGroups=Implicit(0),
             time=300000,
             parScore=0,
             platinumScore=0,

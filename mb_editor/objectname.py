@@ -14,6 +14,9 @@ class ObjectName:
         return self.name
 
     def __eq__(self, other):
-        return self.name == other or self.name == other.name
+        try:
+            return self.name == other.name
+        except AttributeError:
+            return self.name == other
 
 ObjectName.none = ObjectName("")

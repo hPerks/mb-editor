@@ -1,16 +1,20 @@
-from mb_editor.field import Field, Fields
+from mb_editor.numberlists.vector3d import Vector3D
+from mb_editor.numberlists.rotation3d import Rotation3D
+
+from mb_editor.field import Field
+from mb_editor.fields import Fields
+from mb_editor.implicit import Implicit
+
 from mb_editor.physicalobject import BoundedObject
 from mb_editor.objectname import ObjectName
 from mb_editor.tsstatics import TeleportPad
-from mb_editor.numberlists.vector3d import Vector3D
-from mb_editor.numberlists.rotation3d import Rotation3D
 
 
 class Trigger(BoundedObject):
     classname = "Trigger"
 
     defaults = dict(
-        triggerOnce=0
+        triggerOnce=Implicit(0)
     )
 
 
@@ -33,8 +37,8 @@ class TeleportTrigger(Trigger):
     defaults = dict(
         datablock="TeleportTrigger",
         destination=ObjectName.none,
-        delay=2000,
-        silent=0,
+        delay=Implicit(2000),
+        silent=Implicit(0),
     )
 
     def with_destination(self, name, position, **fields):
@@ -49,16 +53,16 @@ class TeleportTrigger(Trigger):
     def tests():
         t = TeleportTrigger(position="4 2 0")
         td = t.with_destination("d", "0 6 9")
-        tdp = td.with_pad(offset="4 4 0", scale="0.5 0.5 0.5")
+        tdp = td.with_pad(name="pad!", offset="4 4 0", scale="0.5 0.5 0.5")
 
-        assert tdp.friends[1].scale == "0.5 0.5 0.5"
+        assert tdp.friends["pad!"].scale == "0.5 0.5 0.5"
 
 
 class RelativeTPTrigger(TeleportTrigger):
     defaults = dict(
         datablock="RelativeTPTrigger",
-        delay=0,
-        silent=1,
+        delay=Implicit(0),
+        silent=Implicit(1),
     )
 
 
@@ -89,10 +93,10 @@ class GravityWellTrigger(Trigger):
         datablock="GravityWellTrigger",
         axis="x",
         customPoint=Vector3D.none,
-        invert=0,
-        restoreGravity=Rotation3D.none,
-        useRadius=0,
-        radius=0,
+        invert=Implicit(0),
+        restoreGravity=Implicit(Rotation3D.none),
+        useRadius=Implicit(0),
+        radius=Implicit(0),
     )
 
 

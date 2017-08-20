@@ -1,3 +1,4 @@
+from mb_editor.implicit import Implicit
 from mb_editor.physicalobject import PhysicalObject
 
 
@@ -43,9 +44,9 @@ class Tornado(StaticShape):
 class FadePlatform(StaticShape):
     defaults = dict(
         datablock="FadePlatform",
-        fadeStyle="fade",
-        functionality="trapdoor",
-        permanent=0,
+        fadeStyle=Implicit("fade"),
+        functionality=Implicit("trapdoor"),
+        permanent=Implicit(0),
     )
 
 
@@ -53,7 +54,7 @@ class HelpBubble(StaticShape):
     defaults = dict(
         datablock="HelpBubble",
         text="",
-        triggerRadius=3,
-        persistTime=2000,
-        displayOnce=0,
+        triggerRadius=Implicit(3),
+        persistTime=Implicit(2000),
+        displayOnce=Implicit(0),
     )

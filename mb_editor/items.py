@@ -1,3 +1,4 @@
+from mb_editor.implicit import Implicit
 from mb_editor.physicalobject import PhysicalObject
 
 
@@ -31,7 +32,7 @@ class Gem(Item):
 class TimeTravel(Item):
     defaults = dict(
         datablock="TimeTravelItem_PQ",
-        timeBonus=5000
+        timeBonus=Implicit(5000)
     )
 
 

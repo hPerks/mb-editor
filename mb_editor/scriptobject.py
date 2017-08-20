@@ -1,4 +1,5 @@
-from mb_editor.field import Field, Fields
+from mb_editor.field import Field
+from mb_editor.fields import Fields
 from mb_editor.friends import Friends
 from mb_editor.utils.lists import flatlist, is_list_of_tuples
 
@@ -44,8 +45,9 @@ class ScriptObject:
     @classmethod
     def __defaults(cls):
         try:
-            return dict(cls.__bases__[0].__defaults(),
-                        **cls.defaults
+            return dict(
+                cls.__bases__[0].__defaults(),
+                **cls.defaults
             )
         except:
             return cls.defaults

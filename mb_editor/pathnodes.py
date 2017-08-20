@@ -1,11 +1,12 @@
+from mb_editor.implicit import Implicit
 from mb_editor.objectname import ObjectName
 from mb_editor.staticshapes import StaticShape
 
 class PathNode(StaticShape):
     defaults = dict(
         datablock="PathNode",
-        nextNode=ObjectName.none,
-        timeToNext=0,
+        nextNode=Implicit(ObjectName.none),
+        timeToNext=0  # Implicit(5000) - my rec breaks with or without this, rip
     )
 
     def __init__(self, *args, **fields):
