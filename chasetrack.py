@@ -113,7 +113,7 @@ path = PathNode("path1_up", position="3 9 0", rotation=rot.up).with_path_of_copi
         ]
     )
 ).path_add(
-    PathNode("path1_sideways", position="3 -127 -13", rotation=rot.away).with_path_of_copies(
+    PathNode("path1_sideways", position="3 -127 -13", rotation=rot.towards).with_path_of_copies(
         "position",
         "3 -127 -13", "3 -127 -11", "2 -127 -3", "2 -127 -1", "2 -124.5 -1"
     )

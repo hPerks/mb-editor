@@ -46,6 +46,10 @@ class PathNode(StaticShape):
 
         next = self.path_next()
         if after == self or (next is None and after is None):
+            if next is not None:
+                for friend in next.path(before):
+                    friend.friends.remove_all()
+
             self.nextNode = node
             self.friends.add(node)
             node.path_add(before)

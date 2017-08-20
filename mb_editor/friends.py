@@ -11,14 +11,11 @@ class Friends:
             self.adjacent.append(friend)
             friend.friends.adjacent.append(self.object)
 
-    def remove(self, *friends):
-        for friend in flatlist(*friends):
-            self.adjacent.remove(friend)
-            friend.friends.adjacent_friends.remove(friend)
-
     def remove_all(self):
         for friend in self.adjacent:
-            self.remove(friend)
+            if self in friend.friends.adjacent:
+                friend.friends.adjacent.remove(self)
+        self.adjacent = []
 
     @property
     def list(self):
