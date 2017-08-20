@@ -68,7 +68,7 @@ class DestinationTrigger(Trigger):
 
 class LapsCheckpointTrigger(Trigger):
     defaults = dict(
-        datablock="LapsCheckpointTrigger",
+        datablock="LapsCheckpoint",
         checkpointNumber=0,
     )
 

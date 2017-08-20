@@ -47,3 +47,13 @@ class FadePlatform(StaticShape):
         functionality="trapdoor",
         permanent=0,
     )
+
+
+class HelpBubble(StaticShape):
+    defaults = dict(
+        datablock="HelpBubble",
+        text="",
+        triggerRadius=3,
+        persistTime=2000,
+        displayOnce=0,
+    )

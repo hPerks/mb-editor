@@ -542,9 +542,8 @@ new SimGroup(MissionGroup) {
       path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
-      datablock = "LapsCheckpointTrigger";
+      datablock = "LapsCheckpoint";
       checkpointNumber = "0";
-      checkpointNum = "0";
    };
 
    new Trigger() {
@@ -554,9 +553,8 @@ new SimGroup(MissionGroup) {
       path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
-      datablock = "LapsCheckpointTrigger";
-      checkpointNumber = "0";
-      checkpointNum = "1";
+      datablock = "LapsCheckpoint";
+      checkpointNumber = "1";
    };
 
    new Trigger() {
@@ -566,9 +564,8 @@ new SimGroup(MissionGroup) {
       path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";
-      datablock = "LapsCheckpointTrigger";
-      checkpointNumber = "0";
-      checkpointNum = "2";
+      datablock = "LapsCheckpoint";
+      checkpointNumber = "2";
    };
 
    new Trigger() {
@@ -923,6 +920,54 @@ new SimGroup(MissionGroup) {
       fadeStyle = "fade";
       functionality = "trapdoor";
       permanent = "1";
+   };
+
+   new StaticShape() {
+      position = "-42.5 45 4";
+      rotation = "1.0 0.0 0.0 0";
+      scale = "1 1 1";
+      path = "";
+      datablock = "HelpBubble";
+      text = "Use the Anvil to shoot down the chute!";
+      triggerRadius = "5";
+      persistTime = "2000";
+      displayOnce = "1";
+   };
+
+   new StaticShape() {
+      position = "-33 77 -19";
+      rotation = "1.0 0.0 0.0 180";
+      scale = "1 1 1";
+      path = "";
+      datablock = "HelpBubble";
+      text = "The path splits here - follow the gem, if you see one!";
+      triggerRadius = "5";
+      persistTime = "2000";
+      displayOnce = "1";
+   };
+
+   new StaticShape() {
+      position = "6 36 -25";
+      rotation = "1.0 0.0 0.0 180";
+      scale = "1 1 1";
+      path = "";
+      datablock = "HelpBubble";
+      text = "Your marble is too heavy to walk on this tightrope!";
+      triggerRadius = "5";
+      persistTime = "2000";
+      displayOnce = "1";
+   };
+
+   new StaticShape() {
+      position = "2.5 -130 -7";
+      rotation = "-1.0 0.0 0.0 90";
+      scale = "1 1 1";
+      path = "";
+      datablock = "HelpBubble";
+      text = "You know what to do with this Anvil!";
+      triggerRadius = "5";
+      persistTime = "2000";
+      displayOnce = "1";
    };
 
    new StaticShape(path1_up) {
@@ -3210,7 +3255,7 @@ new SimGroup(MissionGroup) {
    new Trigger(Bounds) {
       position = "-64 -166 -64";
       rotation = "1.0 0.0 0.0 0";
-      scale = "97 268 165";
+      scale = "97 268 168";
       path = "";
       polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
       triggerOnce = "0";

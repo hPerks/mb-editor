@@ -85,6 +85,14 @@ mission = LapsMission().set_info(
 
     FadePlatform(fadeStyle="fade", permanent=1).copies("position", [(p % 4, p, -0.5) for p in range(-29, -13, 2)]),
 
+    HelpBubble(triggerRadius=5, displayOnce=1).copies(
+        ("position", "rotation", "text"),
+        ["-42.5 45 4", rot.up, "Use the Anvil to shoot down the chute!"],
+        ["-33 77 -19", rot.down, "The path splits here - follow the gem, if you see one!"],
+        ["6 36 -25", rot.down, "Your marble is too heavy to walk on this tightrope!"],
+        ["2.5 -130 -7", rot.towards, "You know what to do with this Anvil!"],
+    )
+
 )
 
 path = PathNode("path1_up", position="3 9 0", rotation=rot.up).with_path_of_copies(

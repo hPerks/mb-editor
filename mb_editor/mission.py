@@ -116,6 +116,6 @@ class LapsMission(NormalMission):
 
     def add_laps_checkpoint_triggers(self, *laps_checkpoint_triggers):
         return super().add([
-            trigger.set(checkpointNum=checkpointNum)
-            for checkpointNum, trigger in enumerate(flatlist(*laps_checkpoint_triggers))
+            trigger.set(checkpointNumber=checkpointNumber)
+            for checkpointNumber, trigger in enumerate(flatlist(*laps_checkpoint_triggers))
         ])
