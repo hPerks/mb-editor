@@ -20,8 +20,8 @@ mission = LapsMission().set_info(
     Sky.wave
 ).add(
     StartPad(position="8 2 0", rotation="0 0 -1 90"),
-    Interior.local("chasetrack.dif"),
-    Interior.local("chasetrack_tightrope.dif").copies(
+    Interior.local("expert/chasetrack.dif"),
+    Interior.local("expert/chasetrack_tightrope.dif").copies(
         ("position", "scale"),
         "6 25 -22", "0.125 14 0",
         "-1.25 -32 0", "1.5 0.125 0",
@@ -177,4 +177,4 @@ mission.add(
         "-1 -56 1", "0 -0.15 0.98 160", 1,
     ).path_loop()
 
-).autobounds().set_info(name="Chasetrack [WIP]").write("data/missions_pq/chasetrack.mis")
+).autobounds().write("data/missions_pq/expert/chasetrack.mis")

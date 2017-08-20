@@ -2,7 +2,7 @@
 new SimGroup(MissionGroup) {
 
    new ScriptObject(MissionInfo) {
-      name = "Chasetrack [WIP]";
+      name = "Chasetrack";
       game = "PQ";
       author = "hPerks";
       type = "Custom";
@@ -50,7 +50,7 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       path = "";
-      interiorFile = "~/data/interiors_pq/chasetrack.dif";
+      interiorFile = "~/data/interiors_pq/expert/chasetrack.dif";
    };
 
    new InteriorInstance() {
@@ -58,7 +58,7 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "0.125 14 0";
       path = "";
-      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+      interiorFile = "~/data/interiors_pq/expert/chasetrack_tightrope.dif";
    };
 
    new InteriorInstance() {
@@ -66,7 +66,7 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 0.125 0";
       path = "";
-      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+      interiorFile = "~/data/interiors_pq/expert/chasetrack_tightrope.dif";
    };
 
    new InteriorInstance() {
@@ -74,7 +74,7 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "0.125 20.125 0";
       path = "";
-      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+      interiorFile = "~/data/interiors_pq/expert/chasetrack_tightrope.dif";
    };
 
    new InteriorInstance() {
@@ -82,7 +82,7 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 0.125 0";
       path = "";
-      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+      interiorFile = "~/data/interiors_pq/expert/chasetrack_tightrope.dif";
    };
 
    new InteriorInstance() {
@@ -90,7 +90,7 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 0.125 0";
       path = "";
-      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+      interiorFile = "~/data/interiors_pq/expert/chasetrack_tightrope.dif";
    };
 
    new InteriorInstance() {
@@ -98,7 +98,7 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "0.125 20.125 0";
       path = "";
-      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+      interiorFile = "~/data/interiors_pq/expert/chasetrack_tightrope.dif";
    };
 
    new InteriorInstance() {
@@ -106,7 +106,7 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.5 0.125 0";
       path = "";
-      interiorFile = "~/data/interiors_pq/chasetrack_tightrope.dif";
+      interiorFile = "~/data/interiors_pq/expert/chasetrack_tightrope.dif";
    };
 
    new SimGroup() {
