@@ -161,7 +161,7 @@ class ScriptObject:
         if cls.classname == classname:
             class_defaults = cls.all_defaults()
             if all(
-                key in class_defaults and class_defaults[key] == value
+                (value is None) or (key in class_defaults and class_defaults[key] == value)
                 for key, value in defaults.items()
             ):
                 classes.append(cls)
@@ -170,9 +170,9 @@ class ScriptObject:
         return classes
 
 
-    RE_OBJECT_BEGIN = re.compile("new ([a-z_A-Z]+)\(([a-z_A-Z]*)\) {", re.DOTALL)
+    RE_OBJECT_BEGIN = re.compile("new ([a-z\_A-Z0-9]+)\(([a-z\_A-Z0-9]*)\) {")
     RE_OBJECT_END = re.compile("};")
-    RE_FIELD = re.compile("([a-z_A-Z]+) = \"(.*)\";")
+    RE_FIELD = re.compile("([a-z_A-Z0-9]+) = \"(.*)\";")
 
     @classmethod
     def from_string(cls, string):
@@ -197,26 +197,28 @@ class ScriptObject:
             elif match.re == cls.RE_OBJECT_END:
                 begin_pos = stack.pop()
                 if len(stack) == 1:
-                    children.append(cls.from_string(string[begin_pos:pos + 1]))
+                    children.append(ScriptObject.from_string(string[begin_pos:pos + 1]))
             elif match.re == cls.RE_FIELD:
                 if len(stack) == 1:
                     field_name, field_value_str = match.groups()
                     fields.set(field_name, field_value_str)
 
         classname, id = matches[0].groups()
-        if fields.get("datablock") is None:
-            classes = ScriptObject.subclasses_with(classname)
-        else:
-            classes = ScriptObject.subclasses_with(classname, datablock=fields.get("datablock"))
 
         try:
-            obj = classes[0](id=id, **fields.dict)
-            if len(children) > 0:
-                obj.add(children)
-            return obj
-
+            subclass = cls.subclasses_with(classname, id=id)[0]
         except IndexError:
-            return None
+            try:
+                subclass = cls.subclasses_with(classname, datablock=fields.get("datablock"))[0]
+            except IndexError:
+                return None
+
+        obj = subclass(id=id, **fields.dict)
+
+        if len(children) > 0:
+            obj.add(children)
+
+        return obj
 
 
     @staticmethod

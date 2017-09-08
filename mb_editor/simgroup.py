@@ -19,7 +19,7 @@ class SimGroup(ScriptObject):
             for key, value in self.fields.dict.items():
                 if isinstance(child, type(value)) and child != value:
                     self.__setattr__(key, child)
-                    return
+                    break
 
             self._children.append(child)
             child._group = self

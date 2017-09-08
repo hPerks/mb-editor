@@ -2,10 +2,8 @@ from mb_editor.scriptobject import ScriptObject
 
 
 class MissionInfo(ScriptObject):
-    def __init__(self, **fields):
-        super().__init__(id="MissionInfo", **fields)
-
     defaults = dict(
+        id="MissionInfo",
         name="New Mission",
         game="PQ",
         author="Unknown",
