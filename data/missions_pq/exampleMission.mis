@@ -1,5 +1,5 @@
 //--- OBJECT WRITE BEGIN ---
-new SimGroup(MissionGroup) {
+new SimGroup() {
 
    new ScriptObject(MissionInfo) {
       name = "Example Mission";
@@ -40,7 +40,7 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      datablock = "StartPad";
+      datablock = "StartPad_PQ";
    };
 
    new InteriorInstance() {
@@ -534,7 +534,7 @@ new SimGroup(MissionGroup) {
       position = "12 0 48";
       rotation = "0.0 0.0 -1.0 90";
       scale = "1 1 1";
-      datablock = "EndPad";
+      datablock = "EndPad_PQ";
    };
 
    new StaticShape() {

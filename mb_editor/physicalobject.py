@@ -6,7 +6,7 @@ from mb_editor.numberlists.vector3d import Vector3D
 
 from mb_editor.scriptobject import ScriptObject
 from mb_editor.implicit import Implicit
-from mb_editor.objectname import ObjectName
+from mb_editor.id import ID
 
 
 class PhysicalObject(ScriptObject):
@@ -14,7 +14,7 @@ class PhysicalObject(ScriptObject):
         position=Vector3D.zero,
         rotation=Rotation3D.identity,
         scale=Vector3D.one,
-        path=Implicit(ObjectName.none)
+        path=Implicit(ID.none)
     )
 
     def __add__(self, other):

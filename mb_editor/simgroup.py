@@ -6,9 +6,8 @@ class SimGroup(ScriptObject):
     classname = "SimGroup"
 
     def __init__(self, *children, **fields):
-        super().__init__(**fields)
-
         self._children = []
+        super().__init__(**fields)
         self.add(*children)
 
     @property
@@ -17,6 +16,11 @@ class SimGroup(ScriptObject):
 
     def add(self, *children):
         for child in flatlist(*children):
+            for key, value in self.fields.dict.items():
+                if isinstance(child, type(value)) and child != value:
+                    self.__setattr__(key, child)
+                    return
+
             self._children.append(child)
             child._group = self
 
@@ -50,20 +54,33 @@ class SimGroup(ScriptObject):
         return super().inner_str() + "\n" + "\n\n".join(map(repr, self.children))
 
 
+    def __setattr__(self, key, value):
+        super().__setattr__(key, value)
+
+        if key[0] == "_":
+            return
+
+        if isinstance(value, ScriptObject):
+            for child in self.children:
+                if isinstance(child, type(value)):
+                    self.remove(child)
+            self.add(value)
+
+
     @staticmethod
     def tests():
         g = SimGroup(
             ScriptObject(
-                name="WesleySeeton",
+                "WesleySeeton",
                 catchphrase="do it all over again",
             ),
 
             ScriptObject(
-                name="EdBeacham",
+                "EdBeacham",
                 catchphrase="take a shit on the house",
             ),
 
-            name="HohSisGroup",
+            id="HohSisGroup",
             mission="to get the joj done",
         )
 
@@ -75,7 +92,7 @@ class SimGroup(ScriptObject):
 
         g.add([
             ScriptObject(
-                name="JudithMiller",
+                "JudithMiller",
                 catchphrase="i would recommend them to anybody",
             )
         ])
@@ -84,7 +101,7 @@ class SimGroup(ScriptObject):
 
         g.add(
             ScriptObject(
-                name="JojIteration",
+                "JojIteration",
                 rating="A+",
             ).copies(
                 ("numTimesAllOverAgain", "satisfaction", "isDone"),
@@ -96,32 +113,31 @@ class SimGroup(ScriptObject):
         assert not g.children[-2].isDone
         assert g.children[-1].isDone
 
-        from mb_editor.objectname import ObjectName
+        from mb_editor.id import ID
 
         class Person(ScriptObject):
             defaults = dict(
-                name="",
-                hometown=ObjectName.none
+                hometown=ID.none
             )
 
         m = SimGroup(
             [ScriptObject(
-                name="SaintLouis",
+                "SaintLouis",
                 primary_export="drugs",
             )],
 
             Person(
-                name="noby",
+                "noby",
                 hometown="SaintLouis"
             ),
 
-            name="MemesGroup",
+            id="MemesGroup"
         ).add(g)
 
-        descendant_names = [descendant.name for descendant in m.descendants()]
-        assert all(name in descendant_names for name in ["SaintLouis", "HohSisGroup", "EdBeacham"])
-        assert m.descendant_named("JojIteration_15").satisfaction == 100
-        assert m.descendant_named("noby").deref("hometown").primary_export == "drugs"
+        descendant_ids = [descendant.id for descendant in m.descendants()]
+        assert all(id in descendant_ids for id in ["SaintLouis", "HohSisGroup", "EdBeacham"])
+        assert m.descendant("JojIteration_15").satisfaction == 100
+        assert m.descendant("noby").deref("hometown").primary_export == "drugs"
 
 
 if __name__ == '__main__':

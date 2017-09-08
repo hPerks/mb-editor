@@ -1,5 +1,5 @@
 //--- OBJECT WRITE BEGIN ---
-new SimGroup(MissionGroup) {
+new SimGroup() {
 
    new ScriptObject(MissionInfo) {
       name = "Chasetrack";
@@ -10,11 +10,17 @@ new SimGroup(MissionGroup) {
       desc = "Chase after the gems around the track. Can you get them all in 3 laps?";
       startHelpText = "No cheating - you still have to do 3 laps!";
       gameMode = "Laps";
+      lapsNumber = "3";
       parTime = "150000";
       platinumTime = "90000";
       ultimateTime = "70000";
       awesomeTime = "55000";
-      lapsNumber = "3";
+   };
+
+   new Sun() {
+      direction = "0.5 0.5 -0.5";
+      color = "1.4 1.2 0.4 1";
+      ambient = "0.3 0.3 0.4 1";
    };
 
    new Sky() {
@@ -31,17 +37,11 @@ new SimGroup(MissionGroup) {
       noRenderBans = "1";
    };
 
-   new Sun() {
-      direction = "0.5 0.5 -0.5";
-      color = "1.4 1.2 0.4 1";
-      ambient = "0.3 0.3 0.4 1";
-   };
-
    new StaticShape() {
       position = "8 2 0";
       rotation = "0.0 0.0 -1.0 90";
       scale = "1 1 1";
-      datablock = "StartPad";
+      datablock = "StartPad_PQ";
    };
 
    new InteriorInstance() {
@@ -115,6 +115,15 @@ new SimGroup(MissionGroup) {
          baseScale = "1 1 1";
       };
 
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
+      };
+
       new Path() {
 
          new Marker() {
@@ -153,15 +162,6 @@ new SimGroup(MissionGroup) {
             smoothingType = "Linear";
          };
       };
-
-      new Trigger() {
-         position = "7 1 0";
-         rotation = "1.0 0.0 0.0 0";
-         scale = "2 2 1";
-         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
-         datablock = "TriggerGotoTarget";
-         targetTime = "-1";
-      };
    };
 
    new SimGroup() {
@@ -177,6 +177,15 @@ new SimGroup(MissionGroup) {
          basePosition = "0 0 0";
          baseRotation = "1.0 0.0 0.0 0";
          baseScale = "1 1 1";
+      };
+
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
       };
 
       new Path() {
@@ -216,15 +225,6 @@ new SimGroup(MissionGroup) {
             msToNext = "0";
             smoothingType = "Linear";
          };
-      };
-
-      new Trigger() {
-         position = "7 1 0";
-         rotation = "1.0 0.0 0.0 0";
-         scale = "2 2 1";
-         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
-         datablock = "TriggerGotoTarget";
-         targetTime = "-1";
       };
    };
 
@@ -243,6 +243,15 @@ new SimGroup(MissionGroup) {
          baseScale = "1 1 1";
       };
 
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
+      };
+
       new Path() {
 
          new Marker() {
@@ -280,15 +289,6 @@ new SimGroup(MissionGroup) {
             msToNext = "0";
             smoothingType = "Linear";
          };
-      };
-
-      new Trigger() {
-         position = "7 1 0";
-         rotation = "1.0 0.0 0.0 0";
-         scale = "2 2 1";
-         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
-         datablock = "TriggerGotoTarget";
-         targetTime = "-1";
       };
    };
 
@@ -307,6 +307,15 @@ new SimGroup(MissionGroup) {
          baseScale = "1 1 1";
       };
 
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
+      };
+
       new Path() {
 
          new Marker() {
@@ -345,15 +354,6 @@ new SimGroup(MissionGroup) {
             smoothingType = "Linear";
          };
       };
-
-      new Trigger() {
-         position = "7 1 0";
-         rotation = "1.0 0.0 0.0 0";
-         scale = "2 2 1";
-         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
-         datablock = "TriggerGotoTarget";
-         targetTime = "-1";
-      };
    };
 
    new SimGroup() {
@@ -369,6 +369,15 @@ new SimGroup(MissionGroup) {
          basePosition = "0 24 0";
          baseRotation = "1.0 0.0 0.0 0";
          baseScale = "1 1 1";
+      };
+
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
       };
 
       new Path() {
@@ -409,15 +418,6 @@ new SimGroup(MissionGroup) {
             smoothingType = "Linear";
          };
       };
-
-      new Trigger() {
-         position = "7 1 0";
-         rotation = "1.0 0.0 0.0 0";
-         scale = "2 2 1";
-         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
-         datablock = "TriggerGotoTarget";
-         targetTime = "-1";
-      };
    };
 
    new SimGroup() {
@@ -433,6 +433,15 @@ new SimGroup(MissionGroup) {
          basePosition = "0 32 0";
          baseRotation = "1.0 0.0 0.0 0";
          baseScale = "1 1 1";
+      };
+
+      new Trigger() {
+         position = "7 1 0";
+         rotation = "1.0 0.0 0.0 0";
+         scale = "2 2 1";
+         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
+         datablock = "TriggerGotoTarget";
+         targetTime = "-1";
       };
 
       new Path() {
@@ -472,15 +481,6 @@ new SimGroup(MissionGroup) {
             msToNext = "0";
             smoothingType = "Linear";
          };
-      };
-
-      new Trigger() {
-         position = "7 1 0";
-         rotation = "1.0 0.0 0.0 0";
-         scale = "2 2 1";
-         polyhedron = "0 0 0 1 0 0 0 1 0 0 0 1";
-         datablock = "TriggerGotoTarget";
-         targetTime = "-1";
       };
    };
 
@@ -855,7 +855,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_0";
       timeToNext = "338";
    };
 
@@ -864,7 +863,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_1";
       timeToNext = "452";
    };
 
@@ -873,7 +871,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_2";
       timeToNext = "451";
    };
 
@@ -882,7 +879,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_3";
       timeToNext = "452";
    };
 
@@ -891,7 +887,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_3_copy";
       timeToNext = "973";
    };
 
@@ -900,7 +895,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path1_up_4";
       timeToNext = "422";
    };
 
@@ -909,7 +903,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_5";
       timeToNext = "225";
    };
 
@@ -918,7 +911,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_6";
       timeToNext = "1810";
    };
 
@@ -927,7 +919,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_7";
       timeToNext = "225";
    };
 
@@ -936,7 +927,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_8";
       timeToNext = "2004";
    };
 
@@ -945,7 +935,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_9";
       timeToNext = "338";
    };
 
@@ -954,7 +943,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_10";
       timeToNext = "180";
    };
 
@@ -963,7 +951,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_11";
       timeToNext = "112";
    };
 
@@ -972,7 +959,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_12";
       timeToNext = "1359";
    };
 
@@ -981,7 +967,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_13";
       timeToNext = "455";
    };
 
@@ -990,7 +975,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up_14";
       timeToNext = "621";
    };
 
@@ -999,7 +983,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down";
       timeToNext = "1919";
    };
 
@@ -1008,7 +991,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_0";
       timeToNext = "621";
    };
 
@@ -1017,7 +999,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_0_copy";
       timeToNext = "376";
    };
 
@@ -1026,7 +1007,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180.0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path1_down_1";
       timeToNext = "528";
    };
 
@@ -1035,7 +1015,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_2";
       timeToNext = "961";
    };
 
@@ -1044,7 +1023,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_3";
       timeToNext = "451";
    };
 
@@ -1053,7 +1031,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_4";
       timeToNext = "287";
    };
 
@@ -1062,7 +1039,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_5";
       timeToNext = "1016";
    };
 
@@ -1071,7 +1047,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_6";
       timeToNext = "2172";
    };
 
@@ -1080,7 +1055,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_7";
       timeToNext = "338";
    };
 
@@ -1089,7 +1063,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_8";
       timeToNext = "698";
    };
 
@@ -1098,7 +1071,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_9";
       timeToNext = "1016";
    };
 
@@ -1107,7 +1079,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_10";
       timeToNext = "343";
    };
 
@@ -1116,7 +1087,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_11";
       timeToNext = "225";
    };
 
@@ -1125,7 +1095,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_12";
       timeToNext = "757";
    };
 
@@ -1134,7 +1103,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_13";
       timeToNext = "765";
    };
 
@@ -1143,7 +1111,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_14";
       timeToNext = "686";
    };
 
@@ -1152,7 +1119,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_14_copy";
       timeToNext = "424";
    };
 
@@ -1161,7 +1127,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180.0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path1_down_15";
       timeToNext = "253";
    };
 
@@ -1170,7 +1135,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_16";
       timeToNext = "465";
    };
 
@@ -1179,7 +1143,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_17";
       timeToNext = "3839";
    };
 
@@ -1188,7 +1151,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_18";
       timeToNext = "931";
    };
 
@@ -1197,7 +1159,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_19";
       timeToNext = "1090";
    };
 
@@ -1206,7 +1167,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_20";
       timeToNext = "451";
    };
 
@@ -1215,7 +1175,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_21";
       timeToNext = "505";
    };
 
@@ -1224,7 +1183,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_22";
       timeToNext = "465";
    };
 
@@ -1233,7 +1191,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_23";
       timeToNext = "343";
    };
 
@@ -1242,7 +1199,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_24";
       timeToNext = "232";
    };
 
@@ -1251,7 +1207,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_25";
       timeToNext = "455";
    };
 
@@ -1260,7 +1215,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_26";
       timeToNext = "910";
    };
 
@@ -1269,7 +1223,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_26_copy";
       timeToNext = "727";
    };
 
@@ -1278,7 +1231,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180.0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path1_down_27";
       timeToNext = "401";
    };
 
@@ -1287,7 +1239,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_28";
       timeToNext = "451";
    };
 
@@ -1296,7 +1247,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_29";
       timeToNext = "903";
    };
 
@@ -1305,7 +1255,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_30";
       timeToNext = "451";
    };
 
@@ -1314,7 +1263,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_31";
       timeToNext = "451";
    };
 
@@ -1323,7 +1271,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_32";
       timeToNext = "451";
    };
 
@@ -1332,7 +1279,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_33";
       timeToNext = "2032";
    };
 
@@ -1341,7 +1287,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_34";
       timeToNext = "910";
    };
 
@@ -1350,7 +1295,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_35";
       timeToNext = "451";
    };
 
@@ -1359,7 +1303,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_down_36";
       timeToNext = "931";
    };
 
@@ -1368,7 +1311,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well";
       timeToNext = "1806";
    };
 
@@ -1377,7 +1319,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_0";
       timeToNext = "121";
    };
 
@@ -1386,7 +1327,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 185.625";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_1";
       timeToNext = "121";
    };
 
@@ -1395,7 +1335,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 191.25";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_2";
       timeToNext = "121";
    };
 
@@ -1404,7 +1343,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 196.875";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_3";
       timeToNext = "121";
    };
 
@@ -1413,7 +1351,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 202.5";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_4";
       timeToNext = "121";
    };
 
@@ -1422,7 +1359,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 208.125";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_5";
       timeToNext = "121";
    };
 
@@ -1431,7 +1367,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 213.75";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_6";
       timeToNext = "121";
    };
 
@@ -1440,7 +1375,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 219.375";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_7";
       timeToNext = "121";
    };
 
@@ -1449,7 +1383,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 225.0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_8";
       timeToNext = "121";
    };
 
@@ -1458,7 +1391,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 230.625";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_9";
       timeToNext = "121";
    };
 
@@ -1467,7 +1399,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 236.25";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_10";
       timeToNext = "121";
    };
 
@@ -1476,7 +1407,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 241.875";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_10_copy";
       timeToNext = "98";
    };
 
@@ -1485,7 +1415,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 246.44628099173565";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path1_well_11";
       timeToNext = "22";
    };
 
@@ -1494,7 +1423,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 247.5";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_12";
       timeToNext = "121";
    };
 
@@ -1503,7 +1431,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 253.125";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_13";
       timeToNext = "121";
    };
 
@@ -1512,7 +1439,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 258.75";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_well_14";
       timeToNext = "121";
    };
 
@@ -1521,7 +1447,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 264.375";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_sideways";
       timeToNext = "121";
    };
 
@@ -1530,7 +1455,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_sideways_0";
       timeToNext = "0";
    };
 
@@ -1539,7 +1463,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_sideways_1";
       timeToNext = "225";
    };
 
@@ -1548,7 +1471,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_sideways_2";
       timeToNext = "910";
    };
 
@@ -1557,7 +1479,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_sideways_3";
       timeToNext = "225";
    };
 
@@ -1566,7 +1487,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_sideways_4";
       timeToNext = "282";
    };
 
@@ -1575,7 +1495,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up";
       timeToNext = "304";
    };
 
@@ -1584,7 +1503,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_0";
       timeToNext = "0";
    };
 
@@ -1593,7 +1511,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_1";
       timeToNext = "451";
    };
 
@@ -1602,7 +1519,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_2";
       timeToNext = "910";
    };
 
@@ -1611,7 +1527,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_3";
       timeToNext = "910";
    };
 
@@ -1620,7 +1535,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_4";
       timeToNext = "39";
    };
 
@@ -1629,7 +1543,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_5";
       timeToNext = "4460";
    };
 
@@ -1638,7 +1551,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_6";
       timeToNext = "39";
    };
 
@@ -1647,7 +1559,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_7";
       timeToNext = "1129";
    };
 
@@ -1656,7 +1567,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_7_copy";
       timeToNext = "277";
    };
 
@@ -1665,7 +1575,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path1_back_up_8";
       timeToNext = "439";
    };
 
@@ -1674,7 +1583,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_9";
       timeToNext = "455";
    };
 
@@ -1683,7 +1591,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_10";
       timeToNext = "197";
    };
 
@@ -1692,7 +1599,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_11";
       timeToNext = "338";
    };
 
@@ -1701,7 +1607,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_12";
       timeToNext = "180";
    };
 
@@ -1710,7 +1615,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_13";
       timeToNext = "790";
    };
 
@@ -1719,7 +1623,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_14";
       timeToNext = "451";
    };
 
@@ -1728,7 +1631,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_15";
       timeToNext = "2258";
    };
 
@@ -1737,7 +1639,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_16";
       timeToNext = "451";
    };
 
@@ -1746,7 +1647,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_17";
       timeToNext = "225";
    };
 
@@ -1755,7 +1655,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_back_up_18";
       timeToNext = "910";
    };
 
@@ -1764,7 +1663,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path1_up";
       timeToNext = "1242";
    };
 
@@ -1773,7 +1671,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_0";
       timeToNext = "0";
    };
 
@@ -1782,7 +1679,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_1";
       timeToNext = "333";
    };
 
@@ -1791,7 +1687,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_2";
       timeToNext = "445";
    };
 
@@ -1800,7 +1695,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_3";
       timeToNext = "444";
    };
 
@@ -1809,7 +1703,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_4";
       timeToNext = "445";
    };
 
@@ -1818,7 +1711,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_5";
       timeToNext = "1374";
    };
 
@@ -1827,7 +1719,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_6";
       timeToNext = "222";
    };
 
@@ -1836,7 +1727,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_7";
       timeToNext = "1781";
    };
 
@@ -1845,7 +1735,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_8";
       timeToNext = "222";
    };
 
@@ -1854,7 +1743,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_9";
       timeToNext = "1972";
    };
 
@@ -1863,7 +1751,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_10";
       timeToNext = "333";
    };
 
@@ -1872,7 +1759,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_11";
       timeToNext = "177";
    };
 
@@ -1881,7 +1767,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_12";
       timeToNext = "111";
    };
 
@@ -1890,7 +1775,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_12_copy";
       timeToNext = "141";
    };
 
@@ -1899,7 +1783,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path2_up_13";
       timeToNext = "1197";
    };
 
@@ -1908,7 +1791,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_14";
       timeToNext = "448";
    };
 
@@ -1917,7 +1799,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_15";
       timeToNext = "611";
    };
 
@@ -1926,7 +1807,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_16";
       timeToNext = "1889";
    };
 
@@ -1935,7 +1815,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_17";
       timeToNext = "611";
    };
 
@@ -1944,7 +1823,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_18";
       timeToNext = "890";
    };
 
@@ -1953,7 +1831,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_19";
       timeToNext = "946";
    };
 
@@ -1962,7 +1839,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_20";
       timeToNext = "444";
    };
 
@@ -1971,7 +1847,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_21";
       timeToNext = "283";
    };
 
@@ -1980,7 +1855,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_down_split";
       timeToNext = "1444";
    };
 
@@ -1989,7 +1863,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_down_split_0";
       timeToNext = "1054";
    };
 
@@ -1998,7 +1871,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_down_split_0_copy";
       timeToNext = "849";
    };
 
@@ -2007,7 +1879,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180.0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path2_down_split_1";
       timeToNext = "150";
    };
 
@@ -2016,7 +1887,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_down_split_2";
       timeToNext = "687";
    };
 
@@ -2025,7 +1895,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_down_split_3";
       timeToNext = "388";
    };
 
@@ -2034,7 +1903,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_down_split_4";
       timeToNext = "503";
    };
 
@@ -2043,7 +1911,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_down_split_5";
       timeToNext = "444";
    };
 
@@ -2052,7 +1919,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_down_split_6";
       timeToNext = "753";
    };
 
@@ -2061,7 +1927,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_28";
       timeToNext = "458";
    };
 
@@ -2070,7 +1935,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_29";
       timeToNext = "745";
    };
 
@@ -2079,7 +1943,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_23";
       timeToNext = "0";
    };
 
@@ -2088,7 +1951,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_24";
       timeToNext = "0";
    };
 
@@ -2097,7 +1959,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_25";
       timeToNext = "0";
    };
 
@@ -2106,7 +1967,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_26";
       timeToNext = "0";
    };
 
@@ -2115,7 +1975,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_27";
       timeToNext = "0";
    };
 
@@ -2124,7 +1983,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_28";
       timeToNext = "0";
    };
 
@@ -2133,7 +1991,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_30";
       timeToNext = "753";
    };
 
@@ -2142,7 +1999,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_31";
       timeToNext = "676";
    };
 
@@ -2151,7 +2007,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_32";
       timeToNext = "666";
    };
 
@@ -2160,7 +2015,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_33";
       timeToNext = "458";
    };
 
@@ -2169,7 +2023,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_34";
       timeToNext = "3778";
    };
 
@@ -2178,7 +2031,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_34_copy";
       timeToNext = "208";
    };
 
@@ -2187,7 +2039,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180.0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path2_up_35";
       timeToNext = "707";
    };
 
@@ -2196,7 +2047,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_36";
       timeToNext = "1073";
    };
 
@@ -2205,7 +2055,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_37";
       timeToNext = "444";
    };
 
@@ -2214,7 +2063,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_38";
       timeToNext = "497";
    };
 
@@ -2223,7 +2071,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_39";
       timeToNext = "458";
    };
 
@@ -2232,7 +2079,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_40";
       timeToNext = "338";
    };
 
@@ -2241,7 +2087,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_41";
       timeToNext = "229";
    };
 
@@ -2250,7 +2095,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_42";
       timeToNext = "448";
    };
 
@@ -2259,7 +2103,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_43";
       timeToNext = "896";
    };
 
@@ -2268,7 +2111,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_44";
       timeToNext = "1111";
    };
 
@@ -2277,7 +2119,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_45";
       timeToNext = "444";
    };
 
@@ -2286,7 +2127,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_46";
       timeToNext = "889";
    };
 
@@ -2295,7 +2135,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_47";
       timeToNext = "444";
    };
 
@@ -2304,7 +2143,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_48";
       timeToNext = "444";
    };
 
@@ -2313,7 +2151,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_49";
       timeToNext = "444";
    };
 
@@ -2322,7 +2159,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_49_copy";
       timeToNext = "1801";
    };
 
@@ -2331,7 +2167,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180.0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path2_up_50";
       timeToNext = "199";
    };
 
@@ -2340,7 +2175,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_51";
       timeToNext = "896";
    };
 
@@ -2349,7 +2183,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_52";
       timeToNext = "444";
    };
 
@@ -2358,7 +2191,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_53";
       timeToNext = "916";
    };
 
@@ -2367,7 +2199,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_54";
       timeToNext = "1778";
    };
 
@@ -2376,7 +2207,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 180";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_55";
       timeToNext = "119";
    };
 
@@ -2385,7 +2215,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 185.625";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_56";
       timeToNext = "119";
    };
 
@@ -2394,7 +2223,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 191.25";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_57";
       timeToNext = "119";
    };
 
@@ -2403,7 +2231,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 196.875";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_58";
       timeToNext = "119";
    };
 
@@ -2412,7 +2239,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 202.5";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_59";
       timeToNext = "119";
    };
 
@@ -2421,7 +2247,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 208.125";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_60";
       timeToNext = "119";
    };
 
@@ -2430,7 +2255,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 213.75";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_61";
       timeToNext = "119";
    };
 
@@ -2439,7 +2263,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 219.375";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_62";
       timeToNext = "119";
    };
 
@@ -2448,7 +2271,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 225.0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_63";
       timeToNext = "119";
    };
 
@@ -2457,7 +2279,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 230.625";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_64";
       timeToNext = "119";
    };
 
@@ -2466,7 +2287,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 236.25";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_65";
       timeToNext = "119";
    };
 
@@ -2475,7 +2295,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 241.875";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_66";
       timeToNext = "119";
    };
 
@@ -2484,7 +2303,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 247.5";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_67";
       timeToNext = "119";
    };
 
@@ -2493,7 +2311,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 253.125";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_68";
       timeToNext = "119";
    };
 
@@ -2502,7 +2319,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 258.75";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_69";
       timeToNext = "119";
    };
 
@@ -2511,7 +2327,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 264.375";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_70";
       timeToNext = "119";
    };
 
@@ -2520,7 +2335,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_71";
       timeToNext = "0";
    };
 
@@ -2529,7 +2343,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_72";
       timeToNext = "222";
    };
 
@@ -2538,7 +2351,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_73";
       timeToNext = "896";
    };
 
@@ -2547,7 +2359,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_74";
       timeToNext = "222";
    };
 
@@ -2556,7 +2367,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_75";
       timeToNext = "277";
    };
 
@@ -2565,7 +2375,6 @@ new SimGroup(MissionGroup) {
       rotation = "-1.0 0.0 0.0 90";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_76";
       timeToNext = "299";
    };
 
@@ -2574,7 +2383,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_77";
       timeToNext = "0";
    };
 
@@ -2583,7 +2391,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_78";
       timeToNext = "444";
    };
 
@@ -2592,7 +2399,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_79";
       timeToNext = "896";
    };
 
@@ -2601,7 +2407,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_80";
       timeToNext = "896";
    };
 
@@ -2610,7 +2415,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_81";
       timeToNext = "39";
    };
 
@@ -2619,7 +2423,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_81_copy";
       timeToNext = "338";
    };
 
@@ -2628,7 +2431,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path2_up_82";
       timeToNext = "4050";
    };
 
@@ -2637,7 +2439,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_83";
       timeToNext = "39";
    };
 
@@ -2646,7 +2447,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_84";
       timeToNext = "1111";
    };
 
@@ -2655,7 +2455,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_85";
       timeToNext = "705";
    };
 
@@ -2664,7 +2463,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_86";
       timeToNext = "448";
    };
 
@@ -2673,7 +2471,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_87";
       timeToNext = "194";
    };
 
@@ -2682,7 +2479,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_88";
       timeToNext = "333";
    };
 
@@ -2691,7 +2487,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_89";
       timeToNext = "177";
    };
 
@@ -2700,7 +2495,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_90";
       timeToNext = "777";
    };
 
@@ -2709,7 +2503,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_back_up_split";
       timeToNext = "444";
    };
 
@@ -2718,7 +2511,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_back_up_split_0";
       timeToNext = "2222";
    };
 
@@ -2727,7 +2519,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_back_up_split_0_copy";
       timeToNext = "167";
    };
 
@@ -2736,7 +2527,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_94";
       timeToNext = "222";
    };
 
@@ -2745,7 +2535,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1.0 1.0 1.0";
       datablock = "PathNode";
-      nextNode = "path2_up_93";
       timeToNext = "276";
    };
 
@@ -2754,7 +2543,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_92";
       timeToNext = "0";
    };
 
@@ -2763,7 +2551,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_93";
       timeToNext = "0";
    };
 
@@ -2772,7 +2559,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up_95";
       timeToNext = "896";
    };
 
@@ -2781,7 +2567,6 @@ new SimGroup(MissionGroup) {
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "path2_up";
       timeToNext = "1222";
    };
 
@@ -2789,7 +2574,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path1_up_3_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2800,7 +2584,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path2_up_12_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2811,7 +2594,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path1_down_0_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2822,7 +2604,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path2_down_split_0_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2833,7 +2614,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path1_down_14_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2844,7 +2624,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path2_up_34_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2855,7 +2634,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path1_down_26_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2866,7 +2644,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path2_up_49_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2877,7 +2654,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path1_well_10_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2888,7 +2664,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path2_up_81_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2899,7 +2674,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path1_back_up_7_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2910,7 +2684,6 @@ new SimGroup(MissionGroup) {
       position = "0 0 0";
       rotation = "1.0 0.0 0.0 0";
       scale = "1 1 1";
-      path = "path2_back_up_split_0_copy";
       collideable = "0";
       static = "1";
       rotate = "1";
@@ -2922,7 +2695,6 @@ new SimGroup(MissionGroup) {
       rotation = "0.5686086112707271 0.19951179342832534 -0.7980471737133014 45";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "CameraPath1_0";
       timeToNext = "5500";
    };
 
@@ -2931,7 +2703,6 @@ new SimGroup(MissionGroup) {
       rotation = "0.6516311192522112 0.1002509414234171 -0.7518820606756282 25";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "CameraPath1_1";
       timeToNext = "1";
    };
 
@@ -2940,7 +2711,6 @@ new SimGroup(MissionGroup) {
       rotation = "-0.9488147219339524 -0.09987523388778448 -0.29962570166335345 45";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "CameraPath1_2";
       timeToNext = "3500";
    };
 
@@ -2949,7 +2719,6 @@ new SimGroup(MissionGroup) {
       rotation = "-0.5123155195785599 0.25615775978927996 0.8197048313256959 65";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "CameraPath1_3";
       timeToNext = "3000";
    };
 
@@ -2958,7 +2727,6 @@ new SimGroup(MissionGroup) {
       rotation = "0.0 0.20601048104984193 0.978549784986749 145";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "CameraPath1_4";
       timeToNext = "1";
    };
 
@@ -2967,7 +2735,6 @@ new SimGroup(MissionGroup) {
       rotation = "0.0 -0.15129918600920672 0.9884880152601505 160";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "CameraPath1_5";
       timeToNext = "7000";
    };
 
@@ -2976,7 +2743,6 @@ new SimGroup(MissionGroup) {
       rotation = "0.0 -0.15129918600920672 0.9884880152601505 160";
       scale = "1 1 1";
       datablock = "PathNode";
-      nextNode = "CameraPath1";
       timeToNext = "1";
    };
 

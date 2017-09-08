@@ -6,7 +6,7 @@ from mb_editor.fields import Fields
 from mb_editor.implicit import Implicit
 
 from mb_editor.physicalobject import BoundedObject
-from mb_editor.objectname import ObjectName
+from mb_editor.id import ID
 from mb_editor.tsstatics import TeleportPad
 
 
@@ -36,14 +36,14 @@ class HelpTrigger(Trigger):
 class TeleportTrigger(Trigger):
     defaults = dict(
         datablock="TeleportTrigger",
-        destination=ObjectName.none,
+        destination=ID.none,
         delay=Implicit(2000),
         silent=Implicit(0),
     )
 
-    def with_destination(self, name, position, **fields):
-        self.destination = name
-        return self.with_friends(DestinationTrigger(name, position=position, **fields))
+    def with_destination(self, id, position, **fields):
+        self.destination = id
+        return self.with_friends(DestinationTrigger(id, position=position, **fields))
 
     def with_pad(self, offset="8 8 0", **fields):
         return self.with_friends(TeleportPad(position=self.position + offset, **fields))
@@ -53,7 +53,7 @@ class TeleportTrigger(Trigger):
     def tests():
         t = TeleportTrigger(position="4 2 0")
         td = t.with_destination("d", "0 6 9")
-        tdp = td.with_pad(name="pad!", offset="4 4 0", scale="0.5 0.5 0.5")
+        tdp = td.with_pad(id="pad!", offset="4 4 0", scale="0.5 0.5 0.5")
 
         assert tdp.friends["pad!"].scale == "0.5 0.5 0.5"
 

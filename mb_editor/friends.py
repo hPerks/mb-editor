@@ -31,4 +31,4 @@ class Friends:
         if item == "":
             return None
 
-        return next(filter(lambda f: item == f.name, self.list), None)
+        return next(filter(lambda f: item == f.id, self.list), None)

@@ -25,14 +25,20 @@ class Field:
             self._value = value.type(value.value)
             self.implicit_default = self._value
         else:
-            self._value = self.type(value)
+            from mb_editor.scriptobject import ScriptObject  # ughh ugly hacks, I tried so many things lol
+            if isinstance(value, ScriptObject):
+                self._value = value
+            else:
+                self._value = self.type(value)
 
     def is_explicit(self):
+        from mb_editor.scriptobject import ScriptObject  # yeahh I know
+
         return (
             (self.value is not None and self.implicit_default is None)
             or (self.value is None and self.implicit_default is not None)
             or self.value != self.implicit_default
-        )
+        ) and not isinstance(self.value, ScriptObject)
 
 
     @staticmethod
@@ -44,8 +50,8 @@ class Field:
         f.key, f.type, f.value = "areaCode", Vector3D, [2, 1, 4]
         assert f.value == "2 1 4"
 
-        from mb_editor.objectname import ObjectName
-        f.key, f.type, f.value = "client", ObjectName, "RichardSwiney"
+        from mb_editor.id import ID
+        f.key, f.type, f.value = "client", ID, "RichardSwiney"
         from mb_editor.scriptobject import ScriptObject
         assert f.value == ScriptObject("RichardSwiney")
 

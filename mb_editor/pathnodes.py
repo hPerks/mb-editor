@@ -1,11 +1,11 @@
 from mb_editor.implicit import Implicit
-from mb_editor.objectname import ObjectName
+from mb_editor.id import ID
 from mb_editor.staticshapes import StaticShape
 
 class PathNode(StaticShape):
     defaults = dict(
         datablock="PathNode",
-        nextNode=Implicit(ObjectName.none),
+        nextNode=Implicit(ID.none),
         timeToNext=0  # Implicit(5000) - my rec breaks with or without this, rip
     )
 
@@ -60,8 +60,8 @@ class PathNode(StaticShape):
 
         return self
 
-    def with_path_of_copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
-        copies = self.copies(keys_tuple, *values_tuples, name=name)
+    def with_path_of_copies(self, keys_tuple, *values_tuples, id="(id)_(i)"):
+        copies = self.copies(keys_tuple, *values_tuples, id=id)
 
         if len(copies) > 0:
             self.nextNode = copies[0]

@@ -7,7 +7,9 @@ TOTAL_PATH_TIME = 64000
 NUM_GEMS = 12
 GEM_OFFSET = 0.5
 
-mission = LapsMission().set_info(
+mission = LapsMission(sky=Sky.wave)
+
+mission.info.set(
     name="Chasetrack",
     author="hPerks",
     desc="Chase after the gems around the track. Can you get them all in 3 laps?",
@@ -16,9 +18,9 @@ mission = LapsMission().set_info(
     platinumTime=90000,
     ultimateTime=70000,
     awesomeTime=55000,
-).set_sky(
-    Sky.wave
-).add(
+)
+
+mission.add(
     StartPad(position="8 2 0", rotation="0 0 -1 90"),
     Interior.local("expert/chasetrack.dif"),
     Interior.local("expert/chasetrack_tightrope.dif").copies(
@@ -36,14 +38,12 @@ mission = LapsMission().set_info(
         MovingInterior.make(
             PathedInterior.local("chasetrack.dif", 0, basePosition=(0, y, 0), initialTargetPosition=0),
             TriggerGotoTarget(position="7 1 0", scale="2 2 1", targetTime=-1),
-        ).set_path(
-            Path.make_linear(
-                (0, y, 0), 62.5 * (40 - y),
-                (0, 40, 0), 0,
-                (0, -8, 0), 62.5 * (y + 8),
-                (0, y, 0)
-            )
-        )
+        ).set(path=Path.make_linear(
+            (0, y, 0), 62.5 * (40 - y),
+            (0, 40, 0), 0,
+            (0, -8, 0), 62.5 * (y + 8),
+            (0, y, 0)
+        ))
 
         for y in range(-8, 40, 8)
     ],

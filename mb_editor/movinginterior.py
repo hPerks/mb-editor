@@ -32,19 +32,10 @@ class PathedInterior(PhysicalObject):
 
 class MovingInterior(SimGroup):
 
-    def __init__(self, **fields):
-        super().__init__(**fields)
-
-        self._interior, self._path = PathedInterior(), Path()
-        self.add(self.interior, self.path)
-
-    @property
-    def interior(self):
-        return self._interior
-
-    @property
-    def path(self):
-        return self._path
+    defaults = dict(
+        interior=PathedInterior(),
+        path=Path()
+    )
 
     @property
     def markers(self):
@@ -53,19 +44,6 @@ class MovingInterior(SimGroup):
     @property
     def other_children(self):
         return list(filter(lambda child: child not in [self.interior, self.path], self.children))
-
-    def set_interior(self, interior=None, **fields):
-        if interior is not None:
-            self.interior.set(**interior.fields.dict)
-        self.interior.set(**fields)
-        return self
-
-    def set_path(self, path=None, **fields):
-        if path is not None:
-            self.path.remove_all()
-            self.path.add(*path.children)
-        self.path.set(**fields)
-        return self
 
     def path_add(self, *markers):
         self.path.add(*markers)
@@ -84,7 +62,7 @@ class MovingInterior(SimGroup):
             path = Path(*list(filter(lambda a: isinstance(a, Marker), args)))
             other_children = filter(lambda a: not isinstance(a, Marker), args)
 
-        return cls(**fields).set_interior(pathedInterior).set_path(path).add(*other_children)
+        return cls(interior=pathedInterior, path=path, **fields).add(*other_children)
 
 
     @staticmethod
@@ -115,6 +93,12 @@ class MovingInterior(SimGroup):
         assert b.interior.interiorResource == h.interior.interiorResource
         assert b.markers[0].position.z > b.markers[1].position.z
         assert b.other_children[0].animation == "rolling"
+
+        b.path = Path.make_accelerate("0 0 0", "2000", "0 40 -2")
+        assert b.markers[0].msToNext == 2000
+
+        b.add(Path.make_accelerate("0 0 0", "8000", "0 40 -2"))
+        assert b.markers[0].msToNext == 8000
 
 
 if __name__ == '__main__':

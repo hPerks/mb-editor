@@ -9,8 +9,8 @@ from mb_editor.utils.lists import flatlist, is_list_of_tuples
 class ScriptObject:
     classname = "ScriptObject"
 
-    def __init__(self, name="", **fields):
-        self._name = name
+    def __init__(self, id="", **fields):
+        self._id = id
         self._fields = Fields()
         self._group = None
         self._friends = Friends(self)
@@ -34,9 +34,9 @@ class ScriptObject:
         self.fields.set(key, value)
 
     def __repr__(self):
-        return 'new {classname}({name}) {{\n{fields}\n}};'.format(
+        return 'new {classname}({id}) {{\n{fields}\n}};'.format(
             classname=self.classname,
-            name=self._name,
+            id=self.id,
             fields=indent(self.inner_str(), "   ")
         )
 
@@ -57,12 +57,12 @@ class ScriptObject:
         return self._fields
 
     @property
-    def name(self):
-        return self._name
+    def id(self):
+        return self._id
 
-    @name.setter
-    def name(self, value):
-        self._name = value
+    @id.setter
+    def id(self, value):
+        self._id = value
 
     def written_fields(self):
         return self.fields
@@ -72,19 +72,22 @@ class ScriptObject:
 
     def set(self, **fields):
         for key, value in fields.items():
-            self.fields.set(key, value)
+            self.__setattr__(key, value)
         return self
 
+    def merge(self, object):
+        self.set(**object.fields.dict)
 
-    def copy(self, name="(name)_copy", **fields):
+
+    def copy(self, id="(id)_copy", **fields):
         copy = self.__class__(
-            name="" if self.name == "" else name.replace("(name)", self.name),
+            id="" if self.id == "" else id.replace("(id)", self.id),
             **self.fields.dict
         )
         copy.set(**fields)
         return copy
 
-    def copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
+    def copies(self, keys_tuple, *values_tuples, id="(id)_(i)"):
         values_tuples = flatlist(*values_tuples)
 
         if isinstance(keys_tuple, str):
@@ -106,7 +109,7 @@ class ScriptObject:
 
         return [
             self.copy(
-                name=name.replace("(i)", str(values_tuple_index)),
+                id=id.replace("(i)", str(values_tuple_index)),
                 **{
                     keys_tuple[value_index]: value
                     for value_index, value in enumerate(values_tuple)
@@ -126,17 +129,17 @@ class ScriptObject:
     def descendants(self):
         return []
 
-    def descendant_named(self, name):
-        if name == "":
+    def descendant(self, id):
+        if id == "":
             return None
 
-        return next(filter(lambda d: d.name == name, self.descendants()), None)
+        return next(filter(lambda d: d.id == id, self.descendants()), None)
 
-    def object_named(self, name):
-        return self.root().descendant_named(name) or self.friends[name]
+    def object(self, id):
+        return self.root().descendant(id) or self.friends[id]
 
     def deref(self, field_name):
-        return self.object_named(self.fields.get(field_name).name)
+        return self.object(self.fields.get(field_name).id)
 
 
     @property
@@ -147,8 +150,8 @@ class ScriptObject:
         self.friends.add(*friends)
         return self
 
-    def with_copies(self, keys_tuple, *values_tuples, name="(name)_(i)"):
-        return self.with_friends(self.copies(keys_tuple, *values_tuples, name=name))
+    def with_copies(self, keys_tuple, *values_tuples, id="(id)_(i)"):
+        return self.with_friends(self.copies(keys_tuple, *values_tuples, id=id))
 
 
     @classmethod
@@ -200,14 +203,14 @@ class ScriptObject:
                     field_name, field_value_str = match.groups()
                     fields.set(field_name, field_value_str)
 
-        classname, name = matches[0].groups()
+        classname, id = matches[0].groups()
         if fields.get("datablock") is None:
             classes = ScriptObject.subclasses_with(classname)
         else:
             classes = ScriptObject.subclasses_with(classname, datablock=fields.get("datablock"))
 
         try:
-            obj = classes[0](name=name, **fields.dict)
+            obj = classes[0](id=id, **fields.dict)
             if len(children) > 0:
                 obj.add(children)
             return obj
@@ -232,12 +235,12 @@ class ScriptObject:
             25, "i'm going to take a sh!t on the house",
             0,
 
-            name="(name)_dialogue(i)",
+            id="(id)_dialogue(i)",
         )
 
         assert len(cc) == 4
         assert cc[0].rating == "A+"
-        assert cc[1].name == "EdBeacham_copy_dialogue1"
+        assert cc[1].id == "EdBeacham_copy_dialogue1"
         assert "!" in cc[2].catchphrase
         assert (cc[3].satisfaction, cc[3].catchphrase) == (0, "i'm beaming up")
 
