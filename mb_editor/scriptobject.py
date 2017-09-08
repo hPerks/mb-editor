@@ -1,9 +1,9 @@
-from mb_editor.field import Field
+import re
+from textwrap import indent
+
 from mb_editor.fields import Fields
 from mb_editor.friends import Friends
 from mb_editor.utils.lists import flatlist, is_list_of_tuples
-
-from textwrap import indent
 
 
 class ScriptObject:
@@ -15,7 +15,7 @@ class ScriptObject:
         self._group = None
         self._friends = Friends(self)
 
-        self.set(**self.__defaults())
+        self.set(**self.all_defaults())
         self.set(**fields)
 
     def __getattr__(self, item):
@@ -43,10 +43,10 @@ class ScriptObject:
     defaults = {}
 
     @classmethod
-    def __defaults(cls):
+    def all_defaults(cls):
         try:
             return dict(
-                cls.__bases__[0].__defaults(),
+                cls.__bases__[0].all_defaults(),
                 **cls.defaults
             )
         except:
@@ -151,6 +151,71 @@ class ScriptObject:
         return self.with_friends(self.copies(keys_tuple, *values_tuples, name=name))
 
 
+    @classmethod
+    def subclasses_with(cls, classname, **defaults):
+        classes = []
+
+        if cls.classname == classname:
+            class_defaults = cls.all_defaults()
+            if all(
+                key in class_defaults and class_defaults[key] == value
+                for key, value in defaults.items()
+            ):
+                classes.append(cls)
+
+        classes += flatlist([subclass.subclasses_with(classname, **defaults) for subclass in cls.__subclasses__()])
+        return classes
+
+
+    RE_OBJECT_BEGIN = re.compile("new ([a-z_A-Z]+)\(([a-z_A-Z]*)\) {", re.DOTALL)
+    RE_OBJECT_END = re.compile("};")
+    RE_FIELD = re.compile("([a-z_A-Z]+) = \"(.*)\";")
+
+    @classmethod
+    def from_string(cls, string):
+        children = []
+        fields = Fields()
+
+        stack = []
+
+        matches = sorted(
+            list(re.finditer(cls.RE_OBJECT_BEGIN, string)) +
+            list(re.finditer(cls.RE_OBJECT_END, string)) +
+            list(re.finditer(cls.RE_FIELD, string)),
+
+            key=lambda m: m.start()
+        )
+
+        for match in matches:
+            pos = match.start()
+
+            if match.re == cls.RE_OBJECT_BEGIN:
+                stack.append(pos)
+            elif match.re == cls.RE_OBJECT_END:
+                begin_pos = stack.pop()
+                if len(stack) == 1:
+                    children.append(cls.from_string(string[begin_pos:pos + 1]))
+            elif match.re == cls.RE_FIELD:
+                if len(stack) == 1:
+                    field_name, field_value_str = match.groups()
+                    fields.set(field_name, field_value_str)
+
+        classname, name = matches[0].groups()
+        if fields.get("datablock") is None:
+            classes = ScriptObject.subclasses_with(classname)
+        else:
+            classes = ScriptObject.subclasses_with(classname, datablock=fields.get("datablock"))
+
+        try:
+            obj = classes[0](name=name, **fields.dict)
+            if len(children) > 0:
+                obj.add(children)
+            return obj
+
+        except IndexError:
+            return None
+
+
     @staticmethod
     def tests():
         w = ScriptObject("WesleySeeton", catchphrase="do it all over again")
@@ -179,6 +244,7 @@ class ScriptObject:
         we = w.with_friends(e)
         wer = w.with_friends(c)
         assert len(we.friends.list) == 2
+
 
 if __name__ == '__main__':
     ScriptObject.tests()
