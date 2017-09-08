@@ -7,11 +7,11 @@ class StaticShape(PhysicalObject):
 
 
 class StartPad(StaticShape):
-    defaults = dict(datablock="StartPad")
+    defaults = dict(datablock="StartPad_PQ")
 
 
 class EndPad(StaticShape):
-    defaults = dict(datablock="EndPad")
+    defaults = dict(datablock="EndPad_PQ")
 
     def with_sign(self, offset="0 0 4", **fields):
         return self.with_friends(FinishSign(position=self.position + offset, **fields))
