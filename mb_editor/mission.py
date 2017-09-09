@@ -17,6 +17,14 @@ class Mission(SimGroup):
         sun=Sun(),
     )
 
+    def __init__(self, *args, **fields):
+        super().__init__(*args, **fields)
+
+        for field in self.info.fields.list:
+            if field.key in fields:
+                self.info.fields.set(field.key, fields[field.key])
+                self.fields.delete(field.key)
+
     def __repr__(self):
         return "//--- OBJECT WRITE BEGIN ---\n" + super().__repr__()
 
@@ -86,6 +94,10 @@ class LapsMission(NormalMission):
     defaults = dict(
         info=MissionInfo(
             gameMode="Laps",
+            parTime=Implicit(0),
+            platinumTime=0,
+            ultimateTime=0,
+            awesomeTime=0,
             lapsNumber=3
         )
     )

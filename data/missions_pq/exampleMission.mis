@@ -9,11 +9,11 @@ new SimGroup() {
       level = "1";
       desc = "Showcasing some of the features in my text-based MB level maker.";
       startHelpText = "";
+      music = "Good To Jump To.ogg";
       gameMode = "Normal";
       platinumTime = "25000";
       ultimateTime = "18000";
       awesomeTime = "15500";
-      music = "Good To Jump To.ogg";
    };
 
    new Sky() {

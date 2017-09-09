@@ -1,4 +1,5 @@
 from mb_editor.scriptobject import ScriptObject
+from mb_editor.implicit import Implicit
 
 
 class MissionInfo(ScriptObject):
@@ -11,5 +12,6 @@ class MissionInfo(ScriptObject):
         level="1",
         desc="No description set.",
         startHelpText="No start help text.",
+
+        music=Implicit(""),
     )
-    

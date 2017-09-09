@@ -7,9 +7,7 @@ TOTAL_PATH_TIME = 64000
 NUM_GEMS = 12
 GEM_OFFSET = 0.5
 
-mission = LapsMission(sky=Sky.wave)
-
-mission.info.set(
+mission = LapsMission(
     name="Chasetrack",
     author="hPerks",
     desc="Chase after the gems around the track. Can you get them all in 3 laps?",
@@ -18,9 +16,9 @@ mission.info.set(
     platinumTime=90000,
     ultimateTime=70000,
     awesomeTime=55000,
-)
 
-mission.add(
+    sky=Sky.wave,
+).add(
     StartPad(position="8 2 0", rotation="0 0 -1 90"),
     Interior.local("expert/chasetrack.dif"),
     Interior.local("expert/chasetrack_tightrope.dif").copies(

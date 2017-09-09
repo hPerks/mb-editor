@@ -10,11 +10,11 @@ new SimGroup() {
       desc = "Chase after the gems around the track. Can you get them all in 3 laps?";
       startHelpText = "No cheating - you still have to do 3 laps!";
       gameMode = "Laps";
-      lapsNumber = "3";
       parTime = "150000";
       platinumTime = "90000";
       ultimateTime = "70000";
       awesomeTime = "55000";
+      lapsNumber = "3";
    };
 
    new Sun() {

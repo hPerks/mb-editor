@@ -1,11 +1,6 @@
 from mb_editor import *
 
-mission = NormalMission(
-    sky=Sky.blender1,
-    sun=Sun(ambient=(0.3, 0.3, 0.4, 1))
-)
-
-mission.info.set(
+NormalMission(
     name="Example Mission",
     author="hPerks",
     desc="Showcasing some of the features in my text-based MB level maker.",
@@ -14,9 +9,10 @@ mission.info.set(
     ultimateTime=18000,
     awesomeTime=15500,
     music="Good To Jump To.ogg",
-)
 
-mission.add(
+    sky=Sky.blender1,
+    sun=Sun(ambient=(0.3, 0.3, 0.4, 1))
+).add(
     StartPad("StartPoint", position=vec.zero),
     Interior.local("exampleMission.dif", position="0 0 0"),
 

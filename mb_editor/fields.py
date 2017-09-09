@@ -34,3 +34,9 @@ class Fields:
             self.field_with_key(key).value = value
         except AttributeError:
             self.list.append(Field(key, value, type(value) if field_type is None else field_type))
+
+    def delete(self, key):
+        try:
+            self.list.remove(self.field_with_key(key))
+        except AttributeError:
+            pass

@@ -1,13 +1,9 @@
 from mb_editor import *
 
-mission = NormalMission()
-
-mission.info.set(
+mission = NormalMission(
     name="Drills",
     author="hPerks",
-)
-
-mission.add(
+).add(
     StartPad(position="-150 -3 0", rotation=rot.k(90)),
     Interior.local("custom/drills.dif"),
 )
