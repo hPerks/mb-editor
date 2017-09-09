@@ -7,7 +7,7 @@ TOTAL_PATH_TIME = 64000
 NUM_GEMS = 12
 GEM_OFFSET = 0.5
 
-mission = LapsMission(
+mission = Mission.laps(
     name="Chasetrack",
     author="hPerks",
     desc="Chase after the gems around the track. Can you get them all in 3 laps?",

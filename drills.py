@@ -1,6 +1,6 @@
 from mb_editor import *
 
-mission = NormalMission(
+mission = Mission.normal(
     name="Drills",
     author="hPerks",
 ).add(

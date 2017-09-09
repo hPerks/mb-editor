@@ -1,6 +1,6 @@
 from mb_editor.implicit import Implicit
 from mb_editor.simgroup import SimGroup
-from mb_editor.missioninfo import MissionInfo
+from mb_editor.missioninfo import *
 from mb_editor.sky import Sky
 from mb_editor.sun import Sun
 from mb_editor.physicalobject import PhysicalObject
@@ -16,14 +16,6 @@ class Mission(SimGroup):
         sky=Sky(),
         sun=Sun(),
     )
-
-    def __init__(self, *args, **fields):
-        super().__init__(*args, **fields)
-
-        for field in self.info.fields.list:
-            if field.key in fields:
-                self.info.fields.set(field.key, fields[field.key])
-                self.fields.delete(field.key)
 
     def __repr__(self):
         return "//--- OBJECT WRITE BEGIN ---\n" + super().__repr__()
@@ -62,48 +54,23 @@ class Mission(SimGroup):
         return cls.from_string(string)
 
 
-class NormalMission(Mission):
-    defaults = dict(
-        info=MissionInfo(
-            gameMode="Normal",
-            parTime=Implicit(0),
-            platinumTime=0,
-            ultimateTime=0,
-            awesomeTime=0,
-        )
-    )
+    @classmethod
+    def normal(cls, *args, **fields):
+        return cls(*args, info=NormalMissionInfo(**fields))
 
 
-class HuntMission(Mission):
-    defaults = dict(
-        info=MissionInfo(
-            gameMode="Hunt",
-            radiusFromGem=30,
-            maxGemsPerSpawn=6,
-            gemGroups=Implicit(0),
-            time=300000,
-            parScore=0,
-            platinumScore=0,
-            ultimateScore=0,
-            awesomeScore=0,
-        )
-    )
+    @classmethod
+    def hunt(cls, *args, **fields):
+        return cls(*args, info=HuntMissionInfo(**fields))
 
 
-class LapsMission(NormalMission):
-    defaults = dict(
-        info=MissionInfo(
-            gameMode="Laps",
-            parTime=Implicit(0),
-            platinumTime=0,
-            ultimateTime=0,
-            awesomeTime=0,
-            lapsNumber=3
-        )
-    )
+    @classmethod
+    def laps(cls, *args, **fields):
+        return cls(*args, info=LapsMissionInfo(**fields))
+
 
     def add_laps_checkpoint_triggers(self, *laps_checkpoint_triggers):
-        return super().add([
+        return self.add([
             trigger.set(checkpointNumber=checkpointNumber)
             for checkpointNumber, trigger in enumerate(flatlist(*laps_checkpoint_triggers))
         ])

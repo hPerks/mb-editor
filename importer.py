@@ -25,7 +25,7 @@ def run_import(source_dir, mb_home_dir):
                 picture_dest_path = os.path.join(mission_dest_dir, picture_basename)
 
                 if os.path.exists(picture_source_path):
-                    print("copying associated mission image '{}' to '{}".format(picture_source_path, picture_dest_path))
+                    print("copying associated mission image '{}' to '{}'".format(picture_source_path, picture_dest_path))
                     shutil.copyfile(picture_source_path, picture_dest_path)
                 else:
                     print("associated mission image '{}' not found".format(picture_source_path))

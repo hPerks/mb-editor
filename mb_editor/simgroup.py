@@ -62,7 +62,7 @@ class SimGroup(ScriptObject):
 
         if isinstance(value, ScriptObject):
             for child in self.children:
-                if isinstance(child, type(value)):
+                if isinstance(value, type(child)):
                     self.remove(child)
             self.add(value)
 
