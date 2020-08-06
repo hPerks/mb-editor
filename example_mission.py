@@ -1,4 +1,4 @@
-from mb_editor import *
+from amble import *
 
 trim = Texture('PQ/pq_edge_white_2', [0.5, 0.5])
 floor = Texture('PQ/pq_neutral_7_med', [4, 4], [0.5, 0.5])

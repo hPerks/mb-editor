@@ -2,10 +2,10 @@
 
 ## Setup
 
-Create a python file in the parent directory of `mb_editor`.
+Create a python file in the parent directory of `amble`.
 Add this line to the start of the file:
 
-    from mb_editor import *
+    from amble import *
 
 ## Creating a mission
 

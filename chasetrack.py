@@ -1,5 +1,5 @@
-from mb_editor import *
-from mb_editor.utils.lists import drange
+from amble import *
+from amble.utils.lists import drange
 
 from math import sin, cos, radians
 

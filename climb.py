@@ -8,9 +8,9 @@ import tkinter.filedialog
 import sys
 import traceback
 
-from mb_editor.interior import Interior
-from mb_editor.mission import Mission
-from mb_editor.utils import path
+from amble.interior import Interior
+from amble.mission import Mission
+from amble.utils import path
 
 
 def run_import(source_dir, mission_dest_dir):
@@ -192,7 +192,7 @@ class ImporterApp(StyledApp):
         self.scrollbar_status_v = ttk.Scrollbar(self.frame_status, orient='vertical')
         self.text_status = self.Text(self.frame_status, state='disabled', width=0, height=0, yscrollcommand=self.scrollbar_status_v.set)
 
-        self.label_credits = ttk.Label(self.frame, text='made with \u2665 by hPerks, using mb-editor (github.com/omaitzen/mb-editor)', font=('Roboto', 10), foreground='#525252')
+        self.label_credits = ttk.Label(self.frame, text='made with \u2665 by hPerks, using AMBLE (github.com/omaitzen/amble)', font=('Roboto', 10), foreground='#525252')
 
         self.frame.grid_columnconfigure(0, weight=1, uniform='joj')
         self.frame.grid_columnconfigure(1, weight=1, uniform='joj')
