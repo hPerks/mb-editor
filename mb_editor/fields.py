@@ -1,5 +1,4 @@
 from mb_editor.field import Field
-from mb_editor.implicit import Implicit
 
 
 class Fields:
@@ -7,7 +6,7 @@ class Fields:
         self.list = [] if fields_list is None else fields_list
 
     def __repr__(self):
-        return "\n".join(map(repr, filter(lambda field: field.is_explicit(), self.list)))
+        return '\n'.join(map(repr, filter(lambda field: field.is_explicit(), self.list)))
 
     @property
     def dict(self):
@@ -25,8 +24,8 @@ class Fields:
             return None
 
     def set(self, key, value, field_type=None):
-        if "." in key:
-            before_dot, after_dot = tuple(key.split(".", 1))
+        if '.' in key:
+            before_dot, after_dot = tuple(key.split('.', 1))
             self.get(before_dot).__setattr__(after_dot, value)
             return
 

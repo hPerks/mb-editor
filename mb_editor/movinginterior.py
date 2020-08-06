@@ -1,18 +1,17 @@
 from mb_editor.numberlists.rotation3d import Rotation3D
 from mb_editor.numberlists.vector3d import Vector3D
 from mb_editor.simgroup import SimGroup
-from mb_editor.physicalobject import PhysicalObject
+from mb_editor.sceneobject import SceneObject
 from mb_editor.path import Marker, Path
+from mb_editor.utils import path
 
 
-class PathedInterior(PhysicalObject):
-    classname = "PathedInterior"
-
-    local_dir = "platinum/data/interiors_pq"
+class PathedInterior(SceneObject):
+    classname = 'PathedInterior'
 
     defaults = dict(
-        datablock="PathedDefault",
-        interiorResource="",
+        datablock='PathedDefault',
+        interiorResource='',
         interiorIndex=0,
         initialTargetPosition=-1,
 
@@ -24,7 +23,7 @@ class PathedInterior(PhysicalObject):
     @classmethod
     def local(cls, interiorResource, interiorIndex, **fields):
         return cls(
-            interiorResource="{}/{}".format(cls.local_dir, interiorResource),
+            interiorResource=path.join('platinum/data/interiors_pq/custom', interiorResource),
             interiorIndex=interiorIndex,
             **fields
         )
@@ -69,35 +68,35 @@ class MovingInterior(SimGroup):
     def tests():
         from mb_editor.scriptobject import ScriptObject
         h = MovingInterior.make(
-            PathedInterior.local("foundationRepair.dif", 0, basePosition="4 2 0"),
-            Marker(position="0 0 0", msToNext=1000),
-            Marker(position="0 0 4", msToNext=1000),
-            Marker(position="0 0 0"),
-            ScriptObject("Information", interiorName="TheHouse", animation="lifting")
+            PathedInterior.local('foundationRepair.dif', 0, basePosition='4 2 0'),
+            Marker(position='0 0 0', msToNext=1000),
+            Marker(position='0 0 4', msToNext=1000),
+            Marker(position='0 0 0'),
+            ScriptObject('Information', interiorName='TheHouse', animation='lifting')
         )
 
         assert h.interior.basePosition == [4, 2, 0]
         assert len(h.markers) == 3
         assert len(h.other_children) == 1
-        assert h.other_children[0].animation == "lifting"
+        assert h.other_children[0].animation == 'lifting'
 
         b = MovingInterior.make(
-            PathedInterior.local("foundationRepair.dif", 1, basePosition="0 0 0"),
+            PathedInterior.local('foundationRepair.dif', 1, basePosition='0 0 0'),
             Path.make_accelerate(
-                "0 0 0", "5000",
-                "0 40 -2"
+                '0 0 0', '5000',
+                '0 40 -2'
             ),
-            ScriptObject("Information", interiorName="Ball", animation="rolling")
+            ScriptObject('Information', interiorName='Ball', animation='rolling')
         )
 
         assert b.interior.interiorResource == h.interior.interiorResource
         assert b.markers[0].position.z > b.markers[1].position.z
-        assert b.other_children[0].animation == "rolling"
+        assert b.other_children[0].animation == 'rolling'
 
-        b.path = Path.make_accelerate("0 0 0", "2000", "0 40 -2")
+        b.path = Path.make_accelerate('0 0 0', '2000', '0 40 -2')
         assert b.markers[0].msToNext == 2000
 
-        b.add(Path.make_accelerate("0 0 0", "8000", "0 40 -2"))
+        b.add(Path.make_accelerate('0 0 0', '8000', '0 40 -2'))
         assert b.markers[0].msToNext == 8000
 
 

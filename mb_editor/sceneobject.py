@@ -9,7 +9,7 @@ from mb_editor.implicit import Implicit
 from mb_editor.id import ID
 
 
-class PhysicalObject(ScriptObject):
+class SceneObject(ScriptObject):
     defaults = dict(
         position=Vector3D.zero,
         rotation=Rotation3D.identity,
@@ -41,20 +41,20 @@ class PhysicalObject(ScriptObject):
 
     @staticmethod
     def tests():
-        cc = PhysicalObject().copies(
-            ("position.x", "position.y"),
+        cc = SceneObject().copies(
+            ('position.x', 'position.y'),
             1, 3,
             3, 7,
         )
         assert len(cc) == 2
-        assert cc[0].position == "1 3"
+        assert cc[0].position == '1 3'
 
 
-class BoundedObject(PhysicalObject):
+class BoundedObject(SceneObject):
     defaults = dict(
         polyhedron=Polyhedron3D.identity
     )
 
 
 if __name__ == '__main__':
-    PhysicalObject.tests()
+    SceneObject.tests()

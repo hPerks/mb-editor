@@ -7,9 +7,9 @@ from mb_editor.utils.lists import flatlist, is_list_of_tuples
 
 
 class ScriptObject:
-    classname = "ScriptObject"
+    classname = 'ScriptObject'
 
-    def __init__(self, id="", **fields):
+    def __init__(self, id='', **fields):
         self._id = id
         self._fields = Fields()
         self._group = None
@@ -22,7 +22,7 @@ class ScriptObject:
         return self.fields.get(item)
 
     def __setattr__(self, key, value):
-        if key[0] == "_":
+        if key[0] == '_':
             object.__setattr__(self, key, value)
             return
 
@@ -37,7 +37,7 @@ class ScriptObject:
         return 'new {classname}({id}) {{\n{fields}\n}};'.format(
             classname=self.classname,
             id=self.id,
-            fields=indent(self.inner_str(), "   ")
+            fields=indent(self.inner_str(), '   ')
         )
 
     defaults = {}
@@ -79,15 +79,15 @@ class ScriptObject:
         self.set(**object.fields.dict)
 
 
-    def copy(self, id="(id)_copy", **fields):
+    def copy(self, id='(id)_copy', **fields):
         copy = self.__class__(
-            id="" if self.id == "" else id.replace("(id)", self.id),
+            id='' if self.id == '' else id.replace('(id)', self.id),
             **self.fields.dict
         )
         copy.set(**fields)
         return copy
 
-    def copies(self, keys_tuple, *values_tuples, id="(id)_(i)"):
+    def copies(self, keys_tuple, *values_tuples, id='(id)_(i)'):
         values_tuples = flatlist(*values_tuples)
 
         if isinstance(keys_tuple, str):
@@ -109,7 +109,7 @@ class ScriptObject:
 
         return [
             self.copy(
-                id=id.replace("(i)", str(values_tuple_index)),
+                id=id.replace('(i)', str(values_tuple_index)),
                 **{
                     keys_tuple[value_index]: value
                     for value_index, value in enumerate(values_tuple)
@@ -130,7 +130,7 @@ class ScriptObject:
         return []
 
     def descendant(self, id):
-        if id == "":
+        if id == '':
             return None
 
         return next(filter(lambda d: d.id == id, self.descendants()), None)
@@ -150,7 +150,7 @@ class ScriptObject:
         self.friends.add(*friends)
         return self
 
-    def with_copies(self, keys_tuple, *values_tuples, id="(id)_(i)"):
+    def with_copies(self, keys_tuple, *values_tuples, id='(id)_(i)'):
         return self.with_friends(self.copies(keys_tuple, *values_tuples, id=id))
 
 
@@ -170,9 +170,9 @@ class ScriptObject:
         return classes
 
 
-    RE_OBJECT_BEGIN = re.compile("new ([a-z\_A-Z0-9]+)\(([a-z\_A-Z0-9]*)\) {")
-    RE_OBJECT_END = re.compile("};")
-    RE_FIELD = re.compile("([a-z_A-Z0-9]+) = \"(.*)\";")
+    RE_OBJECT_BEGIN = re.compile('new ([a-z\_A-Z0-9]+)\(([a-z\_A-Z0-9]*)\) {')
+    RE_OBJECT_END = re.compile('};')
+    RE_FIELD = re.compile('([a-z_A-Z0-9]+) = \"(.*)\";')
 
     @classmethod
     def from_string(cls, string):
@@ -209,9 +209,9 @@ class ScriptObject:
             subclass = cls.subclasses_with(classname, id=id)[0]
         except IndexError:
             try:
-                subclass = cls.subclasses_with(classname, datablock=fields.get("datablock"))[0]
+                subclass = cls.subclasses_with(classname, datablock=fields.get('datablock'))[0]
             except IndexError:
-                return None
+                return ScriptObject(id=id, **fields.dict)
 
         obj = subclass(id=id, **fields.dict)
 
@@ -223,28 +223,28 @@ class ScriptObject:
 
     @staticmethod
     def tests():
-        w = ScriptObject("WesleySeeton", catchphrase="do it all over again")
-        assert w.catchphrase == "do it all over again"
+        w = ScriptObject('WesleySeeton', catchphrase='do it all over again')
+        assert w.catchphrase == 'do it all over again'
 
-        e = ScriptObject("EdBeacham", catchphrase="lift the house", rating="A+")
-        c = e.copy(catchphrase="i'm beaming up")
-        assert (e.catchphrase, c.catchphrase, c.rating) == ("lift the house", "i'm beaming up", "A+")
+        e = ScriptObject('EdBeacham', catchphrase='lift the house', rating='A+')
+        c = e.copy(catchphrase='i\'m beaming up')
+        assert (e.catchphrase, c.catchphrase, c.rating) == ('lift the house', 'i\'m beaming up', 'A+')
 
         cc = c.copies(
-            ("satisfaction", "catchphrase"),
-            75, "we no longer care about customer satisfaction",
-            [50, "and my guys no longer care about the joj and doing the joj right"],
-            25, "i'm going to take a sh!t on the house",
+            ('satisfaction', 'catchphrase'),
+            75, 'we no longer care about customer satisfaction',
+            [50, 'and my guys no longer care about the joj and doing the joj right'],
+            25, 'i\'m going to take a sh!t on the house',
             0,
 
-            id="(id)_dialogue(i)",
+            id='(id)_dialogue(i)',
         )
 
         assert len(cc) == 4
-        assert cc[0].rating == "A+"
-        assert cc[1].id == "EdBeacham_copy_dialogue1"
-        assert "!" in cc[2].catchphrase
-        assert (cc[3].satisfaction, cc[3].catchphrase) == (0, "i'm beaming up")
+        assert cc[0].rating == 'A+'
+        assert cc[1].id == 'EdBeacham_copy_dialogue1'
+        assert '!' in cc[2].catchphrase
+        assert (cc[3].satisfaction, cc[3].catchphrase) == (0, 'i\'m beaming up')
 
         we = w.with_friends(e)
         wer = w.with_friends(c)

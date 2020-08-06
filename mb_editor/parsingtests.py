@@ -3,13 +3,13 @@ from mb_editor import *
 
 def tests():
     class JoJite(ScriptObject):
-        classname = "JoJite"
-        defaults = dict(home="Planet JoJ")
+        classname = 'JoJite'
+        defaults = dict(home='Planet JoJ')
 
     class Infomercial(ScriptObject):
-        defaults = dict(datablock="Infomercial", creator="cs188", index=Implicit(0))
+        defaults = dict(datablock='Infomercial', creator='cs188', index=Implicit(0))
 
-    group = ScriptObject.from_string("""
+    group = ScriptObject.from_string('''
         new SimGroup(HohSisGroup) {
             new JoJite(WesleySeeton) {
                 catchphrase = "do it all over again";
@@ -38,16 +38,16 @@ def tests():
                 };
             };
         };
-    """)
+    ''')
 
     assert type(group) == SimGroup
     assert len(group.children) == 3
 
     wesley = group.children[0]
-    assert (type(wesley), wesley.home, wesley.catchphrase) == (JoJite, "Planet JoJ", "do it all over again")
+    assert (type(wesley), wesley.home, wesley.catchphrase) == (JoJite, 'Planet JoJ', 'do it all over again')
 
     vid = group.children[2].children[0]
-    assert (type(vid), vid.creator, vid.index, vid.title) == (Infomercial, "cs188", 0, "No one needs foundation repair")
+    assert (type(vid), vid.creator, vid.index, vid.title) == (Infomercial, 'cs188', 0, 'No one needs foundation repair')
 
 
 if __name__ == '__main__':

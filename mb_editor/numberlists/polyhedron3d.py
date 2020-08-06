@@ -53,15 +53,16 @@ class Polyhedron3D(NumberList):
 
     @staticmethod
     def tests():
-        p = Polyhedron3D.make("0 0 0", "1 1 0", "0 1 0", "0 0 1")
-        assert p == "0 0 0 1 1 0 0 1 0 0 0 1"
+        p = Polyhedron3D.make('0 0 0', '1 1 0', '0 1 0', '0 0 1')
+        assert p == '0 0 0 1 1 0 0 1 0 0 0 1'
 
         p.i = Vector3D.i
         p.k += p.j
-        assert p == "0 0 0 1 0 0 0 1 0 0 1 1"
+        assert p == '0 0 0 1 0 0 0 1 0 0 1 1'
 
         q = p.with_offset_faces(right=1, left=-1, bottom=-1)
-        assert q == "-1 0 -1 3 0 0 0 1 0 0 1 2"
+        assert q == '-1 0 -1 3 0 0 0 1 0 0 1 2'
+
 
 Polyhedron3D.identity = Polyhedron3D.make()
 

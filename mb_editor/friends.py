@@ -28,7 +28,7 @@ class Friends:
         return already_found
 
     def __getitem__(self, item):
-        if item == "":
+        if item == '':
             return None
 
         return next(filter(lambda f: item == f.id, self.list), None)

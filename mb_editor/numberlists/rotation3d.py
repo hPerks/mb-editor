@@ -30,12 +30,15 @@ class Rotation3D(Vector3D):
 
     class Quaternion(NumberList):
         def __mul__(self, other):
-            return Rotation3D.Quaternion(
+            return self.__class__(
                 self[0] * other[0] - self[1] * other[1] - self[2] * other[2] - self[3] * other[3],
                 self[0] * other[1] + self[1] * other[0] + self[2] * other[3] - self[3] * other[2],
                 self[0] * other[2] - self[1] * other[3] + self[2] * other[0] + self[3] * other[1],
                 self[0] * other[3] + self[1] * other[2] - self[2] * other[1] + self[3] * other[0]
             )
+
+        def conjugate(self):
+            return self.__class__(self[0], -self[1], -self[2], -self[3])
 
     def to_quaternion(self):
         cosine, sine = cos(radians(self.angle) / 2), sin(radians(self.angle) / 2)
@@ -48,7 +51,6 @@ class Rotation3D(Vector3D):
             return cls("1 0 0 0")
 
         return cls(q[1] / sine, q[2] / sine, q[3] / sine, 2 * degrees(atan2(sine, cosine)))
-
 
     def __eq__(self, other):
         return Vector3D.__eq__(self, other) or self.to_quaternion() == other.to_quaternion()
@@ -78,6 +80,7 @@ class Rotation3D(Vector3D):
         p = r + repr(s)
         assert abs(p.axis - Vector3D.one.normalized()) < 0.01
         assert abs(p.angle - 120) < 0.01
+
 
 Rotation3D.none = Rotation3D()
 

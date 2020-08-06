@@ -1,9 +1,9 @@
 from mb_editor.implicit import Implicit
-from mb_editor.physicalobject import PhysicalObject
+from mb_editor.sceneobject import SceneObject
 
 
-class Item(PhysicalObject):
-    classname = "Item"
+class Item(SceneObject):
+    classname = 'Item'
 
     defaults = dict(
         collideable=0,
@@ -14,14 +14,14 @@ class Item(PhysicalObject):
 
 class Gem(Item):
     defaults = dict(
-        datablock="GemItem_PQ"
+        datablock='GemItem_PQ'
     )
 
     datablocks = {
-        1: "GemItemRed_PQ",
-        2: "GemItemYellow_PQ",
-        5: "GemItemBlue_PQ",
-        10: "kys"
+        1: 'GemItemRed_PQ',
+        2: 'GemItemYellow_PQ',
+        5: 'GemItemBlue_PQ',
+        10: 'kys'
     }
 
     @classmethod
@@ -31,38 +31,38 @@ class Gem(Item):
 
 class TimeTravel(Item):
     defaults = dict(
-        datablock="TimeTravelItem_PQ",
+        datablock='TimeTravelItem_PQ',
         timeBonus=Implicit(5000)
     )
 
 
 class SuperJump(Item):
-    defaults = dict(datablock="SuperJumpItem_PQ")
+    defaults = dict(datablock='SuperJumpItem_PQ')
 
 
 class SuperSpeed(Item):
-    defaults = dict(datablock="SuperSpeedItem_PQ")
+    defaults = dict(datablock='SuperSpeedItem_PQ')
 
 
 class Gyrocopter(Item):
-    defaults = dict(datablock="HelicopterItem_PQ")
+    defaults = dict(datablock='HelicopterItem_PQ')
 
 
 class SuperBounce(Item):
-    defaults = dict(datablock="SuperBounceItem_PQ")
+    defaults = dict(datablock='SuperBounceItem_PQ')
 
 
 class ShockAbsorber(Item):
-    defaults = dict(datablock="ShockAbsorberItem_PQ")
+    defaults = dict(datablock='ShockAbsorberItem_PQ')
 
 
 class GravityModifier(Item):
-    defaults = dict(datablock="AntiGravityItem_PQ")
+    defaults = dict(datablock='AntiGravityItem_PQ')
 
 
 class Anvil(Item):
-    defaults = dict(datablock="AnvilItem")
+    defaults = dict(datablock='AnvilItem')
 
 
 class NestEgg(Item):
-    defaults = dict(datablock="NestEgg_PQ")
+    defaults = dict(datablock='NestEgg_PQ')

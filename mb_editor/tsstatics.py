@@ -1,7 +1,9 @@
-from mb_editor.physicalobject import PhysicalObject
+from mb_editor.sceneobject import SceneObject
 
-class TSStatic(PhysicalObject):
-    classname = "TSStatic"
+
+class TSStatic(SceneObject):
+    classname = 'TSStatic'
+
 
 class TeleportPad(TSStatic):
-    defaults = dict(shapeName="~/data/shapes/teleportpad.dts")
+    defaults = dict(shapeName='~/data/shapes/teleportpad.dts')

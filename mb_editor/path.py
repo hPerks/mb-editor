@@ -1,20 +1,20 @@
 from mb_editor.simgroup import SimGroup
-from mb_editor.physicalobject import PhysicalObject
+from mb_editor.sceneobject import SceneObject
 from mb_editor.utils.lists import flatlist
 
 
-class Marker(PhysicalObject):
-    classname = "Marker"
+class Marker(SceneObject):
+    classname = 'Marker'
 
     defaults = dict(
         seqNum=0,
         msToNext=0,
-        smoothingType="Linear"
+        smoothingType='Linear'
     )
 
 
 class Path(SimGroup):
-    classname = "Path"
+    classname = 'Path'
 
     def __init__(self, *markers, **fields):
         super().__init__([marker.copy(seqNum=seqNum) for seqNum, marker in enumerate(flatlist(*markers))], **fields)
@@ -27,7 +27,7 @@ class Path(SimGroup):
     def make(cls, *args, **fields):
         return cls(
             Marker(**fields).copies(
-                ("position", "msToNext", "smoothingType"),
+                ('position', 'msToNext', 'smoothingType'),
                 *args
             )
         )
@@ -35,8 +35,8 @@ class Path(SimGroup):
     @classmethod
     def make_linear(cls, *args, **fields):
         return cls(
-            Marker(smoothingType="Linear", **fields).copies(
-                ("position", "msToNext"),
+            Marker(smoothingType='Linear', **fields).copies(
+                ('position', 'msToNext'),
                 *args
             )
         )
@@ -44,8 +44,8 @@ class Path(SimGroup):
     @classmethod
     def make_accelerate(cls, *args, **fields):
         return cls(
-            Marker(smoothingType="Accelerate", **fields).copies(
-                ("position", "msToNext"),
+            Marker(smoothingType='Accelerate', **fields).copies(
+                ('position', 'msToNext'),
                 *args
             )
         )
@@ -60,11 +60,11 @@ class Path(SimGroup):
     @staticmethod
     def tests():
         p = Path.make_accelerate(
-            "0 0 0", "1000",
-            "0 0 4", "200",
-            "0 0 6", "200",
-            "0 0 4", "1000",
-            "0 0 0"
+            '0 0 0', '1000',
+            '0 0 4', '200',
+            '0 0 6', '200',
+            '0 0 4', '1000',
+            '0 0 0'
         )
 
         assert len(p.markers) == 5
@@ -72,7 +72,7 @@ class Path(SimGroup):
 
         q = p.start_at_index(2)
         assert len(q.markers) == 5
-        assert q.markers[2].position == "0 0 0"
+        assert q.markers[2].position == '0 0 0'
         assert q.markers[2].seqNum == 2
 
 if __name__ == '__main__':

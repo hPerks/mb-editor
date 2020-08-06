@@ -3,7 +3,7 @@ from mb_editor.utils.lists import flatlist
 
 
 class SimGroup(ScriptObject):
-    classname = "SimGroup"
+    classname = 'SimGroup'
 
     def __init__(self, *children, **fields):
         self._children = []
@@ -51,13 +51,13 @@ class SimGroup(ScriptObject):
         return self.children + flatlist([child.descendants() for child in self.children])
 
     def inner_str(self):
-        return super().inner_str() + "\n" + "\n\n".join(map(repr, self.children))
+        return super().inner_str() + '\n' + '\n\n'.join(map(repr, self.children))
 
 
     def __setattr__(self, key, value):
         super().__setattr__(key, value)
 
-        if key[0] == "_":
+        if key[0] == '_':
             return
 
         if isinstance(value, ScriptObject):
@@ -71,40 +71,40 @@ class SimGroup(ScriptObject):
     def tests():
         g = SimGroup(
             ScriptObject(
-                "WesleySeeton",
-                catchphrase="do it all over again",
+                'WesleySeeton',
+                catchphrase='do it all over again',
             ),
 
             ScriptObject(
-                "EdBeacham",
-                catchphrase="take a shit on the house",
+                'EdBeacham',
+                catchphrase='take a shit on the house',
             ),
 
-            id="HohSisGroup",
-            mission="to get the joj done",
+            id='HohSisGroup',
+            mission='to get the joj done',
         )
 
         assert len(g.children) == 2
-        assert g.children[1].group.mission == "to get the joj done"
+        assert g.children[1].group.mission == 'to get the joj done'
 
         g.remove(g.children[0])
         assert len(g.children) == 1
 
         g.add([
             ScriptObject(
-                "JudithMiller",
-                catchphrase="i would recommend them to anybody",
+                'JudithMiller',
+                catchphrase='i would recommend them to anybody',
             )
         ])
-        g.children[1].speed = "slow"
-        assert (g.children[1].catchphrase, g.children[1].speed) == ("i would recommend them to anybody", "slow")
+        g.children[1].speed = 'slow'
+        assert (g.children[1].catchphrase, g.children[1].speed) == ('i would recommend them to anybody', 'slow')
 
         g.add(
             ScriptObject(
-                "JojIteration",
-                rating="A+",
+                'JojIteration',
+                rating='A+',
             ).copies(
-                ("numTimesAllOverAgain", "satisfaction", "isDone"),
+                ('numTimesAllOverAgain', 'satisfaction', 'isDone'),
                 *[(i, i * 100 / 15, i == 15) for i in range(16)],
             )
         )
@@ -122,22 +122,22 @@ class SimGroup(ScriptObject):
 
         m = SimGroup(
             [ScriptObject(
-                "SaintLouis",
-                primary_export="drugs",
+                'SaintLouis',
+                primary_export='drugs',
             )],
 
             Person(
-                "noby",
-                hometown="SaintLouis"
+                'noby',
+                hometown='SaintLouis'
             ),
 
-            id="MemesGroup"
+            id='MemesGroup'
         ).add(g)
 
         descendant_ids = [descendant.id for descendant in m.descendants()]
-        assert all(id in descendant_ids for id in ["SaintLouis", "HohSisGroup", "EdBeacham"])
-        assert m.descendant("JojIteration_15").satisfaction == 100
-        assert m.descendant("noby").deref("hometown").primary_export == "drugs"
+        assert all(id in descendant_ids for id in ['SaintLouis', 'HohSisGroup', 'EdBeacham'])
+        assert m.descendant('JojIteration_15').satisfaction == 100
+        assert m.descendant('noby').deref('hometown').primary_export == 'drugs'
 
 
 if __name__ == '__main__':

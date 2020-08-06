@@ -21,11 +21,17 @@ def drange(*args):
         start, stop, step = args[0], args[1], 1.0
     elif len(args) == 1:
         start, stop, step = 0.0, args[0], 1.0
+    else:
+        raise StopIteration
 
     r = start
     while r < stop - 0.000000001:
         yield r
         r += step
+
+
+def first(filter, list):
+    return next((item for item in list if filter(item)), None)
 
 
 def tests():

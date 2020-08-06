@@ -43,19 +43,19 @@ class Field:
 
     @staticmethod
     def tests():
-        f = Field("name", "EdBeacham", str)
-        assert (f.key, f.value, f.type) == ("name", "EdBeacham", str)
+        f = Field('name', 'EdBeacham', str)
+        assert (f.key, f.value, f.type) == ('name', 'EdBeacham', str)
 
         from mb_editor.numberlists.vector3d import Vector3D
-        f.key, f.type, f.value = "areaCode", Vector3D, [2, 1, 4]
-        assert f.value == "2 1 4"
+        f.key, f.type, f.value = 'areaCode', Vector3D, [2, 1, 4]
+        assert f.value == '2 1 4'
 
         from mb_editor.id import ID
-        f.key, f.type, f.value = "client", ID, "RichardSwiney"
+        f.key, f.type, f.value = 'client', ID, 'RichardSwiney'
         from mb_editor.scriptobject import ScriptObject
-        assert f.value == ScriptObject("RichardSwiney")
+        assert f.value == ScriptObject('RichardSwiney')
 
-        g = Field("timeBonus", Implicit(5000), Implicit)
+        g = Field('timeBonus', Implicit(5000), Implicit)
         assert (g.value, g.type, g.implicit_default) == (5000, int, 5000)
 
         g.value = Implicit(3000)

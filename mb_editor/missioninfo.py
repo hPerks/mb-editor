@@ -4,22 +4,22 @@ from mb_editor.implicit import Implicit
 
 class MissionInfo(ScriptObject):
     defaults = dict(
-        id="MissionInfo",
-        name="New Mission",
-        game="PQ",
-        author="Unknown",
-        type="Custom",
-        level="1",
-        desc="No description set.",
-        startHelpText="No start help text.",
+        id='MissionInfo',
+        name='New Mission',
+        game='PQ',
+        artist='Unknown',
+        type='Custom',
+        level='1',
+        desc='No description set.',
+        startHelpText='No start help text.',
 
-        music=Implicit(""),
+        music=Implicit(''),
     )
 
 
 class NormalMissionInfo(MissionInfo):
     defaults = dict(
-        gameMode="Normal",
+        gameMode='Normal',
         parTime=Implicit(0),
         platinumTime=0,
         ultimateTime=0,
@@ -29,7 +29,7 @@ class NormalMissionInfo(MissionInfo):
 
 class HuntMissionInfo(MissionInfo):
     defaults = dict(
-        gameMode="Hunt",
+        gameMode='Hunt',
         radiusFromGem=30,
         maxGemsPerSpawn=6,
         gemGroups=Implicit(0),
@@ -43,6 +43,6 @@ class HuntMissionInfo(MissionInfo):
 
 class LapsMissionInfo(NormalMissionInfo):
     defaults = dict(
-        gameMode="Laps",
+        gameMode='Laps',
         lapsNumber=3,
     )

@@ -27,23 +27,43 @@ class Vector3D(NumberList):
     def z(self, value):
         self[2] = value
 
-    def __abs__(self):
-        return pow(sum(map(lambda i: i ** 2, self)), 0.5)
+    def dot(self, other):
+        other = Vector3D(other)
+        return self.x * other.x + self.y * other.y + self.z * other.z
 
-    def normalized(self):
-        return self / abs(self)
+    def cross(self, other):
+        other = Vector3D(other)
+        return self.__class__(
+            self.y * other.z - self.z * other.y,
+            self.z * other.x - self.x * other.z,
+            self.x * other.y - self.y * other.x
+        )
+
+    def tangent(self):
+        if abs(self.x) < 0.01 and abs(self.y) < 0.01:
+            return Vector3D.j.cross(self).normalized()
+        else:
+            return Vector3D.k.cross(self).normalized()
+
+    def cotangent(self):
+        return self.tangent().cross(self).normalized()
 
 
     @staticmethod
     def tests():
-        v = Vector3D("3 1 4")
+        v = Vector3D('3 1 4')
 
         v.x = 2
         v.z = v.y * v.x
-        assert v == "2 1 2"
+        assert v == '2 1 2'
 
         assert abs(v) == 3
         assert v.normalized() == (2/3, 1/3, 2/3)
+        assert v.dot('-1 2 0') == 0
+        assert v.cross('-1 2 0') == '-4 -2 5'
+        assert v.tangent() == Vector3D(-1, 2, 0).normalized()
+        assert v.dot(v.tangent()) == 0 and v.dot(v.cotangent()) == 0
+
 
 Vector3D.none = Vector3D()
 

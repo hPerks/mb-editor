@@ -19,4 +19,5 @@ class ID:
         except AttributeError:
             return self.id == other
 
-ID.none = ID("")
+
+ID.none = ID('')

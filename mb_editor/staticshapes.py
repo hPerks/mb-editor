@@ -1,59 +1,59 @@
 from mb_editor.implicit import Implicit
-from mb_editor.physicalobject import PhysicalObject
+from mb_editor.sceneobject import SceneObject
 
 
-class StaticShape(PhysicalObject):
-    classname = "StaticShape"
+class StaticShape(SceneObject):
+    classname = 'StaticShape'
 
 
 class StartPad(StaticShape):
-    defaults = dict(datablock="StartPad_PQ")
+    defaults = dict(datablock='StartPad_PQ')
 
 
 class EndPad(StaticShape):
-    defaults = dict(datablock="EndPad_PQ")
+    defaults = dict(datablock='EndPad_PQ')
 
-    def with_sign(self, offset="0 0 4", **fields):
+    def with_sign(self, offset='0 0 4', **fields):
         return self.with_friends(FinishSign(position=self.position + offset, **fields))
 
 
 class FinishSign(StaticShape):
-    defaults = dict(datablock="RegularFinishLineSign")
+    defaults = dict(datablock='RegularFinishLineSign')
 
 
 class Bumper(StaticShape):
-    defaults = dict(datablock="RoundBumper_PQ")
+    defaults = dict(datablock='RoundBumper_PQ')
 
 
 class DuctFan(StaticShape):
-    defaults = dict(datablock="DuctFan_PQ")
+    defaults = dict(datablock='DuctFan_PQ')
 
 
 class Mine(StaticShape):
-    defaults = dict(datablock="LandMine_PQ")
+    defaults = dict(datablock='LandMine_PQ')
 
 
 class TrapDoor(StaticShape):
-    defaults = dict(datablock="TrapDoor_PQ")
+    defaults = dict(datablock='TrapDoor_PQ')
 
 
 class Tornado(StaticShape):
-    defaults = dict(datablock="Tornado_PQ")
+    defaults = dict(datablock='Tornado_PQ')
 
 
 class FadePlatform(StaticShape):
     defaults = dict(
-        datablock="FadePlatform",
-        fadeStyle=Implicit("fade"),
-        functionality=Implicit("trapdoor"),
+        datablock='FadePlatform',
+        fadeStyle=Implicit('fade'),
+        functionality=Implicit('trapdoor'),
         permanent=Implicit(0),
     )
 
 
 class HelpBubble(StaticShape):
     defaults = dict(
-        datablock="HelpBubble",
-        text="",
+        datablock='HelpBubble',
+        text='',
         triggerRadius=Implicit(3),
         persistTime=Implicit(2000),
         displayOnce=Implicit(0),

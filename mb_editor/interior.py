@@ -1,24 +1,23 @@
-from mb_editor.physicalobject import PhysicalObject
+from mb_editor.sceneobject import SceneObject
+from mb_editor.utils import path
 
 
-class Interior(PhysicalObject):
-    classname = "InteriorInstance"
-
-    local_dir = "~/data/interiors_pq"
+class Interior(SceneObject):
+    classname = 'InteriorInstance'
 
     defaults = dict(
-        interiorFile=""
+        interiorFile=''
     )
 
     @classmethod
-    def local(cls, interiorFile, **fields):
-        return cls(interiorFile="{}/{}".format(cls.local_dir, interiorFile), **fields)
-
+    def local(cls, interiorFile, subdir='', **fields):
+        return cls(interiorFile=path.join('~/data/interiors_pq/custom', subdir, interiorFile), **fields)
 
     @staticmethod
     def tests():
-        i = Interior.local("foundationRepair.dif")
-        return i.interiorFile == "~/data/interiors/foundationRepair.dif"
+        i = Interior.local('foundationRepair.dif')
+        assert i.interiorFile == '~/data/interiors_pq/custom/foundationRepair.dif'
+
 
 if __name__ == '__main__':
     Interior.tests()

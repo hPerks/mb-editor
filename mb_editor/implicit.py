@@ -1,5 +1,6 @@
 typeof = type
 
+
 class Implicit:
     def __init__(self, value, type=None):
         self.value = value
@@ -7,4 +8,3 @@ class Implicit:
 
     def __repr__(self):
         return repr(self.value)
-    
