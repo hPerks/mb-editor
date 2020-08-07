@@ -1,8 +1,7 @@
 import math
-
-from amble import *
 import random
 
+from amble import *
 from amble.utils.lists import drange
 
 mission = Mission.hunt(
@@ -436,7 +435,7 @@ for position, angle in [
             rotation=rotation,
 
             datablock='Tulip',
-            skin="yellow" if position.y < 67 else "purple"
+            skin='yellow' if position.y < 67 else 'purple'
         ))
 
 

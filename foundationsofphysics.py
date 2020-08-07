@@ -2,7 +2,7 @@ from amble import *
 
 mission = Mission.normal(
     name='Foundations of Physics',
-    author='hPerks',
+    artist='hPerks',
     desc='Explore this industrial playground and learn the many varieties of physics modifications.',
     startHelpText='Pick your path, pick your physics changes!',
     platinumTime=60000,
