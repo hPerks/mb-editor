@@ -19,7 +19,7 @@ class MissionInfo(ScriptObject):
 
 class NormalMissionInfo(MissionInfo):
     defaults = dict(
-        gameMode='Normal',
+        gameMode='null',
         parTime=Implicit(0),
         platinumTime=0,
         ultimateTime=0,
