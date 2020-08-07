@@ -13,15 +13,13 @@ def mod(x, m):
 
 
 def repr_float(float):
-    bad_decimals = ['999996', '999997', '999998', '999999', '000001', '000002', '000003', '000004']
-
     if repr(float) == '-0.0':
         return '0'
     elif repr(float).endswith('.0'):
         return repr(float)[:-2]
-    elif '.' in repr(float) and any(repr(float).endswith(decimal) for decimal in bad_decimals):
+    elif '.' in repr(float) and (repr(float)[:-1].endswith('99999') or repr(float)[:-1].endswith('00000')):
         decimal_places = 0
-        while not any('.' + decimal in repr(float) for decimal in bad_decimals):
+        while not ('.99999' in repr(float) or '.00000' in repr(float) or repr(float).endswith('.0')):
             float *= 10
             decimal_places += 1
         digits = repr(int(round(float)))
@@ -43,3 +41,4 @@ if __name__ == '__main__':
     assert repr_float(0.300000000000004) == '0.3'
     assert repr_float(0.399999999999999) == '0.4'
     assert repr_float(1000000.0000000001) == '1000000'
+    assert(repr_float(103.97999999999999) == '103.98')

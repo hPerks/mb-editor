@@ -24,9 +24,10 @@ class Gem(Item):
         10: 'kys'
     }
 
-    @classmethod
-    def points(cls, points, **fields):
-        return cls(datablock=cls.datablocks[points], **fields)
+    def __init__(self, points=0, **fields):
+        super().__init__(**fields)
+        if points != 0:
+            self.datablock = self.__class__.datablocks[points]
 
 
 class TimeTravel(Item):

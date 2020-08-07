@@ -3,6 +3,8 @@ from amble.numberlists.vector3d import Vector3D
 
 from math import sin, cos, atan2, radians, degrees
 
+from amble.utils.numbers import repr_float
+
 
 class Rotation3D(Vector3D):
 
@@ -48,7 +50,7 @@ class Rotation3D(Vector3D):
     def from_quaternion(cls, q):
         cosine, sine = q[0], abs(Vector3D(q[1:4]))
         if sine == 0:
-            return cls("1 0 0 0")
+            return cls('1 0 0 0')
 
         return cls(q[1] / sine, q[2] / sine, q[3] / sine, 2 * degrees(atan2(sine, cosine)))
 
@@ -62,7 +64,15 @@ class Rotation3D(Vector3D):
         return self + (other * -1)
 
     def __mul__(self, other):
-        return self.__class__(self.x, self.y, self.z, self.angle * other)
+        if isinstance(other, int) or isinstance(other, float):
+            return self.__class__(self.x, self.y, self.z, self.angle * other)
+
+        return Vector3D((
+            self.to_quaternion() *
+            Rotation3D.Quaternion(0, *Vector3D(other).values) *
+            self.to_quaternion().conjugate()
+        )[1:4])
+
 
     def __truediv__(self, other):
         return self * (1 / other)
@@ -80,6 +90,9 @@ class Rotation3D(Vector3D):
         p = r + repr(s)
         assert abs(p.axis - Vector3D.one.normalized()) < 0.01
         assert abs(p.angle - 120) < 0.01
+
+        r.angle = 30
+        assert repr_float((r * s.axis).z) == '0.5'
 
 
 Rotation3D.none = Rotation3D()

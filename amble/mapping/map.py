@@ -43,9 +43,10 @@ class Map(SimGroup):
         return output
 
     def to_interior(self, name, keep_map=None, **fields):
-        interiors_dir = path.platinum('data/interiors_pq')
+        if name.endswith('.dif'):
+            name = name[:-4]
 
-        os.chdir(interiors_dir)
+        os.chdir(path.platinum('data/interiors_pq'))
         if keep_map is None:
             keep_map = os.path.exists(name + '.map')
 
@@ -88,7 +89,7 @@ class Map(SimGroup):
             )
         )
 
-        i = m.to_interior('joj')
+        i = m.to_interior('joj.dif')
         assert i.interiorFile == '~/data/interiors_pq/custom/joj.dif'
 
 

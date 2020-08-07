@@ -97,7 +97,7 @@ Mission.normal(
             ),
             Brush.make_cube(texture=trim, center='16 -16.25 17.75', size='8 0.5 0.5')
         )
-    ).to_interior('exampleMission'),
+    ).to_interior('examplemission.dif'),
 
     SuperJump(position='0 3 0'),
     HelpTrigger(
@@ -172,4 +172,4 @@ Mission.normal(
              'your level without a bounds trigger throws an error!'
     ),
 
-).autobounds().write('exampleMission.mis')
+).autobounds().write('examplemission.mis')

@@ -38,9 +38,10 @@ class NumberList:
         return self.map(sub, other)
 
     def __mul__(self, other):
-        if isinstance(other, NumberList):
-            return self.__class__(self[i] * other[i] for i in range(len(self.values)))
-        return self.map(lambda x: x * other)
+        if isinstance(other, int) or isinstance(other, float):
+            return self.map(lambda x: x * other)
+        other = NumberList(other)
+        return self.__class__(self[i] * other[i] for i in range(len(self.values)))
 
     def __truediv__(self, other):
         return self.map(lambda x: x / other)
@@ -80,6 +81,7 @@ class NumberList:
         assert m - n == '0 3 0'
         assert n * 2 == '6 2 6'
         assert n / 0.5 == '6 2 6'
+        assert m * '2 0 3' == '6 0 9'
 
 
 if __name__ == '__main__':
