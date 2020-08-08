@@ -20,7 +20,7 @@ class MissionInfo(ScriptObject):
 class NormalMissionInfo(MissionInfo):
     defaults = dict(
         gameMode='null',
-        parTime=Implicit(0),
+        time=Implicit(0),
         platinumTime=0,
         ultimateTime=0,
         awesomeTime=0,
@@ -34,7 +34,7 @@ class HuntMissionInfo(MissionInfo):
         maxGemsPerSpawn=6,
         gemGroups=Implicit(0),
         time=300000,
-        parScore=0,
+        score=0,
         platinumScore=0,
         ultimateScore=0,
         awesomeScore=0,

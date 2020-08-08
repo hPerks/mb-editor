@@ -10,7 +10,7 @@ mission = Mission.hunt(
     desc='Use the warps to navigate this wrap-around room, 3D Pacman style!',
     startHelpText='The gems might be closer than they appear...',
     gemGroups=1,
-    parScore=40,
+    score=40,
     platinumScore=60,
     ultimateScore=90,
     awesomeScore=125,
@@ -59,8 +59,8 @@ mission = Mission.hunt(
         '16 112.5 1.5',
         '21 115.5 1.5',
         '26 112.5 1.5',
-        '-6.5 107 -1',
-        '48.5 107 -1',
+        '-6.5 107 -0.5',
+        '48.5 107 -0.5',
     ),
 
     StaticShape(datablock='Fence_5TilesLength', scale='0.75 0.75 0.6').copies(
@@ -315,7 +315,7 @@ gems = Gem().copies(
     '24 72 -1', 1,
     '3 72 -2', 1,
     '48 70 -2', 2,
-    '-1 59 -1', 2,
+    '-1 59 -2', 2,
     '7 59 -2', 2,
 
     '-22 72 7', 1,
