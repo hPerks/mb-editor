@@ -1,6 +1,7 @@
 from amble.numberlists.vector2d import Vector2D
 from amble.numberlists.vector3d import Vector3D
-from amble.numberlists.numberlist import NumberList
+from amble.numberlists.rotation3d import Rotation3D
+from amble.utils.numbers import repr_float, approx_div
 
 
 class Faces:
@@ -33,8 +34,9 @@ class Faces:
             ' '.join(
                 '( ' + repr(vertex * 32) + ' )' for vertex in self.vertices[:3]
             ) + ' ' + repr(self.texture) +
-            ' [ ' + repr(self.u) + ' ] [ ' + repr(self.v) + ' ] ' +
-            repr(self.rotation) + ' ' + repr(self.texture.scale)
+            ' [ ' + repr(self.u) + ' ' + repr_float(self.shift.x * 32 / self.texture.scale.x) +
+            ' ] [ ' + repr(self.v) + ' ' + repr_float(self.shift.y * 32 / self.texture.scale.y) +
+            ' ] 0 ' + repr(self.texture.scale)
         )
 
     @property
@@ -47,11 +49,11 @@ class Faces:
 
     @property
     def center(self):
-        return (self.vertices[0] + self.vertices[1] + self.vertices[2] + self.vertices[3]) / 4
+        return sum(self.vertices) / len(self.vertices)
 
     @property
     def left_edge(self):
-        return self.vertices[3] - self.vertices[0]
+        return self.vertices[-1] - self.vertices[0]
 
     @property
     def right_edge(self):
@@ -67,7 +69,7 @@ class Faces:
 
     @property
     def bottom_edge(self):
-        return self.vertices[2] - self.vertices[3]
+        return self.vertices[-2] - self.vertices[-1]
 
     @property
     def middle_bisector(self):
@@ -75,22 +77,54 @@ class Faces:
 
     @property
     def tangent(self):
-        return self.normal.tangent()
+        return Rotation3D(*self.normal, self.rotation) * self.normal.tangent()
 
     @property
     def cotangent(self):
-        return self.normal.cotangent()
+        return Rotation3D(*self.normal, self.rotation) * self.normal.cotangent()
+
+    @property
+    def alignment_orientation(self):
+        if (
+            self.center_bisector.is_perpendicular(self.tangent) or
+            self.middle_bisector.is_perpendicular(self.cotangent)
+        ):
+            return 'normal'
+        elif (
+            self.middle_bisector.is_perpendicular(self.tangent) or
+            self.center_bisector.is_perpendicular(self.cotangent)
+        ):
+            return 'rotated'
+        else:
+            return 'none'
+
+    @property
+    def tangent_bisector(self):
+        return {
+            'normal': self.middle_bisector,
+            'rotated': self.center_bisector,
+            'none': None
+        }[self.alignment_orientation]
+
+    @property
+    def cotangent_bisector(self):
+        return {
+            'normal': self.center_bisector,
+            'rotated': self.middle_bisector,
+            'none': None
+        }[self.alignment_orientation]
 
     @property
     def origin(self):
         try:
             return self._origin
         except AttributeError:
-            if (
-                self.middle_bisector.dot(self.tangent) % self.texture.size.x == 0 and
-                self.center_bisector.dot(self.cotangent) % self.texture.size.y == 0
-            ):
-                return self.top_left
+            if self.alignment_orientation != 'none':
+                if (
+                    approx_div(self.tangent_bisector.dot(self.tangent), self.texture.size.x) and
+                    approx_div(self.cotangent_bisector.dot(self.cotangent), self.texture.size.y)
+                ):
+                    return self.top_left
             return self.center
 
     @origin.setter
@@ -102,10 +136,13 @@ class Faces:
         try:
             return self._skew
         except AttributeError:
-            return Vector2D(
-                self.center_bisector.dot(self.tangent) / self.center_bisector.dot(self.cotangent),
-                self.middle_bisector.dot(self.cotangent) / self.middle_bisector.dot(self.tangent)
-            )
+            if self.alignment_orientation == 'none':
+                return Vector2D(0, 0)
+            else:
+                return Vector2D(
+                    self.cotangent_bisector.dot(self.tangent) / self.cotangent_bisector.dot(self.cotangent),
+                    self.tangent_bisector.dot(self.cotangent) / self.tangent_bisector.dot(self.tangent)
+                )
 
     @skew.setter
     def skew(self, value):
@@ -120,8 +157,8 @@ class Faces:
 
     @property
     def u(self):
-        return NumberList(*(self.tangent - self.cotangent * self.skew.x), self.shift.x * 32 / self.texture.scale.x)
+        return self.tangent - self.cotangent * self.skew.y
 
     @property
     def v(self):
-        return NumberList(*(self.cotangent - self.tangent * self.skew.y), self.shift.y * 32 / self.texture.scale.y)
+        return self.cotangent - self.tangent * self.skew.x

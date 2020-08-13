@@ -1,17 +1,23 @@
-from amble.utils.numbers import int_or_float, repr_float
+from amble.utils.numbers import int_or_float, repr_float, approx_eq
 
-from operator import eq, add, sub
+from operator import add, sub, mul
 
 
 class NumberList:
 
-    def __init__(self, *args):
+    def __init__(self, *args, size=None):
         if len(args) > 1 or len(args) == 0:
             self.values = list(args)
         elif isinstance(args[0], str):
             self.values = list(map(int_or_float, args[0].split(' ')))
+        elif isinstance(args[0], int) or isinstance(args[0], float):
+            self.values = [args[0]]
         else:
             self.values = list(args[0])
+
+        if size is not None:
+            for i in range(len(self.values), size):
+                self.values.append(0)
 
     def __getitem__(self, item):
         return self.values[item]
@@ -20,7 +26,7 @@ class NumberList:
         self.values[key] = value
 
     def __eq__(self, other):
-        return all(map(eq, self, NumberList(other)))
+        return all(map(approx_eq, self, NumberList(other)))
 
     def __copy__(self):
         return NumberList(self)
@@ -29,19 +35,28 @@ class NumberList:
         return ' '.join(map(repr_float, self))
 
     def map(self, function, *others):
-        return self.__class__(map(function, *([self] + [NumberList(other) for other in others])))
+        return self.__class__(map(function, *([self] + [NumberList(other, size=len(self.values)) for other in others])))
 
     def __add__(self, other):
         return self.map(add, other)
 
+    def __radd__(self, other):
+        return self + other
+
     def __sub__(self, other):
         return self.map(sub, other)
+
+    def __rsub__(self, other):
+        return -self + other
 
     def __mul__(self, other):
         if isinstance(other, int) or isinstance(other, float):
             return self.map(lambda x: x * other)
         other = NumberList(other)
         return self.__class__(self[i] * other[i] for i in range(len(self.values)))
+
+    def __rmul__(self, other):
+        return self * other
 
     def __truediv__(self, other):
         return self.map(lambda x: x / other)
@@ -60,6 +75,16 @@ class NumberList:
             return self / abs(self)
         except ZeroDivisionError:
             return self
+
+    def dot(self, other):
+        other = NumberList(other)
+        return sum(map(mul, self, other))
+
+    def is_perpendicular(self, other):
+        return approx_eq(self.dot(other), 0)
+
+    def is_parallel(self, other):
+        return self.normalized() == NumberList(other).normalized()
 
 
     @staticmethod
@@ -82,6 +107,9 @@ class NumberList:
         assert n * 2 == '6 2 6'
         assert n / 0.5 == '6 2 6'
         assert m * '2 0 3' == '6 0 9'
+        assert '2 0 3' * m == '6 0 9'
+        assert m + 2 == '5 4 3'
+        assert m.dot('-2 3 -2') == 0
 
 
 if __name__ == '__main__':

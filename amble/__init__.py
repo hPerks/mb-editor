@@ -27,11 +27,17 @@ def tests():
     module = sys.modules[__name__]
     for key in dir(module):
         value = getattr(module, key)
-        if isinstance(value, type) and hasattr(value, 'tests'):
-            try:
-                value.tests()
-            except:
-                traceback.print_exc()
+        if isinstance(value, type):
+            tests = getattr(value, 'tests', 0)
+            inherited_tests = getattr(value.mro()[1], 'tests', 0)
+            if tests and tests != inherited_tests:
+                try:
+                    print('testing', value)
+                    tests()
+                except:
+                    traceback.print_exc()
+            else:
+                print('no tests for', value)
 
 
 if __name__ == '__main__':

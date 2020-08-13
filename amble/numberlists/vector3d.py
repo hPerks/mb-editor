@@ -27,10 +27,6 @@ class Vector3D(NumberList):
     def z(self, value):
         self[2] = value
 
-    def dot(self, other):
-        other = Vector3D(other)
-        return self.x * other.x + self.y * other.y + self.z * other.z
-
     def cross(self, other):
         other = Vector3D(other)
         return self.__class__(
@@ -59,7 +55,6 @@ class Vector3D(NumberList):
 
         assert abs(v) == 3
         assert v.normalized() == (2/3, 1/3, 2/3)
-        assert v.dot('-1 2 0') == 0
         assert v.cross('-1 2 0') == '-4 -2 5'
         assert v.tangent() == Vector3D(-1, 2, 0).normalized()
         assert v.dot(v.tangent()) == 0 and v.dot(v.cotangent()) == 0

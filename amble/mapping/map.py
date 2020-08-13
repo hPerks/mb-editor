@@ -24,7 +24,7 @@ class Map(SimGroup):
             '   "emergency_ambient_color" "0 0 0"\n'
             '   "mapversion" "220"\n'
             '\n' + indent('\n'.join(
-                repr(brush) for brush in self.children if isinstance(brush, Brush)
+                repr(brush) for brush in self.children if not isinstance(brush, Map)
             ), '   ') + '\n}\n'
         )
 
@@ -36,13 +36,17 @@ class Map(SimGroup):
                     '   "initialTargetPosition" "-1"\n'
                     '   "datablock" "PathedDefault"\n'
                     '\n' + indent('\n'.join(
-                        repr(brush) for brush in submap.children if isinstance(brush, Brush)
+                        repr(brush) for brush in submap.children if not isinstance(brush, Map)
                     ), '   ') + '\n}\n'
                 )
 
         return output
 
-    def to_interior(self, name, keep_map=None, **fields):
+    def write(self, filename):
+        with open(path.platinum('data/interiors_pq', filename), 'w') as f:
+            f.write(repr(self))
+
+    def to_interior(self, name, subdir='', keep_map=None, **fields):
         if name.endswith('.dif'):
             name = name[:-4]
 
@@ -58,12 +62,12 @@ class Map(SimGroup):
         else:
             os.system('./map2dif -t . -o . "{}.map" > /dev/null'.format(name))
 
-        shutil.copy(name + '.dif', 'custom')
+        shutil.copy(name + '.dif', path.join('custom', subdir))
         os.remove(name + '.dif')
         if not keep_map:
             os.remove(name + '.map')
 
-        return Interior.local(name + '.dif')
+        return Interior.local(path.join(subdir, name + '.dif'))
 
 
     @staticmethod
@@ -89,8 +93,8 @@ class Map(SimGroup):
             )
         )
 
-        i = m.to_interior('joj.dif')
-        assert i.interiorFile == '~/data/interiors_pq/custom/joj.dif'
+        i = m.to_interior('joj.dif', subdir='hohsis', keep_map=False)
+        assert i.interiorFile == '~/data/interiors_pq/custom/hohsis/joj.dif'
 
 
 if __name__ == '__main__':

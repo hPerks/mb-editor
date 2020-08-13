@@ -4,6 +4,9 @@ from amble.mapping.faces import Faces
 from amble.scriptobject import ScriptObject
 from amble.mapping.texture import Texture
 from amble.numberlists.vector3d import Vector3D
+from amble.numberlists.vector2d import Vector2D
+from amble.numberlists.rotation3d import Rotation3D
+from amble.utils.lists import drange
 
 
 class Brush(ScriptObject):
@@ -15,6 +18,7 @@ class Brush(ScriptObject):
         manual_vertices=list(),
         manual_faces=dict(),
 
+        sides=0,
         center=Vector3D.zero,
         size=Vector3D.one,
     )
@@ -46,25 +50,65 @@ class Brush(ScriptObject):
             return self.manual_vertices
 
         if self.model == 'cube':
-            vertices = []
-            for x in [self.center.x + self.size.x / 2, self.center.x - self.size.x / 2]:
-                for y in [self.center.y + self.size.y / 2, self.center.y - self.size.y / 2]:
-                    for z in [self.center.z + self.size.z / 2, self.center.z - self.size.z / 2]:
-                        vertices.append(Vector3D(x, y, z))
-            return vertices
+            return [
+                Vector3D(x, y, z)
+                for x in [self.center.x + self.size.x / 2, self.center.x - self.size.x / 2]
+                for y in [self.center.y + self.size.y / 2, self.center.y - self.size.y / 2]
+                for z in [self.center.z + self.size.z / 2, self.center.z - self.size.z / 2]
+            ]
+        elif self.model == 'prism':
+            return [
+                Vector3D(
+                    self.center.x + self.size.x * (Rotation3D.k(angle) * Vector3D.i).x,
+                    self.center.y + self.size.y * (Rotation3D.k(angle) * Vector3D.i).y,
+                    z
+                )
+                for angle in drange(0, 360, 360 / self.sides)
+                for z in [self.center.z + self.size.z / 2, self.center.z - self.size.z / 2]
+            ]
         return []
 
     def __repr__(self):
         return '{\n' + indent('\n'.join(repr(face) for face in self.faces), '   ') + '\n}'
 
+    def _set_face_attributes(self, texture=Texture.none, origin=None, skew=None, rotation=None):
+        if isinstance(texture, Texture):
+            self.face('all').texture = texture
+        else:
+            for group in texture:
+                self.face(group).texture = texture[group]
+
+        if origin is not None:
+            if isinstance(origin, dict):
+                for group in origin:
+                    self.face(group).origin = origin[group]
+            else:
+                self.face('all').origin = origin
+
+        if skew is not None:
+            if isinstance(skew, dict):
+                for group in skew:
+                    self.face(group).skew = skew[group]
+            else:
+                self.face('all').skew = skew
+
+        self.face('all').rotation = 0
+        if rotation is not None:
+            if isinstance(rotation, dict):
+                for group in rotation:
+                    self.face(group).rotation = rotation[group]
+            else:
+                self.face('all').rotation = rotation
+
     def move(self, offset):
-        for i in range(len(self.vertices)):
-            self.move_vertex(i, offset)
-        return self
+        if len(self.manual_vertices) == 0:
+            self.center += offset
+        else:
+            for i in range(len(self.vertices)):
+                self.move_vertex(i, offset)
+            return self
 
     def move_face(self, face, offset):
-        offset = Vector3D(offset)
-
         for i in self.face(face).vertex_indices:
             self.move_vertex(i, offset)
         return self
@@ -73,6 +117,19 @@ class Brush(ScriptObject):
         self.manual_vertices = self.vertices
         self.vertices[vertex_index] += offset
         self.model = None
+        return self
+
+    def rotate(self, rotation, center=None):
+        rotation = Rotation3D(rotation)
+        if center is None:
+            center = sum(self.vertices) / len(self.vertices)
+
+        self.manual_vertices = self.vertices
+        for i, vertex in enumerate(self.vertices):
+            self.vertices[i] = rotation * (vertex - center) + center
+        for face in self.faces:
+            face.normal = rotation * face.normal
+            face.rotation += rotation.angle * face.normal.dot(rotation.axis)
         return self
 
 
@@ -106,35 +163,43 @@ class Brush(ScriptObject):
         cube.face('top').normal = Vector3D.k
         cube.face('bottom').normal = -Vector3D.k
 
-        if isinstance(texture, Texture):
-            cube.face('all').texture = texture
-        else:
-            for group in texture:
-                cube.face(group).texture = texture[group]
-
-        if origin is not None:
-            if isinstance(origin, dict):
-                for group in origin:
-                    cube.face(group).origin = origin[group]
-            else:
-                cube.face('all').origin = origin
-
-        if skew is not None:
-            if isinstance(skew, dict):
-                for group in skew:
-                    cube.face(group).skew = skew[group]
-            else:
-                cube.face('all').skew = skew
-
-        cube.face('all').rotation = 0
-        if rotation is not None:
-            if isinstance(rotation, dict):
-                for group in rotation:
-                    cube.face(group).rotation = rotation[group]
-            else:
-                cube.face('all').rotation = rotation
+        cube._set_face_attributes(texture, origin, skew, rotation)
 
         return cube
+
+    @classmethod
+    def make_prism(cls, sides=3, center=Vector3D.zero, size=Vector3D.one, texture=Texture.none, origin=None, skew=None, rotation=None):
+        prism = cls(
+            model='prism',
+            sides=sides,
+            center=center,
+            size=size,
+
+            face_groups={
+                'z': ['top', 'bottom'],
+                'side': ['side{}'.format(side) for side in range(sides)],
+                'all': ['side{}'.format(side) for side in range(sides)] + ['top', 'bottom'],
+            }
+        )
+
+        for side in range(sides):
+            prism.face('side{}'.format(side)).vertex_indices = [
+                2 * side,
+                (2 * side + 2) % (2 * sides),
+                (2 * side + 3) % (2 * sides),
+                2 * side + 1
+            ]
+            prism.face('side{}'.format(side)).normal = Rotation3D.k((side + 0.5) * 360 / sides) * Vector3D.i
+
+        prism.face('top').vertex_indices = [2 * side for side in range(sides - 1, -1, -1)]
+        prism.face('bottom').vertex_indices = [2 * side + 1 for side in range(sides)]
+        prism.face('top').normal = Vector3D.k
+        prism.face('bottom').normal = -Vector3D.k
+        prism.face('z').skew = Vector2D(0, 0)
+
+        prism._set_face_attributes(texture, origin, skew, rotation)
+
+        return prism
 
 
     @staticmethod
@@ -143,29 +208,30 @@ class Brush(ScriptObject):
             center=[0, 0, -0.25],
             size=[4, 4, 0.5],
             texture={'all': Texture.edge, 'z': Texture.hot1},
-            origin={'side': '0 0 0'},
+            origin={'y': '0 0 0'},
             rotation=90
         )
 
         assert c.face('x').texture == Texture.edge
         assert c.vertices[0] == '2 2 0'
-        assert c.face('top').u == '1 0 0 128'
+        assert c.face('bottom').origin == c.face('bottom').top_left
+        assert c.face('top').shift == '-2 2'
         assert c.face('right').skew == '0 0'
         assert c.face('side').rotation == 90
 
         c.move([4.5, 0, 0])
         c.face('y').origin = '4.5 0 0'
         assert c.vertices[0] == '6.5 2 0'
-        assert c.face('right').shift == '0 0'
-        assert c.face('back').shift == '4.5 0'
+        assert c.face('right').shift == '0 2'
+        assert c.face('back').shift == '0 4.5'
         assert c.face('top').origin == c.face('top').top_left
-        assert c.face('top').u == '1 0 0 -160'
+        assert c.face('top').u == '0 1 0'
 
         c.move_face('back', [-1, -1, 1])
         assert c.vertices[0] == '5.5 1 1'
-        assert c.face('top').skew == (1/3, 0)
+        assert c.face('top').skew == (0, -1/3)
         assert c.face('top').origin == c.face('top').center
-        assert c.face('right').skew == (0, -1/3)
+        assert c.face('right').skew == (1/3, 0)
 
         c.move_face('back', [1, 1, -1])
         c.move_vertex(1, [0.5, 0.5, 0])
@@ -176,6 +242,13 @@ class Brush(ScriptObject):
         assert c.face('top').origin == c.face('top').top_left
         assert c.face('bottom').origin == c.face('bottom').center
 
+        c.rotate('1 0 0 30')
+        c.face('back').origin = c.face('back').top_left
+        c.face('front').origin = c.face('front').top_left
+        assert c.face('top').u == (0, pow(0.75, 0.5), 0.5)
+        assert c.face('right').u == (0, -0.5, pow(0.75, 0.5))
+        assert c.face('right').shift == '-0.033493649053890594 2.125'
+
         ccc = Brush.make_cube(texture=Texture.edge).copies(
             ('center', 'size'),
             '2 3 1', '7 1 4',
@@ -183,6 +256,11 @@ class Brush(ScriptObject):
         )
         assert ccc[0].vertices[0] == '5.5 3.5 3'
         assert ccc[0].face('right').origin == '5.5 2.5 3'
+
+        p = Brush.make_prism(3, '0 0 -0.5', '4 2 1', texture=Texture('PQ/pq_edge_white_2', '0.5 0.5', '2 2'))
+        assert len(p.face_groups['all']) == 5
+        assert p.face('top').skew == '0 0'
+        assert p.face('side1').shift == '0 -0.5'
 
 
 if __name__ == '__main__':
