@@ -148,8 +148,8 @@ class Faces(Cached):
                 return Vector2D(0, 0)
             else:
                 return Vector2D(
-                    self.cotangent_bisector.dot(self.tangent) / self.cotangent_bisector.dot(self.cotangent),
-                    self.tangent_bisector.dot(self.cotangent) / self.tangent_bisector.dot(self.tangent)
+                    self.tangent_bisector.dot(self.cotangent) / self.tangent_bisector.dot(self.tangent),
+                    self.cotangent_bisector.dot(self.tangent) / self.cotangent_bisector.dot(self.cotangent)
                 )
 
     @skew.setter
@@ -159,8 +159,8 @@ class Faces(Cached):
     @property
     def shift(self):
         return Vector2D(
-            -self.origin.dot(self.tangent) + self.origin.dot(self.cotangent) * self.skew.x,
-            -self.origin.dot(self.cotangent) + self.origin.dot(self.tangent) * self.skew.y
+            -self.origin.dot(self.tangent) + self.origin.dot(self.cotangent) * self.skew.y,
+            -self.origin.dot(self.cotangent) + self.origin.dot(self.tangent) * self.skew.x
         )
 
     @property

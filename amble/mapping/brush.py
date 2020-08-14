@@ -229,9 +229,9 @@ class Brush(ScriptObject):
 
         c.move_face('back', [-1, -1, 1])
         assert c.vertices[0] == '5.5 1 1'
-        assert c.face('top').skew == (0, -1/3)
+        assert c.face('top').skew == (-1/3, 0)
         assert c.face('top').origin == c.face('top').center
-        assert c.face('right').skew == (1/3, 0)
+        assert c.face('right').skew == (0, 1/3)
 
         c.move_face('back', [1, 1, -1])
         c.move_vertex(1, [0.5, 0.5, 0])
