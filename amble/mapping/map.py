@@ -62,6 +62,7 @@ class Map(SimGroup):
         else:
             os.system('./map2dif -t . -o . "{}.map" > /dev/null'.format(name))
 
+        os.makedirs(path.join('custom', subdir), 0o777, True)
         shutil.copy(name + '.dif', path.join('custom', subdir))
         os.remove(name + '.dif')
         if not keep_map:
@@ -95,6 +96,17 @@ class Map(SimGroup):
 
         i = m.to_interior('joj.dif', subdir='hohsis', keep_map=False)
         assert i.interiorFile == '~/data/interiors_pq/custom/hohsis/joj.dif'
+
+        import timeit
+        assert timeit.timeit(
+            'repr(Map(Brush.make_cube(texture=Texture.edge)))',
+            setup=(
+                'from amble.mapping.map import Map\n'
+                'from amble.mapping.brush import Brush\n'
+                'from amble.mapping.texture import Texture\n'
+            ),
+            number=100
+        ) < 2
 
 
 if __name__ == '__main__':

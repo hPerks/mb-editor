@@ -36,8 +36,6 @@ def tests():
                     tests()
                 except:
                     traceback.print_exc()
-            else:
-                print('no tests for', value)
 
 
 if __name__ == '__main__':

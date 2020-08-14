@@ -44,11 +44,16 @@ class Mission(SimGroup):
         if not any(d.datablock == 'InBoundsTrigger' for d in self.descendants()):
             raise Exception('Trying to write mission file without InBoundsTrigger')
 
+        if not filename.endswith('.mis'):
+            filename += '.mis'
         with open(path.platinum('data/missions/custom', filename), 'w') as f:
             f.write(repr(self))
 
     @classmethod
     def from_file(cls, filename):
+        if not filename.endswith('.mis'):
+            filename += '.mis'
+
         f = open(path.platinum('data/missions/custom', filename), 'r')
         string = f.read()
         f.close()

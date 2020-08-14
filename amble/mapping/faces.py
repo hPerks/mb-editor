@@ -2,12 +2,19 @@ from amble.numberlists.vector2d import Vector2D
 from amble.numberlists.vector3d import Vector3D
 from amble.numberlists.rotation3d import Rotation3D
 from amble.utils.numbers import repr_float, approx_div
+from amble.utils.cached import Cached
 
 
-class Faces:
+class Faces(Cached):
     inherited_attrs = ['vertex_indices', 'normal', 'texture', 'origin', 'skew', 'rotation']
+    cached_attrs = [
+        'vertices', 'center_bisector', 'middle_bisector', 'tangent',
+        'cotangent', 'alignment_orientation', 'tangent_bisector',
+        'cotangent_bisector', 'origin', 'skew', 'shift', 'u', 'v'
+    ]
 
     def __init__(self, brush, name):
+        super().__init__()
         self.brush, self.name = brush, name
 
     def __getattr__(self, item):
@@ -30,14 +37,15 @@ class Faces:
         raise AttributeError
 
     def __repr__(self):
-        return (
-            ' '.join(
-                '( ' + repr(vertex * 32) + ' )' for vertex in self.vertices[:3]
-            ) + ' ' + repr(self.texture) +
-            ' [ ' + repr(self.u) + ' ' + repr_float(self.shift.x * 32 / self.texture.scale.x) +
-            ' ] [ ' + repr(self.v) + ' ' + repr_float(self.shift.y * 32 / self.texture.scale.y) +
-            ' ] 0 ' + repr(self.texture.scale)
-        )
+        with self.cached:
+            return (
+                ' '.join(
+                    '( ' + repr(vertex * 32) + ' )' for vertex in self.vertices[:3]
+                ) + ' ' + repr(self.texture) +
+                ' [ ' + repr(self.tangent - self.cotangent * self.skew.y) + ' ' + repr_float(self.shift.x * 32 / self.texture.scale.x) +
+                ' ] [ ' + repr(self.cotangent - self.tangent * self.skew.x) + ' ' + repr_float(self.shift.y * 32 / self.texture.scale.y) +
+                ' ] 0 ' + repr(self.texture.scale)
+            )
 
     @property
     def vertices(self):

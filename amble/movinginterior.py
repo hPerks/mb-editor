@@ -22,6 +22,9 @@ class PathedInterior(SceneObject):
 
     @classmethod
     def local(cls, interiorResource, interiorIndex, **fields):
+        if not interiorResource.endswith('.dif'):
+            interiorResource += '.dif'
+
         return cls(
             interiorResource=path.join('platinum/data/interiors_pq/custom', interiorResource),
             interiorIndex=interiorIndex,
