@@ -1,4 +1,5 @@
 from amble.utils.numbers import int_or_float, repr_float, approx_eq
+from amble.utils.lists import flatlist
 
 from operator import add, sub, mul
 
@@ -6,7 +7,7 @@ from operator import add, sub, mul
 class NumberList:
 
     def __init__(self, *args, size=None):
-        if len(args) > 1 or len(args) == 0:
+        if len(args) != 1:
             self.values = list(args)
         elif isinstance(args[0], str):
             self.values = list(map(int_or_float, args[0].split(' ')))
@@ -24,6 +25,9 @@ class NumberList:
 
     def __setitem__(self, key, value):
         self.values[key] = value
+
+    def __len__(self):
+        return len(self.values)
 
     def __eq__(self, other):
         return all(map(approx_eq, self, NumberList(other)))
@@ -86,6 +90,20 @@ class NumberList:
     def is_parallel(self, other):
         return self.normalized() == NumberList(other).normalized()
 
+    def append(self, item):
+        return self.__class__(list(self) + [item])
+
+    def to_basis(self, *basis):
+        basis = [NumberList(basis_vector) for basis_vector in basis]
+        rows = [NumberList(row).append(self[i]) for i, row in enumerate(zip(*basis))]
+        for i in range(len(rows)):
+            if rows[i][i] == 0:
+                rows[i] += next(row for row in rows if row[i] != 0)
+            rows[i] /= rows[i][i]
+            for j in range(len(rows)):
+                if j != i:
+                    rows[j] -= rows[i] * rows[j][i]
+        return self.__class__(row[-1] for row in rows)
 
     @staticmethod
     def tests():
@@ -110,6 +128,8 @@ class NumberList:
         assert '2 0 3' * m == '6 0 9'
         assert m + 2 == '5 4 3'
         assert m.dot('-2 3 -2') == 0
+
+        assert m.to_basis('0 1 2', '1 4 -1', '-1 1 0') == '2 1 -2'
 
 
 if __name__ == '__main__':

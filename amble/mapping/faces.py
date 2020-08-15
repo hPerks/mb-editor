@@ -6,11 +6,11 @@ from amble.utils.cached import Cached
 
 
 class Faces(Cached):
-    inherited_attrs = ['vertex_indices', 'normal', 'texture', 'origin', 'skew', 'rotation']
+    inherited_attrs = ['vertex_indices', 'normal', 'texture', 'origin', 'skew', 'rotation', 'scale']
     cached_attrs = [
         'vertices', 'center_bisector', 'middle_bisector', 'tangent',
         'cotangent', 'alignment_orientation', 'tangent_bisector',
-        'cotangent_bisector', 'origin', 'skew', 'shift', 'u', 'v'
+        'cotangent_bisector', 'origin', 'skew', 'scale', 'shift', 'u', 'v'
     ]
 
     def __init__(self, brush, name):
@@ -42,9 +42,9 @@ class Faces(Cached):
                 ' '.join(
                     '( ' + repr(vertex * 32) + ' )' for vertex in self.vertices[:3]
                 ) + ' ' + repr(self.texture) +
-                ' [ ' + repr(self.tangent - self.cotangent * self.skew.y) + ' ' + repr_float(self.shift.x * 32 / self.texture.scale.x) +
-                ' ] [ ' + repr(self.cotangent - self.tangent * self.skew.x) + ' ' + repr_float(self.shift.y * 32 / self.texture.scale.y) +
-                ' ] 0 ' + repr(self.texture.scale)
+                ' [ ' + repr(self.u) + ' ' + repr_float(self.shift.x * 32 / self.texture.scale.x) +
+                ' ] [ ' + repr(self.v) + ' ' + repr_float(self.shift.y * 32 / self.texture.scale.y) +
+                ' ] 0 ' + repr(self.scale * self.texture.scale)
             )
 
     @property
@@ -159,8 +159,8 @@ class Faces(Cached):
     @property
     def shift(self):
         return Vector2D(
-            -self.origin.dot(self.tangent) + self.origin.dot(self.cotangent) * self.skew.y,
-            -self.origin.dot(self.cotangent) + self.origin.dot(self.tangent) * self.skew.x
+            -self.origin.dot(self.u) / self.scale.x,
+            -self.origin.dot(self.v) / self.scale.y
         )
 
     @property
@@ -170,3 +170,24 @@ class Faces(Cached):
     @property
     def v(self):
         return self.cotangent - self.tangent * self.skew.x
+
+    @property
+    def w(self):
+        return self.normal
+
+    def from_uvw(self, uvw):
+        return self.origin + uvw.x * self.u + uvw.y * self.v + uvw.z * self.w
+
+    def to_uvw(self, point):
+        return (point - self.origin).to_basis(self.u, self.v, self.w)
+
+    def shared_vertices(self, face):
+        return [vertex for vertex in self.vertices if vertex in face.vertices]
+
+    def unify_with(self, face):
+        with self.cached, face.cached:
+            vertex = self.shared_vertices(face)[0]
+            uvw = face.to_uvw(vertex)
+            new_origin = self.from_uvw(-uvw) - self.origin + vertex
+        self.origin = new_origin
+        return self
