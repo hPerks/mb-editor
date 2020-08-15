@@ -1,3 +1,4 @@
+from amble.id import ID
 from amble.implicit import Implicit
 from amble.sceneobject import SceneObject
 
@@ -58,3 +59,48 @@ class HelpBubble(StaticShape):
         persistTime=Implicit(2000),
         displayOnce=Implicit(0),
     )
+
+
+class PushButton(StaticShape):
+    defaults = dict(
+        datablock='PushButton_PQ',
+        triggerOnce=Implicit(0),
+        resetTime=Implicit(5000),
+        triggerObject=Implicit(ID.none),
+        objectMethod=Implicit(''),
+    )
+
+
+class TriggerButton(PushButton):
+    defaults = dict(
+        objectMethod='onEnterTrigger()'
+    )
+
+
+class Cannon(StaticShape):
+    defaults = dict(
+        datablock='DefaultCannon',
+        aimSize=0.25,
+        aimTriggers=0,
+        chargeTime=2000,
+        force=25,
+        instant=0,
+        instantDelayTime=0,
+        lockCam=0,
+        lockTime=0,
+        pitch=0,
+        pitchBoundHigh=0,
+        pitchBoundLow=0,
+        showAim=1,
+        showReticle=0,
+        useBase=1,
+        useCharge=0,
+        yaw=0,
+        yawBoundLeft=0,
+        yawBoundRight=0,
+        yawLimit=0,
+    )
+
+
+class Checkpoint(StaticShape):
+    defaults = dict(datablock='CheckPoint_PQ')

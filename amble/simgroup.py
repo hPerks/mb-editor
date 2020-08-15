@@ -53,7 +53,6 @@ class SimGroup(ScriptObject):
     def inner_str(self):
         return super().inner_str() + '\n' + '\n\n'.join(map(repr, self.children))
 
-
     def __setattr__(self, key, value):
         super().__setattr__(key, value)
 
@@ -65,6 +64,9 @@ class SimGroup(ScriptObject):
                 if isinstance(value, type(child)):
                     self.remove(child)
             self.add(value)
+
+    def copy(self, id='(id)_copy', **fields):
+        return super().copy(id, **fields).add(child.copy(id) for child in self.children)
 
 
     @staticmethod

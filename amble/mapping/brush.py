@@ -252,7 +252,7 @@ class Brush(ScriptObject):
         assert ccc[0].vertices[0] == '5.5 3.5 3'
         assert ccc[0].face('right').origin == '5.5 2.5 3'
 
-        p = Brush.make_prism(16, '0 0 -0.5', '4 2 1', texture=Texture('PQ/pq_edge_white_2', '0.5 0.5', '2 2'))
+        p = Brush.make_prism(16, '0 0 -0.5', '4 2 1', texture=Texture('pq_edge_white_2', '0.5 0.5', '2 2'))
         assert len(p.face_groups['all']) == 18
         assert p.face('top').skew == '0 0'
         assert p.face('side0').scale == '0.9626350356771984 1'

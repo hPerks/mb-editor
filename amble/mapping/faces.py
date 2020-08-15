@@ -10,7 +10,8 @@ class Faces(Cached):
     cached_attrs = [
         'vertices', 'center_bisector', 'middle_bisector', 'tangent',
         'cotangent', 'alignment_orientation', 'tangent_bisector',
-        'cotangent_bisector', 'origin', 'skew', 'scale', 'shift', 'u', 'v'
+        'cotangent_bisector', 'origin', 'skew', 'rotation', 'scale', 'u', 'v',
+        'shift'
     ]
 
     def __init__(self, brush, name):
@@ -157,13 +158,6 @@ class Faces(Cached):
         self._skew = Vector2D(value)
 
     @property
-    def shift(self):
-        return Vector2D(
-            -self.origin.dot(self.u) / self.scale.x,
-            -self.origin.dot(self.v) / self.scale.y
-        )
-
-    @property
     def u(self):
         return self.tangent - self.cotangent * self.skew.y
 
@@ -174,6 +168,13 @@ class Faces(Cached):
     @property
     def w(self):
         return self.normal
+
+    @property
+    def shift(self):
+        return Vector2D(
+            -self.origin.dot(self.u) / self.scale.x,
+            -self.origin.dot(self.v) / self.scale.y
+        )
 
     def from_uvw(self, uvw):
         return self.origin + uvw.x * self.u + uvw.y * self.v + uvw.z * self.w

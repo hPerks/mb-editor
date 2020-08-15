@@ -20,7 +20,7 @@ mission = Mission.hunt(
     awesomeHint='You don\'t need too much luck here if you just know how to quickly navigate the map. The trickest parts are the upper sections near the wall in the middle - fast if you do them right, easy to mess up on.'
 ).add(
     SpawnTrigger(position='3 15 1'),
-    Interior.local('wrapzone.dif'),
+    Interior.local('wrapzone'),
 
     StaticShape(datablock='Tree01', scale='0.5 0.5 0.5').copies(
         ('position', 'skin'),
@@ -397,9 +397,6 @@ for gem in gems[::2]:
 
 mission.add(gem_groups)
 
-
-# tulip bushes
-
 for position, angle in [
     ('0 22 1', 0),
     ('6 22 1', 0),
@@ -438,23 +435,9 @@ for position, angle in [
             skin='yellow' if position.y < 67 else 'purple'
         ))
 
-
-# ferns
-
 for position in [
-    '-23 26 1',
-    '-25 31 1',
-    '-28 36 1',
-    '35 35 1',
-    '13 31 1',
-    '11 26 1',
-    '31 19 1',
-
-    '-11 89 -1',
-    '31 73 -1',
-    '36 76 -1',
-    '46 78 -1',
-    '53 90 -1',
+    '-23 26 1', '-25 31 1', '-28 36 1', '35 35 1', '13 31 1', '11 26 1',
+    '31 19 1', '-11 89 -1', '31 73 -1', '36 76 -1', '46 78 -1', '53 90 -1',
 ]:
     random.seed(position)
 
@@ -468,57 +451,19 @@ for position in [
         scale=scale
     ))
 
-
-## flowers
-
 for position in [
-    '2 14 1',
-    '4 16 1',
-    '-5 20 1',
-    '-7 22 1',
-    '-17 20 1',
-    '-19 22 1',
-    '-25 17 1',
-    '-23 18 1',
-    '-32 35 1',
-    '-34 37 1',
-    '40 35 1',
-    '38 37 1',
-    '31 37 1',
-    '29 35 1',
-    '19 37 1',
-    '17 35 1',
-    '11 10 1',
-    '13 8 1',
-    '34 25 1',
-    '33 23 1',
-    '29 16 1',
-    '31 14 1',
+    '2 14 1', '4 16 1', '-5 20 1', '-7 22 1', '-17 20 1', '-19 22 1',
+    '-25 17 1', '-23 18 1', '-32 35 1', '-34 37 1', '40 35 1', '38 37 1',
+    '31 37 1', '29 35 1', '19 37 1', '17 35 1', '11 10 1', '13 8 1', '34 25 1',
+    '33 23 1', '29 16 1', '31 14 1',
 
-    '39 55 -1',
-    '41 53 -1',
-    '-35 55 -1',
-    '-33 53 -1',
-    '-16 55 -1',
-    '-14 53 -1',
-    '20 55 -1',
-    '22 53 -1',
+    '39 55 -1', '41 53 -1', '-35 55 -1', '-33 53 -1', '-16 55 -1', '-14 53 -1',
+    '20 55 -1', '22 53 -1',
 
-    '-11 73 -1',
-    '-13 71 -1',
-    '1 82 -1',
-    '-1 80 -1',
-    '-14 91 -1',
-    '-16 89 -1',
-    '58 91 -1',
-    '56 89 -1',
-    '49 91 -1',
-    '47 89 -1',
+    '-11 73 -1', '-13 71 -1', '1 82 -1', '-1 80 -1', '-14 91 -1', '-16 89 -1',
+    '58 91 -1', '56 89 -1', '49 91 -1', '47 89 -1',
 
-    '23 73 -1',
-    '25 71 -1',
-    '47 74 -1',
-    '49 76 -1',
+    '23 73 -1', '25 71 -1', '47 74 -1', '49 76 -1',
 ]:
     random.seed(position)
 
@@ -538,4 +483,4 @@ for position in [
         )
     ))
 
-mission.autobounds().write('wrapzone.mis')
+mission.autobounds().write('wrapzone')

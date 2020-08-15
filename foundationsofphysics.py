@@ -11,7 +11,7 @@ mission = Mission.normal(
 ).add(
     StartPad(position='0 0 0.5'),
     EndPad(position='-21 -5 0', rotation='0 0 1 90'),
-    Interior.local('foundationsofphysics.dif'),
+    Interior.local('foundationsofphysics'),
 
     Gem().copies(
         'position',
@@ -109,4 +109,4 @@ for (position, scale) in [
         gravity=200,
     ))
 
-mission.autobounds().write('foundationsofphysics.mis')
+mission.autobounds().write('foundationsofphysics')

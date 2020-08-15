@@ -1,11 +1,11 @@
 from amble import *
 
-trim = Texture('PQ/pq_edge_white_2', [0.5, 0.5])
-floor = Texture('PQ/pq_neutral_7_med', [4, 4], [0.5, 0.5])
-wall = Texture('PQ/pq_wall_blue', [4, 4], [0.5, 0.5])
-ceiling = Texture('PQ/pq_ray_wall_combo', [4, 4], [0.5, 0.5])
-mp_floor = Texture('PQ/pq_neutral_5_med', [4, 4], [0.5, 0.5])
-caution = Texture('PQ/stripe_caution', [4, 4], [0.5, 0.5])
+trim = Texture('pq_edge_white_2', [0.5, 0.5])
+floor = Texture('pq_neutral_7_med', [4, 4], [0.5, 0.5])
+wall = Texture('pq_wall_blue', [4, 4], [0.5, 0.5])
+ceiling = Texture('pq_ray_wall_combo', [4, 4], [0.5, 0.5])
+mp_floor = Texture('pq_neutral_5_med', [4, 4], [0.5, 0.5])
+caution = Texture('stripe_caution', [4, 4], [0.5, 0.5])
 
 Mission.normal(
     name='Example Mission',
@@ -97,7 +97,7 @@ Mission.normal(
             ),
             Brush.make_cube(texture=trim, center='16 -16.25 17.75', size='8 0.5 0.5')
         )
-    ).to_interior('examplemission.dif'),
+    ).to_interior('examplemission'),
 
     SuperJump(position='0 3 0'),
     HelpTrigger(
@@ -129,7 +129,7 @@ Mission.normal(
     ),
 
     MovingInterior.make(
-        PathedInterior.local('exampleMission.dif', 0),
+        PathedInterior.local('examplemission', 0),
         Path.make_accelerate('0 0 0', 3500, '0 0 12', 1500, '0 0 0')
     ),
     HelpTrigger(
@@ -172,4 +172,4 @@ Mission.normal(
              'your level without a bounds trigger throws an error!'
     ),
 
-).autobounds().write('examplemission.mis')
+).autobounds().write('examplemission')

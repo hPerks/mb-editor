@@ -142,8 +142,7 @@ class PhysModTrigger(Trigger):
 class PathTrigger(Trigger):
     defaults = dict(
         datablock='PathTrigger',
-        object=ID.none,
-        path=ID.none
+        triggerOnce=Implicit(1),
     )
 
 

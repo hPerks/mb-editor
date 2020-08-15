@@ -20,8 +20,8 @@ mission = Mission.laps(
     sky=Sky.wave,
 ).add(
     StartPad(position='8 2 0', rotation='0 0 -1 90'),
-    Interior.local('chasetrack.dif'),
-    Interior.local('chasetrack_tightrope.dif').copies(
+    Interior.local('chasetrack'),
+    Interior.local('chasetrack_tightrope').copies(
         ('position', 'scale'),
         '6 25 -22', '0.125 14 0',
         '-1.25 -32 0', '1.5 0.125 0',
@@ -34,7 +34,7 @@ mission = Mission.laps(
 
     [
         MovingInterior.make(
-            PathedInterior.local('chasetrack.dif', 0, basePosition=(0, y, 0), initialTargetPosition=0),
+            PathedInterior.local('chasetrack', 0, basePosition=(0, y, 0), initialTargetPosition=0),
             TriggerGotoTarget(position='7 1 0', scale='2 2 1', targetTime=-1),
         ).set(path=Path.make_linear(
             (0, y, 0), 62.5 * (40 - y),
@@ -175,4 +175,4 @@ mission.add(
         '-1 -56 1', '0 -0.15 0.98 160', 1,
     ).path_loop()
 
-).autobounds().write('chasetrack.mis')
+).autobounds().write('chasetrack')
