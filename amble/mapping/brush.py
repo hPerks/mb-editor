@@ -209,13 +209,7 @@ class Brush(ScriptObject):
 
         prism._set_face_attributes(**face_attributes)
 
-        perimeter = sum(abs(prism.face('side{}'.format(side)).middle_bisector) for side in range(sides))
-        scale_x = perimeter / round(perimeter / prism.face('side').scale.x)
-        prism.face('side').scale *= Vector2D(scale_x, 1)
-
-        prism.face('side0').origin = prism.face('side0').top_left
-        for side in range(1, sides):
-            prism.face('side{}'.format(side)).unify_with(prism.face('side{}'.format(side - 1)))
+        Faces.unify([prism.face('side{}'.format(side)) for side in range(sides)], justify=True)
 
         return prism
 
@@ -284,26 +278,9 @@ class Brush(ScriptObject):
         for slice in slices:
             slice.face('z').origin = center
 
-        outside_perimeter = sum(abs(slice.face('outside').middle_bisector) for slice in slices)
-        outside_scale_x = outside_perimeter / round(outside_perimeter / slices[0].face('outside').scale.x)
-
-        for i, slice in enumerate(slices):
-            slice.face('outside').scale *= Vector2D(outside_scale_x, 1)
-            if i == 0:
-                slice.face('outside').origin = slice.face('outside').top_left
-            else:
-                slice.face('outside').unify_with(slices[i - 1].face('outside'))
-
+        Faces.unify([slice.face('outside') for slice in slices], justify=True)
         if has_inside:
-            inside_perimeter = sum(abs(slice.face('inside').middle_bisector) for slice in slices)
-            inside_scale_x = inside_perimeter / round(inside_perimeter / slices[0].face('inside').scale.x)
-
-            for i, slice in list(enumerate(slices))[::-1]:
-                slice.face('inside').scale *= Vector2D(inside_scale_x, 1)
-                if i == len(slices) - 1:
-                    slice.face('inside').origin = slice.face('inside').top_left
-                else:
-                    slice.face('inside').unify_with(slices[i + 1].face('inside'))
+            Faces.unify([slice.face('inside') for slice in slices[::-1]], justify=True)
 
         return slices
 
@@ -320,23 +297,23 @@ class Brush(ScriptObject):
 
         assert c.face('x').texture == Texture.edge
         assert c.vertices[0] == '2 2 0'
-        assert c.face('bottom').origin == c.face('bottom').top_left
-        assert c.face('top').shift == '-2 2'
+        assert c.face('bottom').origin == c.face('bottom').alignment_point('top left')
+        assert c.face('top').shift == '2 2'
         assert c.face('right').skew == '0 0'
         assert c.face('side').rotation == 90
 
         c.move([4.5, 0, 0])
         c.face('y').origin = '4.5 0 0'
         assert c.vertices[0] == '6.5 2 0'
-        assert c.face('right').shift == '0 2'
+        assert c.face('right').shift == '0.5 2'
         assert c.face('back').shift == '0 4.5'
-        assert c.face('top').origin == c.face('top').top_left
+        assert c.face('top').origin == c.face('top').alignment_point('top left')
         assert c.face('top').u == '0 1 0'
 
         c.move_face('back', [-1, -1, 1])
         assert c.vertices[0] == '5.5 1 1'
         assert c.face('top').skew == (-1/3, 0)
-        assert c.face('top').origin == c.face('top').center
+        assert c.face('top').origin == c.face('top').alignment_point('top')
         assert c.face('right').skew == (0, 1/3)
 
         c.move_face('back', [1, 1, -1])
@@ -345,15 +322,15 @@ class Brush(ScriptObject):
         c.move_vertex(5, [-0.5, 0.5, 0])
         c.move_vertex(7, [-0.5, -0.5, 0])
         assert c.face('right').skew == '0 0'
-        assert c.face('top').origin == c.face('top').top_left
-        assert c.face('bottom').origin == c.face('bottom').center
+        assert c.face('top').origin == c.face('top').alignment_point('top left')
+        assert c.face('bottom').origin == c.face('bottom').alignment_point('center')
 
         c.rotate('1 0 0 30')
-        c.face('back').origin = c.face('back').top_left
-        c.face('front').origin = c.face('front').top_left
+        c.face('back').align('top left')
+        c.face('front').align('top left')
         assert c.face('top').u == (0, pow(0.75, 0.5), 0.5)
         assert c.face('right').u == (0, -0.5, pow(0.75, 0.5))
-        assert c.face('right').shift == '-0.033493649053890594 2.125'
+        assert c.face('right').shift == '0.4665063509461096 2.625'
 
         ccc = Brush.make_cube(texture=Texture.edge).copies(
             ('center', 'size'),

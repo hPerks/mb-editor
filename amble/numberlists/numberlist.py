@@ -90,6 +90,9 @@ class NumberList:
         return approx_eq(self.dot(other), 0)
 
     def is_parallel(self, other):
+        return self.is_facing(other) or (-self).is_facing(other)
+
+    def is_facing(self, other):
         return self.normalized() == NumberList(other).normalized()
 
     def append(self, item):

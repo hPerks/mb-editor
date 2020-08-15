@@ -3,13 +3,14 @@ from amble.numberlists.vector3d import Vector3D
 from amble.numberlists.rotation3d import Rotation3D
 from amble.utils.numbers import repr_float, approx_div
 from amble.utils.cached import Cached
+from amble.utils.lists import flatlist
 
 
 class Faces(Cached):
     inherited_attrs = ['vertex_indices', 'normal', 'texture', 'origin', 'skew', 'rotation', 'scale']
     cached_attrs = [
         'vertices', 'center_bisector', 'middle_bisector', 'tangent',
-        'cotangent', 'alignment_orientation', 'tangent_bisector',
+        'cotangent', 'alignment_vertices', 'tangent_bisector',
         'cotangent_bisector', 'origin', 'skew', 'rotation', 'scale', 'u', 'v',
         'shift'
     ]
@@ -53,36 +54,8 @@ class Faces(Cached):
         return [self.brush.vertices[i] for i in self.vertex_indices]
 
     @property
-    def top_left(self):
-        return self.vertices[0]
-
-    @property
     def center(self):
         return sum(self.vertices) / len(self.vertices)
-
-    @property
-    def left_edge(self):
-        return self.vertices[-1] - self.vertices[0]
-
-    @property
-    def right_edge(self):
-        return self.vertices[2] - self.vertices[1]
-
-    @property
-    def center_bisector(self):
-        return (self.left_edge + self.right_edge) / 2
-
-    @property
-    def top_edge(self):
-        return self.vertices[1] - self.vertices[0]
-
-    @property
-    def bottom_edge(self):
-        return self.vertices[-2] - self.vertices[-1]
-
-    @property
-    def middle_bisector(self):
-        return (self.top_edge + self.bottom_edge) / 2
 
     @property
     def tangent(self):
@@ -93,65 +66,100 @@ class Faces(Cached):
         return Rotation3D(*self.normal, self.rotation) * self.normal.cotangent()
 
     @property
-    def alignment_orientation(self):
-        if (
-            self.center_bisector.is_perpendicular(self.tangent) or
-            self.middle_bisector.is_perpendicular(self.cotangent)
-        ):
-            return 'normal'
-        elif (
-            self.middle_bisector.is_perpendicular(self.tangent) or
-            self.center_bisector.is_perpendicular(self.cotangent)
-        ):
-            return 'rotated'
-        else:
-            return 'none'
+    def center_bisector(self):
+        n = len(self.vertices)
+        return sum(self.vertices[i + n // 2] - self.vertices[i] for i in range(n // 2)) / (n // 2)
+
+    @property
+    def middle_bisector(self):
+        n = len(self.vertices)
+        return sum(self.vertices[i + n // 4] - self.vertices[i - n // 4] for i in range(n // 2)) / (n // 2)
+
+    @property
+    def alignment_vertices(self):
+        return [
+            self.vertices[index]
+            for index in (
+                [0, 1, 2, 3] if (
+                    self.middle_bisector.is_facing(self.tangent) or
+                    self.center_bisector.is_facing(self.cotangent)
+                ) else [1, 2, 3, 0] if (
+                    self.center_bisector.is_facing(self.tangent) or
+                    self.middle_bisector.is_facing(-self.cotangent)
+                ) else [2, 3, 0, 1] if (
+                    self.middle_bisector.is_facing(-self.tangent) or
+                    self.center_bisector.is_facing(-self.cotangent)
+                ) else [3, 0, 1, 2] if (
+                    self.center_bisector.is_facing(-self.tangent) or
+                    self.middle_bisector.is_facing(self.cotangent)
+                ) else []
+            )
+        ]
 
     @property
     def tangent_bisector(self):
-        return {
-            'normal': self.middle_bisector,
-            'rotated': self.center_bisector,
-            'none': None
-        }[self.alignment_orientation]
+        if len(self.alignment_vertices):
+            return (
+                self.alignment_vertices[1] + self.alignment_vertices[2] -
+                self.alignment_vertices[0] - self.alignment_vertices[3]
+            ) / 2
 
     @property
     def cotangent_bisector(self):
-        return {
-            'normal': self.center_bisector,
-            'rotated': self.middle_bisector,
-            'none': None
-        }[self.alignment_orientation]
+        if len(self.alignment_vertices):
+            return (
+                self.alignment_vertices[2] + self.alignment_vertices[3] -
+                self.alignment_vertices[0] - self.alignment_vertices[1]
+            ) / 2
+
+    def alignment_point(self, string=None, horizontal=0, vertical=0):
+        if string is not None:
+            if string == 'world':
+                return Vector3D(0, 0, 0)
+            horizontal = -1 if 'left' in string else 1 if 'right' in string else 0
+            vertical = -1 if 'top' in string else 1 if 'bottom' in string else 0
+        if horizontal == -1:
+            return self.alignment_vertices[0] + (self.alignment_vertices[3] - self.alignment_vertices[0]) * (vertical + 1) / 2
+        elif horizontal == 1:
+            return self.alignment_vertices[1] + (self.alignment_vertices[2] - self.alignment_vertices[1]) * (vertical + 1) / 2
+        elif vertical == -1:
+            return (self.alignment_vertices[0] + self.alignment_vertices[1]) / 2
+        elif vertical == 1:
+            return (self.alignment_vertices[3] + self.alignment_vertices[2]) / 2
+        else:
+            return self.center
 
     @property
     def origin(self):
         try:
             return self._origin
         except AttributeError:
-            if self.alignment_orientation != 'none':
-                if (
-                    approx_div(self.tangent_bisector.dot(self.tangent), self.texture.size.x) and
-                    approx_div(self.cotangent_bisector.dot(self.cotangent), self.texture.size.y)
-                ):
-                    return self.top_left
+            if len(self.alignment_vertices):
+                return self.alignment_point(
+                    horizontal=-1 if approx_div(self.tangent_bisector.dot(self.tangent), self.texture.size.x) else 0,
+                    vertical=-1 if approx_div(self.cotangent_bisector.dot(self.cotangent), self.texture.size.y) else 0,
+                )
             return self.center
 
     @origin.setter
     def origin(self, value):
         self._origin = Vector3D(value)
 
+    def align(self, string=None, horizontal=0, vertical=0):
+        self.origin = self.alignment_point(string, horizontal, vertical)
+        return self
+
     @property
     def skew(self):
         try:
             return self._skew
         except AttributeError:
-            if self.alignment_orientation == 'none':
-                return Vector2D(0, 0)
-            else:
+            if len(self.alignment_vertices):
                 return Vector2D(
                     self.tangent_bisector.dot(self.cotangent) / self.tangent_bisector.dot(self.tangent),
                     self.cotangent_bisector.dot(self.tangent) / self.cotangent_bisector.dot(self.cotangent)
                 )
+            return Vector2D(0, 0)
 
     @skew.setter
     def skew(self, value):
@@ -185,10 +193,32 @@ class Faces(Cached):
     def shared_vertices(self, face):
         return [vertex for vertex in self.vertices if vertex in face.vertices]
 
-    def unify_with(self, face):
-        with self.cached, face.cached:
-            vertex = self.shared_vertices(face)[0]
-            uvw = face.to_uvw(vertex)
-            new_origin = self.from_uvw(-uvw) - self.origin + vertex
-        self.origin = new_origin
+    def unify_with(self, *faces, justify=False):
+        faces = flatlist([self] + list(faces))
+        if justify:
+            tangent_perimeter, cotangent_perimeter = 0, 0
+            for face in faces:
+                with face.cached:
+                    tangent_perimeter += abs(face.tangent_bisector)
+                    cotangent_perimeter += abs(face.cotangent_bisector)
+
+            scale_x = tangent_perimeter / round(tangent_perimeter / self.scale.x)
+            scale_y = cotangent_perimeter / round(cotangent_perimeter / self.scale.y)
+            for face in faces:
+                face.scale *= (scale_x, scale_y)
+
+            self.align('top left')
+
+        for i in range(len(faces) - 1):
+            with faces[i].cached, faces[i + 1].cached:
+                vertex = faces[i].shared_vertices(faces[i + 1])[0]
+                uvw = faces[i].to_uvw(vertex)
+                new_origin = faces[i + 1].from_uvw(-uvw) - faces[i + 1].origin + vertex
+            faces[i + 1].origin = new_origin
+
         return self
+
+    @classmethod
+    def unify(cls, *faces, justify=False):
+        faces = flatlist(*faces)
+        return faces[0].unify_with(faces[1:], justify=justify)
