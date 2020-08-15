@@ -1,3 +1,5 @@
+import math
+
 from amble.numberlists.numberlist import NumberList
 
 
@@ -18,6 +20,16 @@ class Vector2D(NumberList):
     @y.setter
     def y(self, value):
         self[1] = value
+
+    @property
+    def angle(self):
+        return math.degrees(math.atan2(self.y, self.x))
+
+    def rotated(self, angle):
+        return self.__class__(
+            abs(self) * math.cos(math.radians(self.angle + angle)),
+            abs(self) * math.sin(math.radians(self.angle + angle))
+        )
 
 
 Vector2D.none = Vector2D()

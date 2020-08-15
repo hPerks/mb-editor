@@ -1,5 +1,4 @@
 from amble.utils.numbers import int_or_float, repr_float, approx_eq
-from amble.utils.lists import flatlist
 
 from operator import add, sub, mul
 
@@ -63,7 +62,10 @@ class NumberList:
         return self * other
 
     def __truediv__(self, other):
-        return self.map(lambda x: x / other)
+        if isinstance(other, int) or isinstance(other, float):
+            return self.map(lambda x: x / other)
+        other = NumberList(other)
+        return self.__class__(self[i] / other[i] for i in range(len(self.values)))
 
     def __pow__(self, power, modulo=None):
         return self.map(lambda x: pow(x, power, modulo))
