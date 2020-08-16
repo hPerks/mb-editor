@@ -67,6 +67,7 @@ class Faces(Cached):
     @tangent.setter
     def tangent(self, value):
         self._tangent = Vector3D(value)
+        self._cotangent = self._tangent.cross(self.normal)
 
     @property
     def cotangent(self):
@@ -78,6 +79,7 @@ class Faces(Cached):
     @cotangent.setter
     def cotangent(self, value):
         self._cotangent = Vector3D(value)
+        self._tangent = self.normal.cross(self._cotangent)
 
     @property
     def center_bisector(self):
@@ -162,10 +164,9 @@ class Faces(Cached):
         return self
 
     def reset_rotation(self):
-        origin = self.origin
-        del self._origin, self._tangent, self._cotangent
-        if self.origin != origin:
-            self.origin = origin
+        self.origin = self.origin
+        del self._tangent, self._cotangent
+        return self
 
     @property
     def skew(self):
@@ -224,9 +225,6 @@ class Faces(Cached):
             scale_y = cotangent_perimeter / round(cotangent_perimeter / self.scale.y)
             for face in faces:
                 face.scale *= (scale_x, scale_y)
-
-            with self.cached:
-                self.align('top left')
 
         for i in range(len(faces) - 1):
             with faces[i].cached, faces[i + 1].cached:

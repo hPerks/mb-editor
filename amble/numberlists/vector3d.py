@@ -44,6 +44,13 @@ class Vector3D(NumberList):
     def cotangent(self):
         return self.tangent().cross(self).normalized()
 
+    def on_axis(self, axis='z'):
+        return self.__class__(
+            self.z if axis == 'x' else self.x,
+            self.z if axis == 'y' else self.y,
+            self.x if axis == 'x' else self.y if axis == 'y' else self.z,
+        )
+
 
     @staticmethod
     def tests():

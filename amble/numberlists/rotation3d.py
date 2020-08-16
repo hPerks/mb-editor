@@ -68,14 +68,16 @@ class Rotation3D(Vector3D):
             return self.__class__(self.x, self.y, self.z, self.angle * other)
 
         return Vector3D((
-            self.to_quaternion() *
+            self.to_quaternion().conjugate() *
             Rotation3D.Quaternion(0, *Vector3D(other).values) *
-            self.to_quaternion().conjugate()
+            self.to_quaternion()
         )[1:4])
-
 
     def __truediv__(self, other):
         return self * (1 / other)
+
+    def __neg__(self):
+        return self * -1
 
 
     @staticmethod
@@ -92,7 +94,7 @@ class Rotation3D(Vector3D):
         assert abs(p.angle - 120) < 0.01
 
         r.angle = 30
-        assert repr_float((r * s.axis).z) == '0.5'
+        assert repr_float((r * s.axis).z) == '-0.5'
 
 
 Rotation3D.none = Rotation3D()

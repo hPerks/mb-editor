@@ -142,7 +142,9 @@ class Brush(ScriptObject):
             self.vertices[i] = rotation * (vertex - center) + center
 
         for face in self.faces:
-            face.normal, face.tangent, face.cotangent = rotation * face.normal, rotation * face.tangent, rotation * face.cotangent
+            normal, tangent = face.normal, face.tangent
+            face.normal = rotation * normal
+            face.tangent = rotation * tangent
             with face.cached:
                 face.origin = face.from_uvw(face._offset_uvw) - face.origin + face.vertices[0]
             del face._offset_uvw
@@ -185,8 +187,9 @@ class Brush(ScriptObject):
         return cube
 
     @classmethod
-    def make_prism(cls, sides=3, center=Vector3D.zero, size=Vector3D.one, **face_attributes):
-        center, size = Vector3D(center), Vector3D(size)
+    def make_prism(cls, sides=3, axis='z', center=Vector3D.zero, size=Vector3D.one, **face_attributes):
+        center, size = Vector3D(center), Vector3D(size).on_axis(axis)
+
         prism = cls(
             model='prism',
             sides=sides,
@@ -202,28 +205,43 @@ class Brush(ScriptObject):
 
         for side in range(sides):
             prism.face('side{}'.format(side)).vertex_indices = [
-                2 * side,
                 (2 * side + 2) % (2 * sides),
-                (2 * side + 3) % (2 * sides),
-                2 * side + 1
+                2 * side,
+                2 * side + 1,
+                (2 * side + 3) % (2 * sides)
             ]
             prism.face('side{}'.format(side)).normal = ((Rotation3D.k((side + 0.5) * 360 / sides) * Vector3D.i) / size).normalized()
 
-        prism.face('top').vertex_indices = [2 * side for side in range(sides - 1, -1, -1)]
-        prism.face('bottom').vertex_indices = [2 * side + 1 for side in range(sides)]
+        prism.face('top').vertex_indices = [2 * side for side in range(sides)]
+        prism.face('bottom').vertex_indices = [2 * side + 1 for side in range(sides - 1, -1, -1)]
         prism.face('top').normal = Vector3D.k
         prism.face('bottom').normal = -Vector3D.k
         prism.face('z').skew = '0 0'
 
         prism._set_face_attributes(**face_attributes)
 
+        if axis != 'z':
+            prism.rotate(
+                Rotation3D.towards + (0, 0, -1, 90 if axis == 'x' else 0),
+                center=center
+            )
+
+            for face_name in prism.face_groups['side']:
+                face = prism.face(face_name)
+                face.reset_rotation()
+                if axis == 'x':
+                    face.tangent = '1 0 0'
+                else:
+                    face.cotangent = '0 -1 0'
+
+        prism.face('side0').align('bottom left' if axis == 'x' else 'top left' if axis == 'y' else 'top right')
         Faces.unify([prism.face('side{}'.format(side)) for side in range(sides)], justify=True)
 
         return prism
 
     @classmethod
-    def make_slice(cls, center=Vector3D.zero, size=Vector3D.one, inner_size=Vector3D.zero, start_angle=0, end_angle=90, **face_attributes):
-        center, size, inner_size = Vector3D(center), Vector3D(size), Vector3D(inner_size)
+    def make_slice(cls, axis='z', center=Vector3D.zero, size=Vector3D.one, inner_size=Vector3D.zero, start_angle=0, end_angle=90, **face_attributes):
+        center, size, inner_size = Vector3D(center), Vector3D(size).on_axis(axis), Vector3D(inner_size).on_axis(axis)
 
         has_inside = not (inner_size.x == 0 or inner_size.y == 0)
         inner_size.z = 0
@@ -240,22 +258,23 @@ class Brush(ScriptObject):
                 'r': ['outside'] + (['inside'] if has_inside else []),
                 'theta': ['start', 'end'],
                 'z': ['top', 'bottom'],
+                'side': ['outside'] + (['inside'] if has_inside else []) + ['start', 'end'],
                 'all': ['outside'] + (['inside'] if has_inside else []) + ['start', 'end', 'top', 'bottom'],
             }
         )
 
-        slice.face('outside').vertex_indices = [0, 2, 3, 1]
-        slice.face('start').vertex_indices = [4, 0, 1, 5]
+        slice.face('outside').vertex_indices = [2, 0, 1, 3]
+        slice.face('start').vertex_indices = [0, 4, 5, 1]
 
         if has_inside:
-            slice.face('inside').vertex_indices = [6, 4, 5, 7]
-            slice.face('end').vertex_indices = [2, 6, 7, 3]
-            slice.face('top').vertex_indices = [6, 2, 0, 4]
-            slice.face('bottom').vertex_indices = [3, 7, 5, 1]
+            slice.face('inside').vertex_indices = [4, 6, 7, 5]
+            slice.face('end').vertex_indices = [6, 2, 3, 7]
+            slice.face('top').vertex_indices = [4, 0, 2, 6]
+            slice.face('bottom').vertex_indices = [1, 5, 7, 3]
         else:
-            slice.face('end').vertex_indices = [2, 4, 5, 3]
-            slice.face('top').vertex_indices = [4, 2, 0]
-            slice.face('bottom').vertex_indices = [3, 5, 1]
+            slice.face('end').vertex_indices = [4, 2, 3, 5]
+            slice.face('top').vertex_indices = [4, 0, 2]
+            slice.face('bottom').vertex_indices = [1, 5, 3]
 
         slice.face('outside').normal = ((Rotation3D.k(mean_of_angles(start_angle, end_angle)) * Vector3D.i) / size).normalized()
         slice.face('start').normal = ((Rotation3D.k(start_angle) * -Vector3D.j) / (size - inner_size)).normalized()
@@ -271,24 +290,41 @@ class Brush(ScriptObject):
 
         slice._set_face_attributes(**face_attributes)
 
+        if axis != 'z':
+            slice.rotate(
+                Rotation3D.towards + (0, 0, -1, 90 if axis == 'x' else 0),
+                center=center
+            )
+
+            for face_name in slice.face_groups['side']:
+                face = slice.face(face_name)
+                face.reset_rotation()
+                if axis == 'x':
+                    face.tangent = '1 0 0'
+                else:
+                    face.cotangent = '0 -1 0'
+
         return slice
 
     @classmethod
-    def make_slices(cls, center=Vector3D.zero, size=Vector3D.one, inner_size=Vector3D.zero, start_angle=0, end_angle=360, step_angle=90, **face_attributes):
+    def make_slices(cls, axis='z', center=Vector3D.zero, size=Vector3D.one, inner_size=Vector3D.zero, start_angle=0, end_angle=360, step_angle=90, **face_attributes):
         inner_size = Vector3D(inner_size)
         has_inside = not (inner_size.x == 0 or inner_size.y == 0)
 
         slices = [
-            cls.make_slice(center=center, size=size, inner_size=inner_size, start_angle=angle, end_angle=angle + step_angle, **face_attributes)
+            cls.make_slice(axis=axis, center=center, size=size, inner_size=inner_size, start_angle=angle, end_angle=angle + step_angle, **face_attributes)
             for angle in drange(start_angle, end_angle, step_angle)
         ]
 
         for slice in slices:
+            del slice.face('top')._origin, slice.face('bottom')._origin
             slice.face('z').origin = center
 
+        slices[0].face('outside').align('bottom left' if axis == 'x' else 'top left' if axis == 'y' else 'top right')
         Faces.unify([slice.face('outside') for slice in slices], justify=True)
         if has_inside:
-            Faces.unify([slice.face('inside') for slice in slices[::-1]], justify=True)
+            slices[0].face('inside').align('bottom right' if axis == 'x' else 'top right' if axis == 'y' else 'top left')
+            Faces.unify([slice.face('inside') for slice in slices], justify=True)
 
         return slices
 
@@ -313,10 +349,10 @@ class Brush(ScriptObject):
         c.move([4.5, 0, 0])
         c.face('y').origin = '4.5 0 0'
         assert c.vertices[0] == '6.5 2 0'
-        assert c.face('right').shift == '0.5 2'
-        assert c.face('back').shift == '0 4.5'
+        assert c.face('right').shift == '0 2'
+        assert c.face('back').shift == '0 -4.5'
         assert c.face('top').origin == c.face('top').alignment_point('top left')
-        assert c.face('top').u == '0 1 0'
+        assert c.face('top').u == '0 -1 0'
 
         c.move_face('back', [-1, -1, 1])
         assert c.vertices[0] == '5.5 1 1'
@@ -336,9 +372,9 @@ class Brush(ScriptObject):
         c.rotate('1 0 0 30')
         c.face('back').align('top left')
         c.face('front').align('top left')
-        assert c.face('top').u == (0, pow(0.75, 0.5), 0.5)
-        assert c.face('right').u == (0, -0.5, pow(0.75, 0.5))
-        assert c.face('right').shift == '0.4665063509461096 2.625'
+        assert c.face('top').u == (0, -pow(0.75, 0.5), 0.5)
+        assert c.face('right').u == (0, -0.5, -pow(0.75, 0.5))
+        assert c.face('right').shift == '0.0334936490538904 2.125'
 
         ccc = Brush.make_cube(texture=Texture.edge).copies(
             ('center', 'size'),
@@ -350,30 +386,28 @@ class Brush(ScriptObject):
 
         scaled_edge = Texture('pq_edge_white_2', '0.5 0.5', '2 2')
 
-        p = Brush.make_prism(16, '0 0 -0.5', '4 2 1', texture=scaled_edge)
+        p = Brush.make_prism(sides=16, axis='z', center='0 0 -0.5', size='4 2 1', texture=scaled_edge)
         assert len(p.face_groups['all']) == 18
         assert p.face('top').skew == '0 0'
         assert p.face('side0').scale == '0.9626350356771984 1'
-        assert p.face('side1').shift == '1.7264992203753446 0'
+        assert p.face('side1').shift == '-1.7264992203753446 0'
 
-        s = Brush.make_slice('0 0 -0.5', '4 2 1', '2 1 1', 45, 90, texture=scaled_edge)
+        s = Brush.make_slice(axis='x', center='0 0 -0.5', size='1 2 4', inner_size='1 1 2', start_angle=45, end_angle=90, texture=scaled_edge)
         assert len(s.vertices) == 8
-        assert s.vertices[0] == (pow(2, 0.5), pow(0.5, 0.5), 0)
-        assert s.face('end').normal == '-1 0 0'
+        assert s.vertices[2] == '0.5 0 -1.5'
+        assert s.face('end').normal == '0 1 0'
 
-        s.rotate('1 0 0 90', '0 0 0')
-        assert s.vertices[0] == (pow(2, 0.5), 0, pow(0.5, 0.5))
+        s.rotate('0 0 1 90', '0 0 0')
+        assert s.vertices[2] == '0 -0.5 -1.5'
         assert s.face('top').normal == '0 -1 0'
-        assert s.face('outside').tangent == '-0.9792195560749533 0 0.2028030103336036'
-        assert s.face('outside').shift == '0.5193095912783102 0'
+        assert s.face('outside').tangent == '0 -1 0'
+        assert s.face('outside').shift == '-0.5 -0.4179080861115082'
 
-        ss = Brush.make_slice('0 0 -0.5', '4 2 1', '0 0 0', 45, 90, texture=scaled_edge)
+        ss = Brush.make_slice(axis='z', center='0 0 -0.5', size='4 2 1', inner_size='0 0 0', start_angle=45, end_angle=90, texture=scaled_edge)
         assert len(ss.vertices) == 6
         assert ss.vertices[4] == '0 0 0'
 
-        sss = Brush.make_slices('0 0 -0.5', '4 2 1', '2 1 1', step_angle=15, texture=scaled_edge)
-        for slice in sss:
-            slice.rotate('1 0 0 90', '0 -8 0')
+        sss = Brush.make_slices(axis='y', center='0 -0.5 0', size='4 1 2', inner_size='2 1 1', step_angle=15, texture=scaled_edge)
 
 
 if __name__ == '__main__':
