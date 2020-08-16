@@ -20,29 +20,10 @@ def repr_float(float):
     if approx_eq(float, 0):
         return '0'
 
-    r = repr(float)
-    if r.startswith('-'):
-        return '-' + repr_float(-float)
-    elif r.endswith('.0'):
-        return repr(float)[:-2]
-    elif '.' in r and (r[:-1].endswith('99999') or r[:-1].endswith('00000')):
-        decimal_places = 0
-        while not ('.99999' in repr(float) or '.00000' in repr(float) or repr(float).endswith('.0')):
-            float *= 10
-            decimal_places += 1
-        digits = repr(int(round(float)))
-        if decimal_places == 0:
-            return digits
-        else:
-            whole_digits, decimal_digits = digits[:-decimal_places], digits[-decimal_places:].rstrip('0')
-            if whole_digits == '':
-                return '0.' + decimal_digits
-            elif decimal_digits == '':
-                return whole_digits
-            else:
-                return whole_digits + '.' + decimal_digits
-    else:
-        return repr(float)
+    rounded = round(float, 6)
+    if rounded == int(rounded):
+        return repr(int(rounded))
+    return repr(rounded)
 
 
 def mean_of_angles(*angles):
