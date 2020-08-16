@@ -108,6 +108,16 @@ class Map(SimGroup):
             number=100
         ) < 2
 
+        assert timeit.timeit(
+            'repr(Map(Brush.make_prism(sides=16, texture=Texture.edge)))',
+            setup=(
+                'from amble.mapping.map import Map\n'
+                'from amble.mapping.brush import Brush\n'
+                'from amble.mapping.texture import Texture\n'
+            ),
+            number=10
+        ) < 20
+
 
 if __name__ == '__main__':
     Map.tests()

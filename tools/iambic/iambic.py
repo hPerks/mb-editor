@@ -30,15 +30,17 @@ wall_textures = {
 exported = []
 
 
-def export(brush, name):
+def export(name, *brushes):
+    brushes = flatlist(*brushes)
     print('export', name)
     exported.append('iambic/' + name)
     if not os.path.exists(path.platinum('data/interiors_pq/custom/iambic', name + '.dif')):
-        return Map(brush, Map(brush.copy())).to_interior(name, subdir='iambic')
+        return Map(brushes, Map([brush.copy() for brush in brushes])).to_interior(name, subdir='iambic')
 
 
 def platform(texture, width, length):
     return export(
+        'platform_{}_{}x{}'.format(texture, width, length),
         Brush.make_cube(
             center='0 0 -0.25',
             size=(width * 2, length * 2, 0.5),
@@ -46,14 +48,14 @@ def platform(texture, width, length):
                 'z': textures[texture],
                 'side': Texture.edge,
             }
-        ),
-        'platform_{}_{}x{}'.format(texture, width, length)
+        )
     )
 
 
 def ramp(texture, width, length, slope):
     return export(
-            Brush.make_cube(
+        'ramp_{}_{}x{}_slope{}'.format(texture, width, length, int(slope * 100)),
+        Brush.make_cube(
             center=(0, 0, -0.25 - slope * length),
             size=(width * 2, length * 2, 0.5),
             texture={
@@ -63,13 +65,13 @@ def ramp(texture, width, length, slope):
         ).move_face(
             'back',
             (0, 0, slope * length * 2)
-        ),
-        'ramp_{}_{}x{}_slope{}'.format(texture, width, length, int(slope * 100))
+        )
     )
 
 
 def trim(axis, size):
     return export(
+        'trim_{}{}'.format(axis, '' if size == 0 else size),
         Brush.make_cube(
             center=(0, 0, -size if axis == 'z' else -0.25),
             size=(
@@ -81,13 +83,13 @@ def trim(axis, size):
                 )
             ),
             texture=Texture.edge
-        ),
-        'trim_{}{}'.format(axis, '' if size == 0 else size)
+        )
     )
 
 
 def wall(texture, width, height):
     return export(
+        'wall_{}_{}x{}'.format(texture, width, height),
         Brush.make_cube(
             center=(0, 0, -height),
             size=(
@@ -99,41 +101,56 @@ def wall(texture, width, height):
                 'all': Texture.edge,
                 'y': wall_textures[texture]
             }
-        ),
-        'wall_{}_{}x{}'.format(texture, width, height)
+        )
     )
 
 
 def cube(texture, size):
     return export(
+        'cube_{}_{}x{}x{}'.format(texture, size, size, size),
         Brush.make_cube(
             center=(0, 0, -size),
             size=(size * 2, size * 2, size * 2),
             texture=textures[texture]
-        ),
-        'cube_{}_{}x{}x{}'.format(texture, size, size, size)
+        )
     )
 
 
 def circle(texture, size):
-    brush = Brush.make_prism(
-        sides=3,
-        center=(0, 0, -0.25),
-        size=(size * 2, size * 2, 0.5),
-        texture={
-            'z': textures[texture],
-            'side': Texture.edge
-        }
-    )
     return export(
-        brush,
-        'circle_{}_{}x{}'.format(texture, size, size)
+        'circle_{}_{}x{}'.format(texture, size, size),
+        Brush.make_prism(
+            sides=32,
+            center=(0, 0, -0.25),
+            size=(size * 2, size * 2, 0.5),
+            texture={
+                'z': textures[texture],
+                'side': Texture.edge
+            }
+        )
+    )
+
+
+def ring(size):
+    return export(
+        'ring_{}x{}'.format(size, size),
+        [
+            brush.rotate('1 0 0 90', center='0 0 0')
+            for brush in Brush.make_slices(
+                center=(0, -size, 0),
+                size=(size * 2, size * 2, 0.5),
+                inner_size=(size * 2 - 1, size * 2 - 1, 0.5),
+                step_angle=360 / 32,
+                texture=Texture.edge
+            )
+        ]
     )
 
 
 if __name__ == '__main__':
     trim('square', 0)
     for length in [1, 2, 3, 4, 6]:
+        ring(length)
         for axis in 'xyz':
             trim(axis, length)
         for texture in textures.keys():

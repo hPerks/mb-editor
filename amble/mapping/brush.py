@@ -133,12 +133,20 @@ class Brush(ScriptObject):
         if center is None:
             center = sum(self.vertices) / len(self.vertices)
 
+        for face in self.faces:
+            with face.cached:
+                face._offset_uvw = -face.to_uvw(face.vertices[0])
+
         self.manual_vertices = self.vertices
         for i, vertex in enumerate(self.vertices):
             self.vertices[i] = rotation * (vertex - center) + center
+
         for face in self.faces:
-            face.normal = rotation * face.normal
-            face.rotation += rotation.angle * face.normal.dot(rotation.axis)
+            face.normal, face.tangent, face.cotangent = rotation * face.normal, rotation * face.tangent, rotation * face.cotangent
+            with face.cached:
+                face.origin = face.from_uvw(face._offset_uvw) - face.origin + face.vertices[0]
+            del face._offset_uvw
+
         return self
 
 
@@ -353,11 +361,19 @@ class Brush(ScriptObject):
         assert s.vertices[0] == (pow(2, 0.5), pow(0.5, 0.5), 0)
         assert s.face('end').normal == '-1 0 0'
 
+        s.rotate('1 0 0 90', '0 0 0')
+        assert s.vertices[0] == (pow(2, 0.5), 0, pow(0.5, 0.5))
+        assert s.face('top').normal == '0 -1 0'
+        assert s.face('outside').tangent == '-0.9792195560749533 0 0.2028030103336036'
+        assert s.face('outside').shift == '0.5193095912783102 0'
+
         ss = Brush.make_slice('0 0 -0.5', '4 2 1', '0 0 0', 45, 90, texture=scaled_edge)
         assert len(ss.vertices) == 6
         assert ss.vertices[4] == '0 0 0'
 
         sss = Brush.make_slices('0 0 -0.5', '4 2 1', '2 1 1', step_angle=15, texture=scaled_edge)
+        for slice in sss:
+            slice.rotate('1 0 0 90', '0 -8 0')
 
 
 if __name__ == '__main__':

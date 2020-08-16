@@ -59,11 +59,25 @@ class Faces(Cached):
 
     @property
     def tangent(self):
-        return Rotation3D(*self.normal, self.rotation) * self.normal.tangent()
+        try:
+            return self._tangent
+        except AttributeError:
+            return Rotation3D(*self.normal, self.rotation) * self.normal.tangent()
+
+    @tangent.setter
+    def tangent(self, value):
+        self._tangent = Vector3D(value)
 
     @property
     def cotangent(self):
-        return Rotation3D(*self.normal, self.rotation) * self.normal.cotangent()
+        try:
+            return self._cotangent
+        except AttributeError:
+            return Rotation3D(*self.normal, self.rotation) * self.normal.cotangent()
+
+    @cotangent.setter
+    def cotangent(self, value):
+        self._cotangent = Vector3D(value)
 
     @property
     def center_bisector(self):
@@ -98,19 +112,15 @@ class Faces(Cached):
 
     @property
     def tangent_bisector(self):
-        if len(self.alignment_vertices):
-            return (
-                self.alignment_vertices[1] + self.alignment_vertices[2] -
-                self.alignment_vertices[0] - self.alignment_vertices[3]
-            ) / 2
+        vertices = self.alignment_vertices
+        if len(vertices):
+            return (vertices[1] + vertices[2] - vertices[0] - vertices[3]) / 2
 
     @property
     def cotangent_bisector(self):
+        vertices = self.alignment_vertices
         if len(self.alignment_vertices):
-            return (
-                self.alignment_vertices[2] + self.alignment_vertices[3] -
-                self.alignment_vertices[0] - self.alignment_vertices[1]
-            ) / 2
+            return (vertices[2] + vertices[3] - vertices[0] - vertices[1]) / 2
 
     def alignment_point(self, string=None, horizontal=0, vertical=0):
         if string is not None:
@@ -118,14 +128,16 @@ class Faces(Cached):
                 return Vector3D(0, 0, 0)
             horizontal = -1 if 'left' in string else 1 if 'right' in string else 0
             vertical = -1 if 'top' in string else 1 if 'bottom' in string else 0
+
+        vertices = self.alignment_vertices
         if horizontal == -1:
-            return self.alignment_vertices[0] + (self.alignment_vertices[3] - self.alignment_vertices[0]) * (vertical + 1) / 2
+            return vertices[0] + (vertices[3] - vertices[0]) * (vertical + 1) / 2
         elif horizontal == 1:
-            return self.alignment_vertices[1] + (self.alignment_vertices[2] - self.alignment_vertices[1]) * (vertical + 1) / 2
+            return vertices[1] + (vertices[2] - vertices[1]) * (vertical + 1) / 2
         elif vertical == -1:
-            return (self.alignment_vertices[0] + self.alignment_vertices[1]) / 2
+            return (vertices[0] + vertices[1]) / 2
         elif vertical == 1:
-            return (self.alignment_vertices[3] + self.alignment_vertices[2]) / 2
+            return (vertices[3] + vertices[2]) / 2
         else:
             return self.center
 
@@ -148,6 +160,12 @@ class Faces(Cached):
     def align(self, string=None, horizontal=0, vertical=0):
         self.origin = self.alignment_point(string, horizontal, vertical)
         return self
+
+    def reset_rotation(self):
+        origin = self.origin
+        del self._origin, self._tangent, self._cotangent
+        if self.origin != origin:
+            self.origin = origin
 
     @property
     def skew(self):
@@ -207,7 +225,8 @@ class Faces(Cached):
             for face in faces:
                 face.scale *= (scale_x, scale_y)
 
-            self.align('top left')
+            with self.cached:
+                self.align('top left')
 
         for i in range(len(faces) - 1):
             with faces[i].cached, faces[i + 1].cached:
