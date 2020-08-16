@@ -221,8 +221,16 @@ class Faces(Cached):
                     tangent_perimeter += abs(face.tangent_bisector)
                     cotangent_perimeter += abs(face.cotangent_bisector)
 
-            scale_x = tangent_perimeter / round(tangent_perimeter / self.scale.x)
-            scale_y = cotangent_perimeter / round(cotangent_perimeter / self.scale.y)
+            try:
+                scale_x = (tangent_perimeter / self.texture.size.x) / round((tangent_perimeter / self.texture.size.x) / self.scale.x)
+            except ZeroDivisionError:
+                scale_x = tangent_perimeter
+
+            try:
+                scale_y = (cotangent_perimeter / self.texture.size.y) / round((cotangent_perimeter / self.texture.size.y) / self.scale.y)
+            except ZeroDivisionError:
+                scale_y = cotangent_perimeter
+
             for face in faces:
                 face.scale *= (scale_x, scale_y)
 

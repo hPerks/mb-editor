@@ -43,10 +43,12 @@ class Map(SimGroup):
         return output
 
     def write(self, filename):
+        if not filename.endswith('.map'):
+            filename += '.map'
         with open(path.platinum('data/interiors_pq', filename), 'w') as f:
             f.write(repr(self))
 
-    def to_interior(self, name, subdir='', keep_map=None, **fields):
+    def to_interior(self, name, subdir='', keep_map=None, verbose=False, **fields):
         if name.endswith('.dif'):
             name = name[:-4]
 
@@ -58,9 +60,9 @@ class Map(SimGroup):
             f.write(repr(self))
 
         if platform.system() == 'Windows':
-            os.system('map2dif.exe {}.map > nul'.format(name))
+            os.system('map2dif.exe {}.map'.format(name) + ('' if verbose else ' > nul'))
         else:
-            os.system('./map2dif -t . -o . "{}.map" > /dev/null'.format(name))
+            os.system('./map2dif -t . -o . "{}.map"'.format(name) + ('' if verbose else ' > /dev/null'))
 
         os.makedirs(path.join('custom', subdir), 0o777, True)
         shutil.copy(name + '.dif', path.join('custom', subdir))
