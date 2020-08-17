@@ -235,7 +235,10 @@ class Brush(ScriptObject):
                     face.cotangent = '0 -1 0'
 
         prism.face('side0').align('bottom left' if axis == 'x' else 'top left' if axis == 'y' else 'top right')
-        Faces.unify([prism.face('side{}'.format(side)) for side in range(sides)], justify=True)
+        Faces.unify(
+            [prism.face('side{}'.format(side)) for side in range(sides)],
+            justify=face_attributes['justify'] if 'justify' in face_attributes else True
+        )
 
         return prism
 
@@ -277,8 +280,8 @@ class Brush(ScriptObject):
             slice.face('bottom').vertex_indices = [1, 5, 3]
 
         slice.face('outside').normal = ((Rotation3D.k(mean_of_angles(start_angle, end_angle)) * Vector3D.i) / size).normalized()
-        slice.face('start').normal = ((Rotation3D.k(start_angle) * -Vector3D.j) / (size - inner_size)).normalized()
-        slice.face('end').normal = ((Rotation3D.k(end_angle) * Vector3D.j) / (size - inner_size)).normalized()
+        slice.face('start').normal = ((Rotation3D.k(start_angle) * Vector3D.j) / (size - inner_size)).normalized()
+        slice.face('end').normal = ((Rotation3D.k(end_angle) * -Vector3D.j) / (size - inner_size)).normalized()
         slice.face('top').normal = Vector3D.k
         slice.face('bottom').normal = -Vector3D.k
 
@@ -321,10 +324,16 @@ class Brush(ScriptObject):
             slice.face('z').origin = center
 
         slices[0].face('outside').align('bottom left' if axis == 'x' else 'top left' if axis == 'y' else 'top right')
-        Faces.unify([slice.face('outside') for slice in slices], justify=True)
+        Faces.unify(
+            [slice.face('outside') for slice in slices],
+            justify=face_attributes['justify'] if 'justify' in face_attributes else True
+        )
         if has_inside:
-            slices[0].face('inside').align('bottom right' if axis == 'x' else 'top right' if axis == 'y' else 'top left')
-            Faces.unify([slice.face('inside') for slice in slices], justify=True)
+            slices[0].face('inside').align('top left' if axis == 'x' else 'top right' if axis == 'y' else 'bottom right')
+            Faces.unify(
+                [slice.face('inside') for slice in slices],
+                justify=face_attributes['justify'] if 'justify' in face_attributes else True
+            )
 
         return slices
 
