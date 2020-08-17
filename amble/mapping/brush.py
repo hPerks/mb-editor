@@ -404,7 +404,7 @@ class Brush(ScriptObject):
         s = Brush.make_slice(axis='x', center='0 0 -0.5', size='1 2 4', inner_size='1 1 2', start_angle=45, end_angle=90, texture=scaled_edge)
         assert len(s.vertices) == 8
         assert s.vertices[2] == '0.5 0 -1.5'
-        assert s.face('end').normal == '0 1 0'
+        assert s.face('end').normal == '0 -1 0'
 
         s.rotate('0 0 1 90', '0 0 0')
         assert s.vertices[2] == '0 -0.5 -1.5'

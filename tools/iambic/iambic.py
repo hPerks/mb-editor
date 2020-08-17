@@ -210,7 +210,7 @@ def ramp(texture, size, slope):
         'ramp/ramp_{}_{}x{}_slope{}'.format(texture, size, size, int(slope * 100)), size * 2,
         lambda: Brush.make_cube(
             center=(0, 0, -0.25 - slope * size),
-            size=(width * 2, length * 2, 0.5),
+            size=(size * 2, size * 2, 0.5),
             texture={
                 'z': floor_textures[texture],
                 'side': Texture.edge,
