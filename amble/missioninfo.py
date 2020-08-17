@@ -6,7 +6,7 @@ class MissionInfo(ScriptObject):
     defaults = dict(
         id='MissionInfo',
         name='New Mission',
-        game='PQ',
+        game='Custom',
         artist='Unknown',
         type='Custom',
         level='1',
