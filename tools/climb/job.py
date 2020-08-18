@@ -196,33 +196,27 @@ def bundle(mission_file, dest_dir):
 
     bundled_assets = set()
 
-    yield bundle_asset(path.platinum(mission.sky.materialList))
+    for descendant in mission.descendants():
+        for attr in ['materialList', 'interiorFile', 'shapeName']:
+            if attr in descendant.fields.dict:
+                value = descendant.fields.get(attr)
+                if path.platinum(value) not in bundled_assets:
+                    asset_source_path = path.platinum(value)
+                    yield bundle_asset(asset_source_path)
+
+                    with open(asset_source_path, errors='ignore') as f:
+                        asset_contents = f.read()
+
+                    asset_source_dir = os.path.dirname(asset_source_path)
+                    for texture_basename in os.listdir(asset_source_dir):
+                        if texture_basename.endswith('.png') or texture_basename.endswith('.jpg'):
+                            if texture_basename[:-4] in asset_contents:
+                                texture_path = path.join(asset_source_dir, texture_basename)
+                                if texture_path not in bundled_assets:
+                                    yield bundle_asset(texture_path)
+
     if 'music' in mission.info.fields.dict:
         yield bundle_asset(path.platinum('data/sound/music/' + mission.info.music))
-
-    for descendant in mission.descendants():
-        asset_source_path = None
-
-        if 'interiorFile' in descendant.fields.dict:
-            if path.platinum(descendant.interiorFile) not in bundled_assets:
-                asset_source_path = path.platinum(descendant.interiorFile)
-        elif 'shapeName' in descendant.fields.dict:
-            if path.platinum(descendant.shapeName) not in bundled_assets:
-                asset_source_path = path.platinum(descendant.shapeName)
-
-        if asset_source_path:
-            yield bundle_asset(asset_source_path)
-
-            with open(asset_source_path, errors='ignore') as f:
-                asset_contents = f.read()
-
-            asset_source_dir = os.path.dirname(asset_source_path)
-            for texture_basename in os.listdir(asset_source_dir):
-                if texture_basename.endswith('.png') or texture_basename.endswith('.jpg'):
-                    if texture_basename[:-4] in asset_contents:
-                        texture_path = path.join(asset_source_dir, texture_basename)
-                        if texture_path not in bundled_assets:
-                            yield bundle_asset(texture_path)
 
     with open(path.join(temp_dir, 'readme.txt'), 'w') as f:
         f.write(
