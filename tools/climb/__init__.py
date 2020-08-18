@@ -1,0 +1,5 @@
+from tools.climb import app
+
+
+if __name__ == '__main__':
+    app.App().mainloop()

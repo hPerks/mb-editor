@@ -54,7 +54,7 @@ class Mission(SimGroup):
         if not filename.endswith('.mis'):
             filename += '.mis'
 
-        f = open(path.platinum('data/missions/custom', filename), 'r')
+        f = open(path.platinum('data/missions/custom', filename), errors='ignore')
         string = f.read()
         f.close()
 
