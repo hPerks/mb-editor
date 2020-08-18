@@ -3,7 +3,7 @@ import tkinter.ttk as ttk
 
 
 class StyledApp(tk.Tk):
-    colors = ['#2f2f2f', '#3f3f3f', '#ddaa00', '#ffdb66', '#dbdbdb', '#2f2f2f']
+    colors = ['#2f2f2f', '#3f3f3f', '#ddaa00', '#ffdb66', '#dbdbdb', '#2f2f2f', '#525252']
 
     class Entry(tk.Entry):
         def __init__(self, parent, **config):
@@ -40,6 +40,32 @@ class StyledApp(tk.Tk):
         self.style.configure('TFrame', background=self.colors[0])
         self.style.configure('TLabel', background=self.colors[0], foreground=self.colors[4], font=('Roboto', 12, 'bold'))
         self.style.configure('TButton', relief='flat', background=self.colors[2], foreground=self.colors[5], font=('Roboto', 12, 'bold'))
+
+        self.style.element_create('Plain.Notebook.tab', 'from', 'default')
+        self.style.layout(
+            'TNotebook.tab', [(
+                'Plain.Notebook.tab', {
+                    'sticky': 'news',
+                    'children': [(
+                        'Notebook.padding', {
+                            'sticky': 'news',
+                            'side': 'top', 'children': [(
+                                'Notebook.focus', {
+                                    'sticky': 'news',
+                                    'side': 'top', 'children': [(
+                                        'Notebook.label', {'side': 'top', 'sticky': ''}
+                                    )]
+                                }
+                            )]
+                        }
+                    )]
+                }
+            )]
+        )
+
+        self.style.configure('TNotebook', background=self.colors[0], borderwidth=0, relief='flat')
+        self.style.configure('TNotebook.Tab', background=self.colors[0], foreground=self.colors[4], borderwidth=0, relief='flat', font=('Roboto', 10))
+        self.style.map('TNotebook.Tab', background=[('selected', self.colors[0])])
         self.style.map('TButton', background=[('active', self.colors[3])])
 
         self.configure(background=self.colors[0])

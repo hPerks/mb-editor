@@ -17,7 +17,7 @@ def install(source_zip, mission_dest_dir):
 
     source_dir = path.platinum('_climb_export')
     if os.path.exists(source_dir):
-        shutil.rmtree(source_dir)
+        shutil.rmtree(source_dir, ignore_errors=True)
 
     with zipfile.ZipFile(source_zip, 'r') as f:
         f.extractall(source_dir)
@@ -30,13 +30,13 @@ def install(source_zip, mission_dest_dir):
     num_bad_missions = 0
     asset_dest_paths = set()
 
-    for root_dir, _, basenames in os.walk(source_dir):
+    for dir, _, basenames in os.walk(source_dir):
         for source_basename in basenames:
             if source_basename.startswith('._'):
                 continue
 
             if source_basename.endswith('.mis'):
-                mission_source_path = path.join(root_dir, source_basename)
+                mission_source_path = path.join(dir, source_basename)
                 mission_source_paths.append(mission_source_path)
 
                 if len(mission_source_paths) == 1:
@@ -84,9 +84,9 @@ def install(source_zip, mission_dest_dir):
 
     matched_asset_paths = []
 
-    for root_dir, _, basenames in os.walk(source_dir):
+    for dir, _, basenames in os.walk(source_dir):
         for asset_source_basename in basenames:
-            asset_source_path = path.join(root_dir, asset_source_basename)
+            asset_source_path = path.join(dir, asset_source_basename)
 
             for asset_dest_path in asset_dest_paths:
                 asset_dest_dir = os.path.dirname(asset_dest_path)
@@ -107,22 +107,24 @@ def install(source_zip, mission_dest_dir):
                         asset_source_basename
                     )
 
-                    for texture_basename in os.listdir(root_dir):
+                    with open(asset_source_path, errors='ignore') as f:
+                        asset_contents = f.read()
+
+                    for texture_basename in os.listdir(dir):
                         if texture_basename.endswith('.png') or texture_basename.endswith('.jpg'):
-                            with open(asset_source_path, errors='ignore') as f:
-                                if texture_basename[:-4] in f.read():
-                                    texture_source_path = path.join(root_dir, texture_basename)
-                                    texture_dest_path = path.join(asset_dest_dir, texture_basename)
+                            if texture_basename[:-4] in asset_contents:
+                                texture_source_path = path.join(dir, texture_basename)
+                                texture_dest_path = path.join(asset_dest_dir, texture_basename)
 
-                                    if not texture_dest_path in matched_asset_paths:
-                                        shutil.copyfile(texture_source_path, texture_dest_path)
+                                if not texture_dest_path in matched_asset_paths:
+                                    shutil.copyfile(texture_source_path, texture_dest_path)
 
-                                        matched_asset_paths.append(texture_dest_path)
+                                    matched_asset_paths.append(texture_dest_path)
 
-                                        yield '{}/{}\n'.format(
-                                            path.relative(asset_dest_dir),
-                                            texture_basename
-                                        )
+                                    yield '{}/{}\n'.format(
+                                        path.relative(asset_dest_dir),
+                                        texture_basename
+                                    )
                     break
 
     if len(matched_asset_paths) == 0:
@@ -140,7 +142,7 @@ def install(source_zip, mission_dest_dir):
                     os.path.basename(asset_dest_path)
                 )
 
-    shutil.rmtree(source_dir)
+    shutil.rmtree(source_dir, ignore_errors=True)
 
     yield '\nSuccessfully installed {} mission(s)'.format(len(mission_source_paths) - num_bad_missions) + (
         ''
@@ -151,3 +153,85 @@ def install(source_zip, mission_dest_dir):
         if num_missing_assets == 0
         else ' ({} missing)'.format(num_missing_assets)
     )
+
+
+def bundle(mission_file, dest_dir):
+    temp_dir = path.platinum('_climb_export')
+    if os.path.exists(temp_dir):
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+    os.makedirs(path.join(temp_dir, 'data/missions/custom'), mode=0o777, exist_ok=True)
+
+    try:
+        mission = Mission.from_file(mission_file)
+        yield 'Successfully parsed mission "{}"\n\n'.format(mission.info.name)
+    except Exception as e:
+        _, _, e_traceback = sys.exc_info()
+        yield (
+            '\nError parsing mission:\n' +
+            '\n'.join(traceback.format_tb(
+                e_traceback)) +
+            '\n{}: {}'.format(
+                e.__class__.__name__, e.args[0]) +
+            '\nSend this text to @hPerks#5581 on Discord for help!'
+        )
+        return
+
+    shutil.copyfile(mission_file, path.join(temp_dir, 'data/missions/custom', os.path.basename(mission_file)))
+
+    def bundle_asset(asset_source_path):
+        if asset_source_path.endswith('/') or not os.path.exists(asset_source_path):
+            return ''
+
+        asset_dest_path = path.join(temp_dir, path.relative(asset_source_path)[2:])
+
+        os.makedirs(os.path.dirname(asset_dest_path), mode=0o777, exist_ok=True)
+        try:
+            shutil.copyfile(asset_source_path, asset_dest_path)
+        except PermissionError:
+            return 'Denied permissions for asset {}\n'.format(path.relative(asset_source_path))
+
+        bundled_assets.add(asset_source_path)
+        return 'Bundled asset: {}\n'.format(path.relative(asset_source_path))
+
+    bundled_assets = set()
+
+    yield bundle_asset(path.platinum(mission.sky.materialList))
+    if 'music' in mission.info.fields.dict:
+        yield bundle_asset(path.platinum('data/sound/music/' + mission.info.music))
+
+    for descendant in mission.descendants():
+        asset_source_path = None
+
+        if 'interiorFile' in descendant.fields.dict:
+            if path.platinum(descendant.interiorFile) not in bundled_assets:
+                asset_source_path = path.platinum(descendant.interiorFile)
+        elif 'shapeName' in descendant.fields.dict:
+            if path.platinum(descendant.shapeName) not in bundled_assets:
+                asset_source_path = path.platinum(descendant.shapeName)
+
+        if asset_source_path:
+            yield bundle_asset(asset_source_path)
+
+            with open(asset_source_path, errors='ignore') as f:
+                asset_contents = f.read()
+
+            asset_source_dir = os.path.dirname(asset_source_path)
+            for texture_basename in os.listdir(asset_source_dir):
+                if texture_basename.endswith('.png') or texture_basename.endswith('.jpg'):
+                    if texture_basename[:-4] in asset_contents:
+                        texture_path = path.join(asset_source_dir, texture_basename)
+                        if texture_path not in bundled_assets:
+                            yield bundle_asset(texture_path)
+
+    with open(path.join(temp_dir, 'readme.txt'), 'w') as f:
+        f.write(
+            'Thanks for downloading {}! To install, merge the "data" folder with the one in your PQ home folder - '
+            'or use CLIMB, the Custom Level Installer for Marble Blast, by going to tinyurl.com/getclimb.'.format(mission.info.name)
+        )
+
+    zip_name = mission.info.name.replace(':', '')
+    yield '\nArchiving to "{}.zip"... '.format(path.join(dest_dir, zip_name))
+    shutil.make_archive(path.join(dest_dir, zip_name), 'zip', path.join(temp_dir))
+    shutil.rmtree(temp_dir, ignore_errors=True)
+    yield 'done!'
