@@ -6,8 +6,8 @@ def join(*args):
 
 
 def platinum(*subpaths):
-    if len(subpaths) > 0 and len(subpaths[0]) > 1 and subpaths[0][0] == '~':
-        return platinum(*(subpaths[0][2:], *subpaths[1:]))
+    if len(subpaths) > 0 and (subpaths[0].startswith('~/') or subpaths[0].startswith('platinum/')):
+        return platinum(*(subpaths[0].split('/', 1)[1], *subpaths[1:]))
     return (
         join(os.getenv('APPDATA'), 'PlatinumQuest/platinum', *subpaths)
         if platform.system() == 'Windows' else
@@ -16,7 +16,7 @@ def platinum(*subpaths):
 
 
 def relative(*paths):
-    return '~/' + join(*paths).split('platinum/', 1)[1]
+    return '~/' + str(join(*paths).split('platinum/', 1)[1])
 
 
 def tests():
