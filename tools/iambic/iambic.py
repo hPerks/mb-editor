@@ -41,10 +41,11 @@ mission = Mission.normal(
 mission.next_y = 4.0
 
 
-def export(name, size, brush_maker, offset=0):
+def export(brush_maker, name, center, size):
     print('export', name)
-    mission.add(Interior.local('iambic/' + name, position=Vector3D.j * (mission.next_y + size / 2 + offset)))
-    mission.next_y += size + 2
+    if 'trim' in name or 'white' in name:
+        mission.add(Interior.local('iambic/' + name, position=Vector3D.j * (mission.next_y + size / 2 - center)))
+        mission.next_y += size + 2
     if not os.path.exists(path.platinum('data/interiors_pq/custom/iambic', name + '.dif')):
         brushes = flatlist(brush_maker())
         return Map(
@@ -57,7 +58,6 @@ def export(name, size, brush_maker, offset=0):
 
 def trim(axis, size):
     return export(
-        'trim/trim_{}{}'.format(axis, '' if size == 0 else size), size * 2 if axis == 'y' else 0.5,
         lambda: Brush.make_cube(
             center=(0, 0, -size if axis == 'z' else -0.25),
             size=(
@@ -69,13 +69,15 @@ def trim(axis, size):
                 )
             ),
             texture=Texture.edge
-        )
+        ),
+        name='trim/trim_{}{}'.format(axis, '' if size == 0 else size),
+        center=0,
+        size=size * 2 if axis == 'y' else 0.5
     )
 
 
 def ramptrim(axis, size, slope):
     return export(
-        'trim/trim_{}{}_slope{}'.format(axis, '' if size == 0 else size, int(slope * 100)), size * 2,
         lambda: Brush.make_cube(
             center=(0, 0, -0.25 - slope * (size if axis == 'y' else 0.25)),
             size=(
@@ -87,17 +89,20 @@ def ramptrim(axis, size, slope):
         ).move_face(
             'back',
             (0, 0, slope * (size * 2 if axis == 'y' else 0.5))
-        )
+        ),
+        name='trim/trim_{}{}_slope{}'.format(axis, '' if size == 0 else size, int(slope * 100)),
+        center=0,
+        size=size * 2 if axis == 'y' else 0.5
     )
 
 
-def ramptrim_bottom(size, slope):
+def ramptrim_bottom(slope):
     def make():
         brushes = []
-        z = -0.25 - slope * (size + 1)
+        z = -0.25 - slope
         for i in range(1, 5):
             brush = Brush.make_cube(
-                center=(0, -2.25 - size + 0.5 * i, z),
+                center=(0, -2.25 + 0.5 * i, z),
                 size=(0.5, 0.5, 0.5),
                 texture=Texture.edge
             ).move_face('back', (0, 0, i * slope * 0.1))
@@ -105,16 +110,21 @@ def ramptrim_bottom(size, slope):
             brushes.append(brush)
         return brushes
 
-    return export('trim/trim_y{}_slope{}_bottom'.format(size, int(slope * 100)), 2, make, offset=size + 1)
+    return export(
+        make,
+        'trim/trim_slope{}_bottom'.format(int(slope * 100)),
+        center=-1,
+        size=2
+    )
 
 
-def ramptrim_top(size, slope):
+def ramptrim_top(slope):
     def make():
         brushes = []
-        z = -0.25 + slope * (size + 1)
+        z = -0.25 + slope
         for i in range(1, 5):
             brush = Brush.make_cube(
-                center=(0, 2.25 + size - 0.5 * i, z),
+                center=(0, 2.25 - 0.5 * i, z),
                 size=(0.5, 0.5, 0.5),
                 texture=Texture.edge
             ).move_face('front', (0, 0, -i * slope * 0.1))
@@ -122,43 +132,51 @@ def ramptrim_top(size, slope):
             brushes.append(brush)
         return brushes
 
-    return export('trim/trim_y{}_slope{}_top'.format(size, int(slope * 100)), 2, make, offset=-size - 1)
+    return export(
+        make,
+        'trim/trim_slope{}_top'.format(int(slope * 100)),
+        center=1,
+        size=2
+    )
 
 
 def ring(size):
     return export(
-        'ring/ring_{}x{}'.format(size, size), 0.5,
         lambda: Brush.make_slices(
             axis='y',
-            center=(0, 0, -size - 0.5),
+            center=(0, 0, size),
             size=(size * 2 + 1, 0.5, size * 2 + 1),
             inner_size=(size * 2, 0.5, size * 2),
             step_angle=9,
             texture=Texture.edge,
             justify=4
-        )
+        ),
+        name='ring/ring_{}x{}'.format(size, size),
+        center=0,
+        size=0.5
     )
 
 
 def halfring(size):
     return export(
-        'halfring/halfring_{}x{}'.format(size, size), 0.5,
         lambda: Brush.make_slices(
             axis='y',
-            center=(0, 0, 0),
+            center=(0, 0, size),
             size=(size * 2 + 1, 0.5, size * 2 + 1),
             inner_size=(size * 2, 0.5, size * 2),
             end_angle=180,
             step_angle=9,
             texture=Texture.edge,
             justify=2
-        )
+        ),
+        name='halfring/halfring_{}x{}'.format(size, size),
+        center=0,
+        size=0.5
     )
 
 
 def quarterring(size):
     return export(
-        'quarterring/quarterring_{}x{}'.format(size, size), size + 0.5,
         lambda: Brush.make_slices(
             axis='x',
             center=(0, 0, size),
@@ -169,13 +187,14 @@ def quarterring(size):
             texture=Texture.edge,
             justify=1
         ),
-        offset=-size / 2 - 0.25
+        name='quarterring/quarterring_{}x{}'.format(size, size),
+        center=size / 2 + 0.25,
+        size=size + 0.5
     )
 
 
 def platform(texture, width, length):
     return export(
-        'platform/platform_{}_{}x{}'.format(texture, width, length), length * 2,
         lambda: Brush.make_cube(
             center='0 0 -0.25',
             size=(width * 2, length * 2, 0.5),
@@ -183,13 +202,15 @@ def platform(texture, width, length):
                 'z': floor_textures[texture],
                 'side': Texture.edge,
             }
-        )
+        ),
+        name='platform/platform_{}_{}x{}'.format(texture, width, length),
+        center=0,
+        size=length * 2
     )
 
 
 def wall(texture, width, height):
     return export(
-        'wall/wall_{}_{}x{}'.format(texture, width, height), 0.5,
         lambda: Brush.make_cube(
             center=(0, 0, -height),
             size=(
@@ -201,13 +222,15 @@ def wall(texture, width, height):
                 'all': Texture.edge,
                 'y': wall_textures[texture]
             }
-        )
+        ),
+        name='wall/wall_{}_{}x{}'.format(texture, width, height),
+        center=0,
+        size=0.5
     )
 
 
 def ramp(texture, size, slope):
     return export(
-        'ramp/ramp_{}_{}x{}_slope{}'.format(texture, size, size, int(slope * 100)), size * 2,
         lambda: Brush.make_cube(
             center=(0, 0, -0.25 - slope * size),
             size=(size * 2, size * 2, 0.5),
@@ -218,70 +241,84 @@ def ramp(texture, size, slope):
         ).move_face(
             'back',
             (0, 0, slope * size * 2)
-        )
+        ),
+        name='ramp/ramp_{}_{}x{}_slope{}'.format(texture, size, size, int(slope * 100)),
+        center=0,
+        size=size * 2
     )
 
 
 def ramp_bottom(texture, size, slope):
     def make():
         brushes = []
-        z = -0.25 - slope * (size + 1)
+        z = -0.25 - slope
         for i in range(1, 5):
             brush = Brush.make_cube(
-                center=(0, -2.25 - size + 0.5 * i, z),
+                center=(0, -2.25 + 0.5 * i, z),
                 size=(size * 2, 0.5, 0.5),
                 texture={
                     'z': floor_textures[texture],
                     'side': Texture.edge,
                 },
                 origin={
-                    'z': (-size, -size, 0)
+                    'z': (-size, 0, 0)
                 },
             ).move_face('back', (0, 0, i * slope * 0.1))
             z += i * slope * 0.1
             brushes.append(brush)
         return brushes
 
-    return export('ramp/ramp_{}_{}x{}_slope{}_bottom'.format(texture, size, size, int(slope * 100)), 2, make, offset=size + 1)
+    return export(
+        make,
+        'ramp/ramp_{}_{}x{}_slope{}_bottom'.format(texture, size, size, int(slope * 100)),
+        center=-1,
+        size=2
+    )
 
 
 def ramp_top(texture, size, slope):
     def make():
         brushes = []
-        z = -0.25 + slope * (size + 1)
+        z = -0.25 + slope
         for i in range(1, 5):
             brush = Brush.make_cube(
-                center=(0, 2.25 + size - 0.5 * i, z),
+                center=(0, 2.25 - 0.5 * i, z),
                 size=(size * 2, 0.5, 0.5),
                 texture={
                     'z': floor_textures[texture],
                     'side': Texture.edge,
                 },
                 origin={
-                    'z': (-size, -size, 0)
+                    'z': (-size, 0, 0)
                 },
             ).move_face('front', (0, 0, -i * slope * 0.1))
             z -= i * slope * 0.1
             brushes.append(brush)
         return brushes
 
-    return export('ramp/ramp_{}_{}x{}_slope{}_top'.format(texture, size, size, int(slope * 100)), 2, make, offset=-size - 1)
+    return export(
+        make,
+        name='ramp/ramp_{}_{}x{}_slope{}_top'.format(texture, size, size, int(slope * 100)),
+        center=1,
+        size=2
+    )
 
 
 def cube(texture, size):
     return export(
-        'cube/cube_{}_{}x{}x{}'.format(texture, size, size, size), size * 2,
         lambda: Brush.make_cube(
             center=(0, 0, -size),
             size=(size * 2, size * 2, size * 2),
             texture=floor_textures[texture]
-        )
+        ),
+        name='cube/cube_{}_{}x{}x{}'.format(texture, size, size, size),
+        center=0,
+        size=size * 2
     )
 
 
 def circle(texture, size):
     return export(
-        'circle/circle_{}_{}x{}'.format(texture, size, size), size * 2,
         lambda: Brush.make_prism(
             sides=40,
             center=(0, 0, -0.25),
@@ -291,36 +328,40 @@ def circle(texture, size):
                 'side': Texture.edge
             },
             justify=4
-        )
+        ),
+        name='circle/circle_{}_{}x{}'.format(texture, size, size),
+        center=0,
+        size=size * 2
     )
 
 
-def pipe(texture, size):
+def pipe(texture, size, length):
     return export(
-        'pipe/pipe_{}_{}x{}x{}'.format(texture, size, size, size), size * 2,
         lambda: Brush.make_slices(
             axis='y',
-            center=(0, 0, -size - 0.5),
-            size=(size * 2 + 1, size * 2, size * 2 + 1),
-            inner_size=(size * 2, size * 2, size * 2),
+            center=(0, 0, size),
+            size=(size * 2 + 1, length * 2, size * 2 + 1),
+            inner_size=(size * 2, length * 2, size * 2),
             step_angle=9,
             texture={
                 'side': floor_textures[texture],
                 'z': Texture.edge,
             },
             justify=4
-        )
+        ),
+        name='pipe/pipe_{}_{}x{}x{}'.format(texture, size, size, length),
+        center=0,
+        size=length * 2
     )
 
 
-def halfpipe(texture, size):
+def halfpipe(texture, size, length):
     return export(
-        'halfpipe/halfpipe_{}_{}x{}x{}'.format(texture, size, size, size), size * 2,
         lambda: Brush.make_slices(
             axis='y',
-            center=(0, 0, 0),
-            size=(size * 2 + 1, size * 2, size * 2 + 1),
-            inner_size=(size * 2, size * 2, size * 2),
+            center=(0, 0, size),
+            size=(size * 2 + 1, length * 2, size * 2 + 1),
+            inner_size=(size * 2, length * 2, size * 2),
             end_angle=180,
             step_angle=9,
             texture={
@@ -329,18 +370,20 @@ def halfpipe(texture, size):
                 'z': Texture.edge,
             },
             justify=2
-        )
+        ),
+        name='halfpipe/halfpipe_{}_{}x{}x{}'.format(texture, size, size, length),
+        center=0,
+        size=length * 2
     )
 
 
-def quarterpipe(texture, size):
+def quarterpipe(texture, size, length):
     return export(
-        'quarterpipe/quarterpipe_{}_{}x{}x{}'.format(texture, size, size, size), size + 0.5,
         lambda: Brush.make_slices(
             axis='x',
             center=(0, 0, size),
-            size=(size * 2, size * 2 + 1, size * 2 + 1),
-            inner_size=(size * 2, size * 2, size * 2),
+            size=(length * 2, size * 2 + 1, size * 2 + 1),
+            inner_size=(length * 2, size * 2, size * 2),
             end_angle=90,
             step_angle=9,
             texture={
@@ -350,7 +393,81 @@ def quarterpipe(texture, size):
             },
             justify=1
         ),
-        offset=-size / 2 - 0.25
+        name='quarterpipe/quarterpipe_{}_{}x{}x{}'.format(texture, size, size, length),
+        center=size / 2 + 0.25,
+        size=size + 0.5
+    )
+
+
+def pipe_corner(texture, size, direction):
+    def make():
+        brushes = Brush.make_slices(
+            axis='y',
+            center=(0, -1, size),
+            size=(size * 2 + 1, size * 2 + 2, size * 2 + 1),
+            inner_size=(size * 2, size * 2 + 2, size * 2),
+            step_angle=9,
+            texture={
+                'side': floor_textures[texture],
+                'z': Texture.edge,
+            },
+            justify=4
+        )
+        for brush in brushes:
+            for vertex_index in brush.face('bottom').vertex_indices:
+                vertex = brush.vertices[vertex_index]
+                y_offset = (
+                    -abs(vertex.x) if direction == 'leftright' else
+                    vertex.x if direction == 'left' else
+                    -vertex.x
+                ) - size
+                brush.move_vertex(vertex_index, (0, y_offset, 0))
+            for face_name in ['inside', 'outside']:
+                brush.face(face_name).skew = '0 0'
+        return brushes
+
+    return export(
+        make,
+        name='pipe/pipe_{}_{}x{}x{}_corner_{}'.format(texture, size, size, size, direction),
+        center=-1 - size / 2 * (direction == 'leftright'),
+        size=size * 2 + 2 - size * (direction == 'leftright')
+    )
+
+
+def halfpipe_corner(texture, size, direction):
+    def make():
+        brushes = Brush.make_slices(
+            axis='y',
+            center=(0, -1, size),
+            size=(size * 2 + 1, size * 2 + 2, size * 2 + 1),
+            inner_size=(size * 2, size * 2 + 2, size * 2),
+            end_angle=180,
+            step_angle=9,
+            texture={
+                'r': floor_textures[texture],
+                'theta': Texture.edge,
+                'z': Texture.edge,
+            },
+            justify=2
+        )
+        for brush in brushes:
+            for vertex_index in brush.face('bottom').vertex_indices:
+                vertex = brush.vertices[vertex_index]
+                y_offset = (
+                    -abs(vertex.x) if direction == 'leftright' else
+                    vertex.x if direction == 'left' else
+                    -vertex.x
+                ) - size
+                brush.move_vertex(vertex_index, (0, y_offset, 0))
+            for face_name in ['inside', 'outside', 'start', 'end']:
+                brush.face(face_name).skew = '0 0'
+        return brushes
+
+    return export(
+        make,
+        name='halfpipe/halfpipe_{}_{}x{}x{}_corner_{}'.format(texture, size, size, size, direction),
+        center=-1 - size / 2 * (direction == 'leftright'),
+        size=size * 2 + 2 - size * (direction == 'leftright')
     )
 
 
@@ -365,11 +482,12 @@ if __name__ == '__main__':
             for slope in [0.25, 0.5, 0.75]:
                 for axis in 'xy':
                     ramptrim(axis, size, slope)
-                ramptrim_bottom(size, slope)
-                ramptrim_top(size, slope)
         ring(size)
         halfring(size)
         quarterring(size)
+    for slope in [0.25, 0.5, 0.75]:
+        ramptrim_bottom(slope)
+        ramptrim_top(slope)
     for texture in ['white', 'red', 'yellow', 'blue']:
         for width in [1, 2, 3, 4, 6, 8, 12, 16]:
             if width <= 6:
@@ -387,9 +505,14 @@ if __name__ == '__main__':
             else:
                 platform(texture, width, width)
             circle(texture, width)
-            pipe(texture, width)
-            halfpipe(texture, width)
-            quarterpipe(texture, width)
+            for length in {1, width}:
+                pipe(texture, width, length)
+                halfpipe(texture, width, length)
+                quarterpipe(texture, width, length)
+            if width <= 6:
+                for direction in ['left', 'right', 'leftright']:
+                    pipe_corner(texture, width, direction)
+                    halfpipe_corner(texture, width, direction)
     for texture in ['bouncy', 'grass', 'ice', 'mud', 'sand', 'space', 'water']:
         for width in [1, 2, 3]:
             platform(texture, width, width)
