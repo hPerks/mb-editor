@@ -14,7 +14,7 @@ def is_list_of_tuples(list):
     return all(isinstance(item, tuple) for item in list)
 
 
-def drange(*args):
+def drange(*args, include_end=False):
     if len(args) == 3:
         start, stop, step = tuple(args)
     elif len(args) == 2:
@@ -28,6 +28,9 @@ def drange(*args):
     while r < stop - 0.000000001:
         yield r
         r += step
+
+    if include_end and r < stop + 0.000000001:
+        yield r
 
 
 def first(filter, list):

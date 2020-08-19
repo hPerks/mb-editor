@@ -335,6 +335,46 @@ def circle(texture, size):
     )
 
 
+def halfcircle(texture, size):
+    return export(
+        lambda: Brush.make_prism(
+            sides=40,
+            center=(0, 0, -0.25),
+            size=(size * 2, size * 2, 0.5),
+            start_angle=180,
+            end_angle=360,
+            texture={
+                'z': floor_textures[texture],
+                'side': Texture.edge
+            },
+            justify=2
+        ),
+        name='halfcircle/halfcircle_{}_{}x{}'.format(texture, size, size),
+        center=size / 2,
+        size=size
+    )
+
+
+def quartercircle(texture, size):
+    return export(
+        lambda: Brush.make_prism(
+            sides=40,
+            center=(0, 0, -0.25),
+            size=(size * 2, size * 2, 0.5),
+            start_angle=270,
+            end_angle=360,
+            texture={
+                'z': floor_textures[texture],
+                'side': Texture.edge
+            },
+            justify=1
+        ),
+        name='quartercircle/quartercircle_{}_{}x{}'.format(texture, size, size),
+        center=size / 2,
+        size=size
+    )
+
+
 def pipe(texture, size, length):
     return export(
         lambda: Brush.make_slices(
@@ -505,6 +545,8 @@ if __name__ == '__main__':
             else:
                 platform(texture, width, width)
             circle(texture, width)
+            halfcircle(texture, width)
+            quartercircle(texture, width)
             for length in {1, width}:
                 pipe(texture, width, length)
                 halfpipe(texture, width, length)

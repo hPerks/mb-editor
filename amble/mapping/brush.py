@@ -22,6 +22,8 @@ class Brush(ScriptObject):
         sides=0,
         center=Vector3D.zero,
         size=Vector3D.one,
+        start_angle=0,
+        end_angle=360,
     )
 
     def __init__(self, manual_faces=None, **fields):
@@ -64,9 +66,17 @@ class Brush(ScriptObject):
                     self.center.y + self.size.y / 2 * (Rotation3D.k(angle) * Vector3D.i).y,
                     z
                 )
-                for angle in drange(0, 360, 360 / self.sides)
+                for angle in drange(
+                    self.start_angle, self.end_angle, 360 / self.sides,
+                    include_end=(self.end_angle - self.start_angle <= 180),
+                )
                 for z in [self.center.z + self.size.z / 2, self.center.z - self.size.z / 2]
-            ]
+            ] + (
+                [
+                    Vector3D(self.center.x, self.center.y, z)
+                    for z in [self.center.z + self.size.z / 2, self.center.z - self.size.z / 2]
+                ] if self.end_angle - self.start_angle < 180 else []
+            )
         elif self.model == 'slice':
             if self.inner_size.x == 0 or self.inner_size_y == 0:
                 return [
@@ -187,35 +197,48 @@ class Brush(ScriptObject):
         return cube
 
     @classmethod
-    def make_prism(cls, sides=3, axis='z', center=Vector3D.zero, size=Vector3D.one, **face_attributes):
+    def make_prism(cls, sides=3, axis='z', center=Vector3D.zero, size=Vector3D.one, start_angle=0, end_angle=360, **face_attributes):
         center, size = Vector3D(center), Vector3D(size).on_axis(axis)
+
+        delta_angle = end_angle - start_angle
+        effective_sides = sides * delta_angle // 360 + (delta_angle <= 180) + (delta_angle < 180)
 
         prism = cls(
             model='prism',
             sides=sides,
             center=center,
             size=size,
+            start_angle=start_angle,
+            end_angle=end_angle,
 
             face_groups={
                 'z': ['top', 'bottom'],
-                'side': ['side{}'.format(side) for side in range(sides)],
-                'all': ['side{}'.format(side) for side in range(sides)] + ['top', 'bottom'],
+                'side': ['side{}'.format(side) for side in range(effective_sides)],
+                'all': ['side{}'.format(side) for side in range(effective_sides)] + ['top', 'bottom'],
             }
         )
 
-        for side in range(sides):
+        for side in range(effective_sides):
             prism.face('side{}'.format(side)).vertex_indices = [
-                (2 * side + 2) % (2 * sides),
+                (2 * side + 2) % (2 * effective_sides),
                 2 * side,
                 2 * side + 1,
-                (2 * side + 3) % (2 * sides)
+                (2 * side + 3) % (2 * effective_sides)
             ]
-            prism.face('side{}'.format(side)).normal = ((Rotation3D.k((side + 0.5) * 360 / sides) * Vector3D.i) / size).normalized()
 
-        prism.face('top').vertex_indices = [2 * side for side in range(sides)]
-        prism.face('bottom').vertex_indices = [2 * side + 1 for side in range(sides - 1, -1, -1)]
+            if delta_angle < 180 and side == effective_sides - 2:
+                angle = start_angle + (side * 360 / sides) + 90
+            elif delta_angle <= 180 and side == effective_sides - 1:
+                angle = start_angle + 270
+            else:
+                angle = start_angle + (side + 0.5) * 360 / sides
+            prism.face('side{}'.format(side)).normal = ((Rotation3D.k(angle) * Vector3D.i) / size).normalized()
+
+        prism.face('top').vertex_indices = [2 * side for side in range(effective_sides)]
+        prism.face('bottom').vertex_indices = [2 * side + 1 for side in range(effective_sides - 1, -1, -1)]
         prism.face('top').normal = Vector3D.k
         prism.face('bottom').normal = -Vector3D.k
+        prism.face('z').origin = center
         prism.face('z').skew = '0 0'
 
         prism._set_face_attributes(**face_attributes)
@@ -236,7 +259,7 @@ class Brush(ScriptObject):
 
         prism.face('side0').align('bottom left' if axis == 'x' else 'top left' if axis == 'y' else 'top right')
         Faces.unify(
-            [prism.face('side{}'.format(side)) for side in range(sides)],
+            [prism.face('side{}'.format(side)) for side in range(sides * delta_angle // 360)],
             justify=face_attributes['justify'] if 'justify' in face_attributes else True
         )
 
@@ -400,6 +423,12 @@ class Brush(ScriptObject):
         assert p.face('top').skew == '0 0'
         assert p.face('side0').scale == '0.9626350356771984 1'
         assert p.face('side1').shift == '-1.7264992203753446 0'
+
+        pp = Brush.make_prism(sides=16, axis='z', size='4 4 4', start_angle=90, end_angle=270, texture=scaled_edge)
+        print(pp)
+
+        ppp = Brush.make_prism(sides=16, axis='z', size='4 4 4', start_angle=135, end_angle=225, texture=scaled_edge)
+        print(ppp)
 
         s = Brush.make_slice(axis='x', center='0 0 -0.5', size='1 2 4', inner_size='1 1 2', start_angle=45, end_angle=90, texture=scaled_edge)
         assert len(s.vertices) == 8
