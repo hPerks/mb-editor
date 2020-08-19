@@ -186,14 +186,12 @@ def bundle(mission_file, dest_dir):
         asset_dest_path = path.join(temp_dir, path.relative(asset_source_path)[2:])
 
         os.makedirs(os.path.dirname(asset_dest_path), mode=0o777, exist_ok=True)
-        try:
-            shutil.copyfile(asset_source_path, asset_dest_path)
-        except PermissionError:
-            return 'Denied permissions for asset {}\n'.format(path.relative(asset_source_path))
+        shutil.copyfile(asset_source_path, asset_dest_path)
 
         bundled_assets.add(asset_source_path)
-        return 'Bundled asset: {}\n'.format(path.relative(asset_source_path))
+        return '{}\n'.format(path.relative(asset_source_path))
 
+    yield 'Bundled asset(s):\n'
     bundled_assets = set()
 
     for descendant in mission.descendants():
