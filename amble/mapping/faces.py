@@ -232,9 +232,10 @@ class Faces(Cached):
 
         for i in range(len(faces) - 1):
             with faces[i].cached, faces[i + 1].cached:
-                vertex = faces[i].shared_vertices(faces[i + 1])[0]
-                uvw = faces[i].to_uvw(vertex)
-                new_origin = faces[i + 1].from_uvw(-uvw) - faces[i + 1].origin + vertex
+                vertices = faces[i].shared_vertices(faces[i + 1])
+                pivot_point = sum(vertices) / len(vertices)
+                uvw = faces[i].to_uvw(pivot_point)
+                new_origin = faces[i + 1].from_uvw(-uvw) - faces[i + 1].origin + pivot_point
             faces[i + 1].origin = new_origin
 
         return self

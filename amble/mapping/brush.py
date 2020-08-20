@@ -308,11 +308,19 @@ class Brush(ScriptObject):
         slice.face('top').normal = Vector3D.k
         slice.face('bottom').normal = -Vector3D.k
 
+        slice.face('z').skew = '0 0'
+
         if has_inside:
             inner_size.z = 1
             slice.face('inside').normal = ((Rotation3D.k(mean_of_angles(start_angle, end_angle)) * -Vector3D.i) / inner_size).normalized()
 
-        slice.face('z').skew = '0 0'
+            for face_name in ['top', 'bottom']:
+                slice.face(face_name).tangent = slice.face(face_name).middle_bisector.normalized()
+            slice.face('top').origin = slice.face('top').vertices[0]
+            slice.face('bottom').origin = slice.face('bottom').vertices[1]
+        else:
+            for face_name in ['top', 'bottom']:
+                slice.face(face_name).origin = center
 
         slice._set_face_attributes(**face_attributes)
 
@@ -342,9 +350,11 @@ class Brush(ScriptObject):
             for angle in drange(start_angle, end_angle, step_angle)
         ]
 
-        for slice in slices:
-            del slice.face('top')._origin, slice.face('bottom')._origin
-            slice.face('z').origin = center
+        for face_name in ['top', 'bottom']:
+            Faces.unify(
+                [slice.face(face_name) for slice in slices],
+                justify=face_attributes['justify'] if 'justify' in face_attributes else True
+            )
 
         slices[0].face('outside').align('bottom left' if axis == 'x' else 'top left' if axis == 'y' else 'top right')
         Faces.unify(

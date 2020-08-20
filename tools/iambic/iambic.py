@@ -327,6 +327,9 @@ def circle(texture, size):
                 'z': floor_textures[texture],
                 'side': Texture.edge
             },
+            origin={
+                'z': (-size, size, 0)
+            },
             justify=4
         ),
         name='circle/circle_{}_{}x{}'.format(texture, size, size),
@@ -347,6 +350,9 @@ def halfcircle(texture, size):
                 'z': floor_textures[texture],
                 'side': Texture.edge
             },
+            origin={
+                'z': (-size, size, 0)
+            },
             justify=2
         ),
         name='halfcircle/halfcircle_{}_{}x{}'.format(texture, size, size),
@@ -366,6 +372,9 @@ def quartercircle(texture, size):
             texture={
                 'z': floor_textures[texture],
                 'side': Texture.edge
+            },
+            origin={
+                'z': (-size, size, 0)
             },
             justify=1
         ),
