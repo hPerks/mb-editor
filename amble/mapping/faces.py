@@ -38,6 +38,15 @@ class Faces(Cached):
                     pass
         raise AttributeError
 
+    def list(self):
+        for group_name, face_names in self.brush.face_groups.items():
+            if self.name == group_name:
+                return [self.brush.face(face_name) for face_name in face_names]
+        return [self]
+
+    def __getitem__(self, item):
+        return self.list()[item]
+
     def __repr__(self):
         with self.cached:
             return (

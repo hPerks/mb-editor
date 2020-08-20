@@ -117,8 +117,8 @@ class Map(SimGroup):
                 'from amble.mapping.brush import Brush\n'
                 'from amble.mapping.texture import Texture\n'
             ),
-            number=10
-        ) < 20
+            number=100
+        ) < 12
 
 
 if __name__ == '__main__':
