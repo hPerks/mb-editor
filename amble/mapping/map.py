@@ -83,16 +83,6 @@ class Map(SimGroup):
                 center=[0, 0, -0.25],
                 size=[4, 4, 0.5],
                 texture={'all': Texture.hot1, 'side': Texture.edge}
-            ),
-            Map(
-                Brush.make_cube(
-                    texture={'all': Texture.hot1, 'side': Texture.edge}
-                ).copies(
-                    ('center', 'size'),
-                    '-4 6 -0.25', '4 4 0.5',
-                    '0 6 -0.25', '4 4 0.5',
-                    '4 6 -0.25', '4 4 0.5'
-                )
             )
         )
 
