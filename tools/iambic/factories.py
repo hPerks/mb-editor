@@ -33,7 +33,7 @@ wall_textures = {
 def trim_cube(slope=None, **kwargs):
     slope = slope or 0
     return lambda: Brush.make_cube(
-        center='0 0 -0.25',
+        center=(0, 0, -0.25 - slope / 100 * 0.25),
         size='0.5 0.5 0.5',
         texture=Texture.edge
     ).move_face(
