@@ -24,7 +24,8 @@ def name(factory, **kwargs):
         ) +
         ('_slope' + str(kwargs['slope']) if 'slope' in kwargs else '') +
         ('_' + kwargs['part'] if 'part' in kwargs else '') +
-        ('_' + kwargs['direction'] if 'direction' in kwargs else '')
+        ('_' + kwargs['direction'] if 'direction' in kwargs else '') +
+        ('_hole' + str(kwargs['hole_x']) + 'x' + str(kwargs['hole_y']) if 'hole_x' in kwargs else '')
     )
 
 

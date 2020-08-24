@@ -190,56 +190,117 @@ def cube(texture, x, y, z, **kwargs):
     )
 
 
-def circle(texture, x, y, **kwargs):
-    return lambda: Brush.make_prism(
-        sides=40,
-        center=(0, 0, -0.25),
-        size=(x * 2, y * 2, 0.5),
-        texture={
-            'z': floor_textures[texture],
-            'side': Texture.edge
-        },
-        origin={
-            'z': (-x, y, 0)
-        },
-        justify=4
-    )
+def circle(texture, x, y, hole_x=None, hole_y=None, **kwargs):
+    if hole_x is None:
+        return lambda: Brush.make_prism(
+            sides=40,
+            center=(0, 0, -0.25),
+            size=(x * 2, y * 2, 0.5),
+            texture={
+                'z': floor_textures[texture],
+                'side': Texture.edge
+            },
+            origin={
+                'z': (-x, y, 0)
+            },
+            justify=4
+        )
+    else:
+        return lambda: Brush.make_slices(
+            axis='z',
+            center=(0, 0, -0.25),
+            size=(x * 2, y * 2, 0.5),
+            inner_size=(hole_x * 2, hole_y * 2, 0.5),
+            step_angle=9,
+            texture={
+                'z': floor_textures[texture],
+                'side': Texture.edge
+            },
+            origin={
+                'z': (-x, y, 0)
+            },
+            justify={
+                'r': 4
+            }
+        )
 
 
-def halfcircle(texture, x, y, **kwargs):
-    return lambda: Brush.make_prism(
-        sides=40,
-        center=(0, 0, -0.25),
-        size=(x * 2, y * 2, 0.5),
-        start_angle=180,
-        end_angle=360,
-        texture={
-            'z': floor_textures[texture],
-            'side': Texture.edge
-        },
-        origin={
-            'z': (-x, y, 0)
-        },
-        justify=2
-    )
+def halfcircle(texture, x, y, hole_x=None, hole_y=None, **kwargs):
+    if hole_x is None:
+        return lambda: Brush.make_prism(
+            sides=40,
+            center=(0, 0, -0.25),
+            size=(x * 2, y * 2, 0.5),
+            start_angle=180,
+            end_angle=360,
+            texture={
+                'z': floor_textures[texture],
+                'side': Texture.edge
+            },
+            origin={
+                'z': (-x, y, 0)
+            },
+            justify=2
+        )
+    else:
+        return lambda: Brush.make_slices(
+            axis='z',
+            center=(0, 0, -0.25),
+            size=(x * 2, y * 2, 0.5),
+            inner_size=(hole_x * 2, hole_y * 2, 0.5),
+            start_angle=180,
+            end_angle=360,
+            step_angle=9,
+            texture={
+                'z': floor_textures[texture],
+                'side': Texture.edge
+            },
+            origin={
+                'z': (-x, y, 0)
+            },
+            justify={
+                'r': 2
+            }
+        )
 
 
-def quartercircle(texture, x, y, **kwargs):
-    return lambda: Brush.make_prism(
-        sides=40,
-        center=(0, 0, -0.25),
-        size=(x * 2, y * 2, 0.5),
-        start_angle=270,
-        end_angle=360,
-        texture={
-            'z': floor_textures[texture],
-            'side': Texture.edge
-        },
-        origin={
-            'z': (-x, y, 0)
-        },
-        justify=1
-    )
+def quartercircle(texture, x, y, hole_x=None, hole_y=None, **kwargs):
+    if hole_x is None:
+        return lambda: Brush.make_prism(
+            sides=40,
+            center=(0, 0, -0.25),
+            size=(x * 2, y * 2, 0.5),
+            start_angle=270,
+            end_angle=360,
+            texture={
+                'z': floor_textures[texture],
+                'side': Texture.edge
+            },
+            origin={
+                'z': (-x, y, 0)
+            },
+            justify=1
+        )
+    else:
+        return lambda: Brush.make_slices(
+            axis='z',
+            center=(0, 0, -0.25),
+            size=(x * 2, y * 2, 0.5),
+            inner_size=(hole_x * 2, hole_y * 2, 0.5),
+            start_angle=270,
+            end_angle=360,
+            step_angle=9,
+            texture={
+                'z': floor_textures[texture],
+                'side': Texture.edge
+            },
+            origin={
+                'z': (-x, y, 0)
+            },
+            justify={
+                'r': 1
+            }
+        )
 
 
 def pipe(texture, x, y, z, part=None, direction=None, **kwargs):

@@ -87,18 +87,26 @@ for width in [1, 2, 3, 4, 6]:
             add(trim, axis='x', length=width, slope=slope, offset_y=0.25, offset_z=0.25 * slope / 100, advance_y=0.5 + gap, advance_z=(0.5 + gap) * slope / 100)
             add(ramp, texture=texture, x=width, y=width, slope=slope, offset_y=width, offset_z=width * slope / 100, advance_y=2 * width + gap, advance_z=(2 * width + gap) * slope / 100)
             add(ramp, texture=texture, x=width, y=width, slope=slope, part='top', offset_y=0, offset_z=0, advance_y=2 + gap, advance_z=slope / 100)
-        add(ramp, texture='blue', x=width, y=width, slope=75, part='top', offset_y=2, offset_z=-75 / 100, advance_y=2 + gap, advance_z=-(1 + gap) * 75 / 100, rotation='0 0 1 180')
+        add(ramp, texture=texture, x=width, y=width, slope=75, part='top', offset_y=2, offset_z=-75 / 100, advance_y=2 + gap, advance_z=-(1 + gap) * 75 / 100, rotation='0 0 1 180')
         add(trim, axis='x', length=width, slope=75, offset_y=0.25, offset_z=-0.25 * 75 / 100, advance_y=0.5 + gap, advance_z=-(0.5 + gap) * 75 / 100, rotation='0 0 1 180')
         add(ramp, texture=texture, x=width, y=width, slope=75, offset_y=width, offset_z=-width * 75 / 100, advance_y=2 * width + gap, advance_z=-(2 * width + gap) * 75 / 100, rotation='0 0 1 180')
         add(ramp, texture=texture, x=width, y=width, slope=75, part='bottom', offset_y=0, offset_z=0, advance_y=2 + gap, advance_z=-75 / 100, rotation='0 0 1 180')
 
+        for hole in [4, 2]:
+            if hole <= width - 2:
+                add(quartercircle, texture=texture, x=width, y=width, hole_x=hole, hole_y=hole, offset_z=width - 0.5, advance_y=0.5 + gap, rotation=Rotation3D('-1 0 0 90') + '0 -1 0 135')
         add(quartercircle, texture=texture, x=width, y=width, offset_z=width - 0.5, advance_y=0.5 + gap, rotation=Rotation3D('-1 0 0 90') + '0 -1 0 135')
+        add(quarterring, x=width - 0.5, y=width - 0.5, offset=Rotation3D('0 -1 0 135') * (width - 0.5, 0, 0) + (0, 0.25, width - 0.5), advance_y=0.5 + gap, rotation=Rotation3D('0 0 1 90') + '0 -1 0 45')
         add(quarterring, x=width, y=width, offset=Rotation3D('0 -1 0 135') * (width, 0, 0) + (0, 0.25, width), advance_y=0.5 + gap, rotation=Rotation3D('0 0 1 90') + '0 -1 0 45')
         if width > 1:
             add(quarterpipe, texture=texture, x=width, y=width, z=1, offset=Rotation3D('0 -1 0 135') * (width, 0, 0) + (0, 1, width), advance_y=2 + gap, rotation=Rotation3D('0 0 1 90') + '0 -1 0 45')
         add(quarterpipe, texture=texture, x=width, y=width, z=width, offset=Rotation3D('0 -1 0 135') * (width, 0, 0) + (0, width, width), advance_y=2 * width + gap, rotation=Rotation3D('0 0 1 90') + '0 -1 0 45')
 
+        for hole in [4, 2]:
+            if hole <= width - 2:
+                add(halfcircle, texture=texture, x=width, y=width, hole_x=hole, hole_y=hole, offset_z=width - 0.5, advance_y=0.5 + gap, rotation=Rotation3D('-1 0 0 90') + '0 1 0 180')
         add(halfcircle, texture=texture, x=width, y=width, offset_z=width - 0.5, advance_y=0.5 + gap, rotation=Rotation3D('-1 0 0 90') + '0 1 0 180')
+        add(halfring, x=width - 0.5, y=width - 0.5, offset_y=0.25, advance_y=0.5 + gap)
         add(halfring, x=width, y=width, offset_y=0.25, advance_y=0.5 + gap)
         if width > 1:
             add(halfpipe, texture=texture, x=width, y=width, z=1, offset_y=1, advance_y=2 + gap)
@@ -114,7 +122,11 @@ for width in [1, 2, 3, 4, 6]:
         if width > 1:
             add(pipe, texture=texture, x=width, y=width, z=1, offset_y=1, advance_y=2 + gap, rotation='0 0 1 180')
         add(ring, x=width, y=width, offset_y=0.25, advance_y=0.5 + gap, rotation='0 0 1 180')
-        add(circle, texture=texture, x=width, y=width, offset_z=width - 0.5, advance_y=0.5 + gap, rotation=Rotation3D('-1 0 0 90') + '0 1 0 180')
+        add(ring, x=width - 0.5, y=width - 0.5, offset_y=0.25, advance_y=0.5 + gap, rotation='0 0 1 180')
+        add(circle, texture=texture, x=width, y=width, offset_z=width - 0.5, advance_y=0.5 + gap, rotation='-1 0 0 90')
+        for hole in [2, 4]:
+            if hole <= width - 2:
+                add(circle, texture=texture, x=width, y=width, hole_x=hole, hole_y=hole, offset_z=width - 0.5, advance_y=0.5 + gap, rotation='-1 0 0 90')
 
         add(cube, texture=texture, x=width, y=width, z=width, offset_y=width, offset_z=2 * width - 0.5)
 
