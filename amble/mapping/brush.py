@@ -26,9 +26,9 @@ class Brush(ScriptObject):
         if faces is not None:
             for name, face in faces.items():
                 new_face = Faces(self, name)
-                for attr in Faces.inherited_attrs:
+                for attr in Faces.copied_attrs:
                     if attr in face.__dict__:
-                        new_face.__dict__[attr] = face.__dict__[attr]
+                        setattr(new_face, attr, face.__dict__[attr])
                 self.faces[name] = new_face
 
     def face(self, name):
@@ -282,9 +282,6 @@ class Brush(ScriptObject):
             slice.face('inside').normal = ((Rotation3D.k(mean_of_angles(start_angle, end_angle)) * -Vector3D.i) / inner_size).normalized()
 
         slice.face('z').skew = '0 0'
-        for face in slice.face('z'):
-            face.origin = center
-
         slice._set_face_attributes(**face_attributes)
 
         if axis != 'z':

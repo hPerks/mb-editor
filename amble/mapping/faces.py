@@ -7,7 +7,7 @@ from amble.utils.lists import flatlist
 
 
 class Faces(Cached):
-    inherited_attrs = ['vertex_indices', 'normal', 'texture', 'origin', 'skew', 'rotation', 'scale']
+    copied_attrs = ['vertex_indices', 'normal', 'texture', 'rotation', 'scale', '_origin', '_tangent', '_cotangent', '_skew']
     cached_attrs = [
         'vertices', 'center_bisector', 'middle_bisector', 'tangent',
         'cotangent', 'alignment_vertices', 'tangent_bisector',

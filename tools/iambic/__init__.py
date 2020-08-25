@@ -35,7 +35,7 @@ if __name__ == '__main__':
             for factory in [circle, halfcircle, quartercircle]:
                 export(factory, texture=texture, x=width, y=width)
                 for inner_width in [1, 2, 3, 4, 6]:
-                    if width - 12 <= inner_width * 2 <= width - 2 and width - inner_width * 2 != 10:
+                    if width - 12 <= inner_width * 2 <= width - 1 and width - inner_width * 2 != 10:
                         export(factory, texture=texture, x=width, y=width, hole_x=width - inner_width * 2, hole_y=width - inner_width * 2)
             for factory in [pipe, halfpipe, quarterpipe]:
                 for length in {1, width}:
