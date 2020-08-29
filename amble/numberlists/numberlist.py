@@ -102,8 +102,8 @@ class NumberList:
         basis = [NumberList(basis_vector) for basis_vector in basis]
         rows = [NumberList(row).append(self[i]) for i, row in enumerate(zip(*basis))]
         for i in range(len(rows)):
-            if rows[i][i] == 0:
-                rows[i] += next(row for row in rows if row[i] != 0)
+            if approx_eq(rows[i][i], 0):
+                rows[i] += next(row for row in rows[i + 1:] if not approx_eq(row[i], 0))
             rows[i] /= rows[i][i]
             for j in range(len(rows)):
                 if j != i:
