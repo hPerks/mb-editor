@@ -58,7 +58,7 @@ class Mission(SimGroup):
         string = f.read()
         f.close()
 
-        return cls.from_string(string.split('//--- OBJECT WRITE BEGIN ---\n')[1])
+        return cls.from_string(string.split('//--- OBJECT WRITE BEGIN ---\n')[-1])
 
     @classmethod
     def normal(cls, *args, **fields):

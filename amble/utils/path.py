@@ -2,12 +2,13 @@ import os, platform
 
 
 def join(*args):
-    return os.path.join(*args).replace('\\', '/')
+    return os.path.join(args[0], *[
+        arg[2:] if arg.startswith('~/') else arg
+        for arg in args[1:]
+    ]).replace('\\', '/')
 
 
 def platinum(*subpaths):
-    if len(subpaths) > 0 and (subpaths[0].startswith('~/') or subpaths[0].startswith('platinum/')):
-        return platinum(*(subpaths[0].split('/', 1)[1], *subpaths[1:]))
     return (
         join(os.getenv('APPDATA'), 'PlatinumQuest/platinum', *subpaths)
         if platform.system() == 'Windows' else

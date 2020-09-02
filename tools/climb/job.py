@@ -9,16 +9,24 @@ from amble.mission import Mission
 from amble.utils import path
 
 
-def install(source_zip, mission_dest_dir):
+def install(source_zip, mission_dest_dir, filename_transform=lambda filename: filename.lower()):
+    if 'platinum/' not in mission_dest_dir:
+        yield 'Error: couldn\'t find "platinum" directory'
+        return
+
+    platinum_dir = path.join(mission_dest_dir.split('platinum/')[0], 'platinum')
+
     if not source_zip.endswith('.zip'):
+        yield 'Error: source isn\'t a zip file'
         return
 
     yield 'Extracting zip...'
 
-    source_dir = path.platinum('_climb_export')
+    source_dir = path.join(platinum_dir, '_climb_install', source_zip[:-4])
     if os.path.exists(source_dir):
         shutil.rmtree(source_dir, ignore_errors=True)
 
+    os.makedirs(source_dir)
     with zipfile.ZipFile(source_zip, 'r') as f:
         f.extractall(source_dir)
 
@@ -46,7 +54,7 @@ def install(source_zip, mission_dest_dir):
                     mission = Mission.from_file(mission_source_path)
                     yield '"{}" ({})\n'.format(
                         mission.info.name,
-                        path.relative(mission_dest_dir, source_basename)
+                        path.relative(mission_dest_dir, filename_transform(source_basename))
                     )
                 except Exception as e:
                     _, _, e_traceback = sys.exc_info()
@@ -61,26 +69,29 @@ def install(source_zip, mission_dest_dir):
                     )
                     continue
 
-                asset_dest_paths.add(path.platinum(mission.sky.materialList))
+                asset_dest_paths.add(path.join(platinum_dir, mission.sky.materialList))
                 if 'music' in mission.info.fields.dict:
-                    asset_dest_paths.add(path.platinum('data/sound/music', mission.info.music))
+                    asset_dest_paths.add(path.join(platinum_dir, 'data/sound/music', mission.info.music))
 
                 for descendant in mission.descendants():
                     if 'interiorFile' in descendant.fields.dict:
-                        asset_dest_paths.add(path.platinum(descendant.interiorFile))
+                        asset_dest_paths.add(path.join(platinum_dir, descendant.interiorFile))
                     elif 'shapeName' in descendant.fields.dict:
-                        asset_dest_paths.add(path.platinum(descendant.shapeName))
+                        asset_dest_paths.add(path.join(platinum_dir, descendant.shapeName))
 
     if len(mission_source_paths) == 0:
         yield 'No missions found. :(\n'
     yield '\n'
 
     for mission_source_path in mission_source_paths:
-        shutil.copy(mission_source_path, mission_dest_dir)
+        mission_source_basename = os.path.basename(mission_source_path)
+        shutil.copyfile(mission_source_path, path.join(mission_dest_dir, filename_transform(mission_source_basename)))
 
         for extension in ['.png', '.jpg', '.prev.png']:
-            if os.path.exists(mission_source_path.replace('.mis', extension)):
-                shutil.copy(mission_source_path.replace('.mis', extension), mission_dest_dir)
+            preview_source_path = mission_source_path[:-4] + extension
+            if os.path.exists(preview_source_path):
+                preview_source_basename = os.path.basename(preview_source_path)
+                shutil.copyfile(preview_source_path, path.join(mission_dest_dir, filename_transform(preview_source_basename)))
 
     matched_asset_paths = []
 
@@ -156,7 +167,17 @@ def install(source_zip, mission_dest_dir):
 
 
 def bundle(mission_file, dest_dir):
-    temp_dir = path.platinum('_climb_export')
+    if 'platinum/' not in mission_file:
+        yield 'Error: couldn\'t find "platinum" directory'
+        return
+
+    if not mission_file.endswith('.mis'):
+        yield 'Error: mission isn\'t a mis file'
+        return
+
+    platinum_dir = path.join(mission_file.split('platinum/')[0], 'platinum')
+
+    temp_dir = path.join(platinum_dir, '_climb_bundle', mission_file[:-4])
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -198,8 +219,11 @@ def bundle(mission_file, dest_dir):
         for attr in ['materialList', 'interiorFile', 'shapeName']:
             if attr in descendant.fields.dict:
                 value = descendant.fields.get(attr)
-                if path.platinum(value) not in bundled_assets:
-                    asset_source_path = path.platinum(value)
+                asset_source_path = path.join(platinum_dir, value)
+                if asset_source_path not in bundled_assets:
+                    if not os.path.exists(asset_source_path):
+                        continue
+
                     yield bundle_asset(asset_source_path)
 
                     with open(asset_source_path, errors='ignore') as f:
@@ -214,7 +238,7 @@ def bundle(mission_file, dest_dir):
                                     yield bundle_asset(texture_path)
 
     if 'music' in mission.info.fields.dict:
-        yield bundle_asset(path.platinum('data/sound/music/' + mission.info.music))
+        yield bundle_asset(path.join(platinum_dir, 'data/sound/music', mission.info.music))
 
     with open(path.join(temp_dir, 'readme.txt'), 'w') as f:
         f.write(

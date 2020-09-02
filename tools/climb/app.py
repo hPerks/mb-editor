@@ -36,7 +36,7 @@ class App(style.StyledApp):
 
         self.label_missions_dir = ttk.Label(self.tab_install, text='Missions folder:')
         self.entry_missions_dir = self.Entry(self.tab_install)
-        self.entry_missions_dir.insert(0, '~/data/missions/custom')
+        self.entry_missions_dir.insert(0, path.platinum('data/missions/custom'))
         self.entry_missions_dir.xview(tk.END)
         self.button_missions_dir = ttk.Button(self.tab_install, text='Browse', command=self.press_button_missions_dir)
 
@@ -125,19 +125,19 @@ class App(style.StyledApp):
     def press_button_missions_dir(self):
         directory = tk.filedialog.askdirectory(
             title='Select Directory',
-            initialdir=path.platinum(self.entry_missions_dir.get())
+            initialdir=self.entry_missions_dir.get()
         ).replace('\\', '/')
         if directory == '':
             return
 
         self.entry_missions_dir.delete(0, tk.END)
-        self.entry_missions_dir.insert(0, path.relative(directory))
+        self.entry_missions_dir.insert(0, directory)
         self.entry_missions_dir.xview(tk.END)
 
     def press_button_install(self):
         self.job = job.install(
             source_zip=self.entry_source_zip.get(),
-            mission_dest_dir=path.platinum(self.entry_missions_dir.get())
+            mission_dest_dir=self.entry_missions_dir.get()
         )
 
         self.text_status.config(state='normal')
@@ -155,7 +155,7 @@ class App(style.StyledApp):
             return
 
         self.entry_mission_file.delete(0, tk.END)
-        self.entry_mission_file.insert(0, path.relative(file))
+        self.entry_mission_file.insert(0, file)
         self.entry_mission_file.xview(tk.END)
     
     def press_button_dest_dir(self):
@@ -169,7 +169,7 @@ class App(style.StyledApp):
     
     def press_button_bundle(self):
         self.job = job.bundle(
-            mission_file=path.platinum(self.entry_mission_file.get()),
+            mission_file=self.entry_mission_file.get(),
             dest_dir=self.entry_dest_dir.get()
         )
 
