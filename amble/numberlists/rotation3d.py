@@ -1,9 +1,8 @@
-from amble.numberlists.numberlist import NumberList
-from amble.numberlists.vector3d import Vector3D
-
 from math import sin, cos, atan2, radians, degrees
 
-from amble.utils.numbers import repr_float
+from amble.numberlists.numberlist import NumberList
+from amble.numberlists.vector3d import Vector3D
+from amble.utils.numbers import str_float
 
 
 class Rotation3D(Vector3D):
@@ -28,7 +27,6 @@ class Rotation3D(Vector3D):
     @angle.setter
     def angle(self, value):
         self[3] = value
-
 
     class Quaternion(NumberList):
         def __mul__(self, other):
@@ -55,7 +53,7 @@ class Rotation3D(Vector3D):
         return cls(q[1] / sine, q[2] / sine, q[3] / sine, 2 * degrees(atan2(sine, cosine)))
 
     def __eq__(self, other):
-        return Vector3D.__eq__(self, other) or self.to_quaternion() == other.to_quaternion()
+        return super().__eq__(other) or self.to_quaternion() == other.to_quaternion()
 
     def __add__(self, other):
         return self.__class__.from_quaternion(self.to_quaternion() * self.__class__(other).to_quaternion())
@@ -89,12 +87,28 @@ class Rotation3D(Vector3D):
         s.angle = s.angle - 90
         assert s.angle == 90
 
-        p = r + repr(s)
+        p = r + str(s)
         assert abs(p.axis - Vector3D.one.normalized()) < 0.01
         assert abs(p.angle - 120) < 0.01
 
         r.angle = 30
-        assert repr_float((r * s.axis).z) == '-0.5'
+        assert str_float((r * s.axis).z) == '-0.5'
+
+
+    @staticmethod
+    def i(angle):
+        return Rotation3D(1, 0, 0, angle)
+
+    @staticmethod
+    def j(angle):
+        return Rotation3D(0, 1, 0, angle)
+
+    @staticmethod
+    def k(angle):
+        return Rotation3D(0, 0, 1, angle)
+
+
+    none, identity, up, down, right, left, towards, away = tuple(range(8))
 
 
 Rotation3D.none = Rotation3D()
@@ -107,10 +121,8 @@ Rotation3D.left = Rotation3D(0, 1, 0, 90)
 Rotation3D.towards = Rotation3D(-1, 0, 0, 90)
 Rotation3D.away = Rotation3D(1, 0, 0, 90)
 
-Rotation3D.i = lambda angle: Rotation3D(1, 0, 0, angle)
-Rotation3D.j = lambda angle: Rotation3D(0, 1, 0, angle)
-Rotation3D.k = lambda angle: Rotation3D(0, 0, 1, angle)
-
 
 if __name__ == '__main__':
     Rotation3D.tests()
+
+__all__ = ['Rotation3D']

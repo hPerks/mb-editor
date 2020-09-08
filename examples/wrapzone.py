@@ -5,19 +5,19 @@ from amble import *
 from amble.utils.lists import drange
 
 mission = Mission.hunt(
-    name='Wrap Zone',
-    artist='hPerks',
-    desc='Use the warps to navigate this wrap-around room, 3D Pacman style!',
-    startHelpText='The gems might be closer than they appear...',
-    gemGroups=1,
+    name="Wrap Zone",
+    artist="hPerks",
+    desc="Use the warps to navigate this wrap-around room, 3D Pacman style!",
+    starthelptext="The gems might be closer than they appear...",
+    gemgroups=1,
     score=40,
-    platinumScore=60,
-    ultimateScore=90,
-    awesomeScore=125,
+    platinumscore=60,
+    ultimatescore=90,
+    awesomescore=125,
     time=180000,
-    generalHint='Use the warps a lot - they were designed to be useful. The gem spawns will often be in two distant sections that are very close if you use the warps. (I\'ll leave you to guess how I implemented that.)',
-    ultimateHint='You\'ll want to get a good feel for the warps, and be able to collect gems by going back and forth through warps as if they weren\'t there. You\'re given super speeds in the upper sections specifically for a reason - warping around is often the fastest way to get past the wall in the middle of the map.',
-    awesomeHint='You don\'t need too much luck here if you just know how to quickly navigate the map. The trickest parts are the upper sections near the wall in the middle - fast if you do them right, easy to mess up on.'
+    generalhint="Use the warps a lot - they were designed to be useful. The gem spawns will often be in two distant sections that are very close if you use the warps. (I'll leave you to guess how I implemented that.)",
+    ultimatehint="You'll want to get a good feel for the warps, and be able to collect gems by going back and forth through warps as if they weren't there. You're given super speeds in the upper sections specifically for a reason - warping around is often the fastest way to get past the wall in the middle of the map.",
+    awesomehint="You don't need too much luck here if you just know how to quickly navigate the map. The trickest parts are the upper sections near the wall in the middle - fast if you do them right, easy to mess up on."
 ).add(
     SpawnTrigger(position='3 15 1'),
     Interior.local('wrapzone'),
@@ -121,7 +121,7 @@ mission = Mission.hunt(
     StaticShape(datablock='Tulip', scale='0.3 0.3 0.3').copies(
         'position',
         [
-            rot.k(110) * (position + ' 0') * 0.06 + '-37.5 17.6 0'
+            rot.k(110) * (position + ' 0') * 0.06 + vec('-37.5 17.6 0')
             for position in [
                 '1 0', '2 0', '3 0', '4 0', '2.5 -1', '2.5 -2', '2.5 -3', '2 -4', '1 -4', '0.5 -3',
                 '7 -0.25', '8 0', '9 -0.25', '9.75 -1', '10 -2', '9.75 -3', '9 -3.75', '8 -4', '7 -3.75', '6.25 -3', '6 -2', '6.25 -1',
@@ -187,7 +187,7 @@ for axis, (direction, positions) in {
                     position=positive + positive_segment_offset + direction.normalized() * 0.2,
                     scale=scale * (1, segments_proportion, 1)
                 ).with_destination(
-                    id='dest_{}_positive_{}_{}'.format(axis, index, int(segment * segments_proportion)),
+                    id=f'dest_{axis}_positive_{index}_{int(segment * segments_proportion)}',
                     position=negative + negative_segment_offset + direction.normalized() * 0.2,
                     scale=scale * (1, segments_proportion, 1)
                 ),
@@ -196,7 +196,7 @@ for axis, (direction, positions) in {
                     position=negative + negative_segment_offset - direction + direction.normalized() * 0.2,
                     scale=scale * (1, segments_proportion, 1)
                 ).with_destination(
-                    id='dest_{}_negative_{}_{}'.format(axis, index, int(segment * segments_proportion)),
+                    id=f'dest_{axis}_negative_{index}_{int(segment * segments_proportion)}',
                     position=positive + positive_segment_offset - direction + direction.normalized() * 0.2,
                     scale=scale * (1, segments_proportion, 1)
                 )
@@ -217,7 +217,7 @@ for axis, (direction, positions) in {
                 )
             )
         else:
-            spectrum_offset = direction * -2 + (4, 4, scale.z * 0.5)
+            spectrum_offset = direction * -2 + vec(4, 4, scale.z * 0.5)
             mission.add(
                 StaticShape(
                     datablock='Spectrum',

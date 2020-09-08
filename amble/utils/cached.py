@@ -29,3 +29,6 @@ class Cached:
 
         def __exit__(self, type, value, tb):
             self.object.clear_cache()
+
+
+__all__ = ['Cached']

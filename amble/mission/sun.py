@@ -1,9 +1,8 @@
-from amble.numberlists.color import Color
-from amble.numberlists.vector3d import Vector3D
-from amble.scriptobject import ScriptObject
+import amble
+from amble.numberlists import Color, Vector3D
 
 
-class Sun(ScriptObject):
+class Sun(amble.ScriptObject):
     classname = 'Sun'
 
     defaults = dict(
@@ -12,9 +11,13 @@ class Sun(ScriptObject):
         ambient=Color(0.3, 0.3, 0.4, 1),
     )
 
+    normal = None
+
 
 Sun.normal = Sun(
     direction='0.5 0.5 -0.5',
     color='1.4 1.2 0.4 1',
     ambient='0.3 0.3 0.4 1',
 )
+
+__all__ = ['Sun']

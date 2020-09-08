@@ -32,6 +32,9 @@ class Vector2D(NumberList):
         )
 
 
+    none, i, j, zero, one = tuple(range(5))
+
+
 Vector2D.none = Vector2D()
 
 Vector2D.i = Vector2D(1, 0)
@@ -39,3 +42,5 @@ Vector2D.j = Vector2D(0, 1)
 
 Vector2D.zero = Vector2D(0, 0)
 Vector2D.one = Vector2D(1, 1)
+
+__all__ = ['Vector2D']

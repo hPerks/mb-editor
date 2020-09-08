@@ -1,11 +1,12 @@
-import os, platform
+import os
+import platform
 
 
 def join(*args):
     return os.path.join(args[0], *[
         arg[2:] if arg.startswith('~/') else arg
         for arg in args[1:]
-    ]).replace('\\', '/')
+    ]).replace('\\', '/').replace('platinum/platinum', 'platinum')  # lol i gave up
 
 
 def platinum(*subpaths):
@@ -21,6 +22,7 @@ def relative(*paths):
 
 
 def tests():
+    assert join('foo', 'bar', 'baz', '~/qux') == 'foo/bar/baz/qux'
     assert platinum('data/missions').endswith('platinum/data/missions')
     assert platinum('~/data/missions', 'custom').endswith('platinum/data/missions/custom')
     assert relative(platinum('data/missions'), 'custom') == '~/data/missions/custom'
@@ -28,3 +30,5 @@ def tests():
 
 if __name__ == '__main__':
     tests()
+
+__all__ = ['join', 'platinum', 'relative', 'tests']

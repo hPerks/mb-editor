@@ -32,3 +32,6 @@ class Friends:
             return None
 
         return next(filter(lambda f: item == f.id, self.list), None)
+
+
+__all__ = ['Friends']

@@ -1,12 +1,12 @@
-from amble.field import Field
+from amble.base.fields.field import Field
 
 
 class Fields:
     def __init__(self, fields_list=None):
         self.list = [] if fields_list is None else fields_list
 
-    def __repr__(self):
-        return '\n'.join(map(repr, filter(lambda field: field.is_explicit(), self.list)))
+    def __str__(self):
+        return '\n'.join(map(str, filter(lambda field: field.is_explicit(), self.list)))
 
     @property
     def dict(self):
@@ -15,7 +15,7 @@ class Fields:
         }
 
     def field_with_key(self, key):
-        return next(filter(lambda field: field.key == key, self.list), None)
+        return next(filter(lambda field: field.key == key.lower(), self.list), None)
 
     def get(self, key):
         try:
@@ -39,3 +39,6 @@ class Fields:
             self.list.remove(self.field_with_key(key))
         except AttributeError:
             pass
+
+
+__all__ = ['Fields']

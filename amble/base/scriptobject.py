@@ -1,9 +1,10 @@
 import re
 from textwrap import indent
 
-from amble.fields import Fields
-from amble.friends import Friends
+from amble.base.fields import Fields
+from amble.base.friends import Friends
 from amble.utils.lists import flatlist, is_list_of_tuples
+from amble.utils.text import unescape
 
 
 class ScriptObject:
@@ -22,23 +23,15 @@ class ScriptObject:
         return self.fields.get(item)
 
     def __setattr__(self, key, value):
-        if key[0] == '_':
+        if key[0] == '_' or isinstance(getattr(self.__class__, key, None), property):
             object.__setattr__(self, key, value)
-            return
-
-        prop = getattr(self.__class__, key, None)
-        if isinstance(prop, property):
-            prop.fset(self, value)
             return
 
         self.fields.set(key, value)
 
-    def __repr__(self):
-        return 'new {classname}({id}) {{\n{fields}\n}};'.format(
-            classname=self.classname,
-            id=self.id,
-            fields=indent(self.inner_str(), '   ')
-        )
+    def __str__(self):
+        inner = indent(self.inner_str(), '   ')
+        return f'new {self.classname}({self.id}) {{\n{inner}\n}};'
 
     defaults = {}
 
@@ -49,7 +42,7 @@ class ScriptObject:
                 cls.__bases__[0].all_defaults(),
                 **cls.defaults
             )
-        except:
+        except AttributeError:
             return cls.defaults
 
     @property
@@ -68,7 +61,7 @@ class ScriptObject:
         return self.fields
 
     def inner_str(self):
-        return repr(self.written_fields())
+        return str(self.written_fields())
 
     def set(self, **fields):
         for key, value in fields.items():
@@ -158,10 +151,10 @@ class ScriptObject:
     def subclasses_with(cls, classname, **defaults):
         classes = []
 
-        if cls.classname == classname:
+        if cls.classname.lower() == classname.lower():
             class_defaults = cls.all_defaults()
             if all(
-                (value is None) or (key in class_defaults and class_defaults[key] == value)
+                (value is None) or (key in class_defaults and class_defaults[key].lower() == value.lower())
                 for key, value in defaults.items()
             ):
                 classes.append(cls)
@@ -170,12 +163,14 @@ class ScriptObject:
         return classes
 
 
-    RE_OBJECT_BEGIN = re.compile('new ([a-z\_A-Z0-9]+)\(([a-z\_A-Z0-9]*)\) {')
-    RE_OBJECT_END = re.compile('};')
-    RE_FIELD = re.compile('([a-z_A-Z0-9]+) = \"(.*)\";')
+    RE_OBJECT_BEGIN = re.compile(r'new \s*(?P<classname>[a-z_A-Z0-9]+)\s*\(\s*(?P<id>[a-z_A-Z0-9]*)\s*\)\s*{')
+    RE_OBJECT_END = re.compile(r'}\s*;')
+    RE_FIELD = re.compile(r'(?P<name>[a-z_A-Z0-9]+)\s*=\s*\"(?P<value>(?:(?:[^\"])|(?:\\\"))*(?:(?:[^\\])|(?:\\\\)))\"\s*;')
 
     @classmethod
     def from_string(cls, string):
+        string = string.replace('$usermods @ "', '"~')
+
         children = []
         fields = Fields()
 
@@ -201,7 +196,7 @@ class ScriptObject:
             elif match.re == cls.RE_FIELD:
                 if len(stack) == 1:
                     field_name, field_value_str = match.groups()
-                    fields.set(field_name, field_value_str)
+                    fields.set(field_name.lower(), unescape(field_value_str))
 
         classname, id = matches[0].groups()
 
@@ -223,18 +218,18 @@ class ScriptObject:
 
     @staticmethod
     def tests():
-        w = ScriptObject('WesleySeeton', catchphrase='do it all over again')
-        assert w.catchphrase == 'do it all over again'
+        w = ScriptObject('WesleySeeton', catchphrase="do it all over again")
+        assert w.catchphrase == "do it all over again"
 
-        e = ScriptObject('EdBeacham', catchphrase='lift the house', rating='A+')
-        c = e.copy(catchphrase='i\'m beaming up')
-        assert (e.catchphrase, c.catchphrase, c.rating) == ('lift the house', 'i\'m beaming up', 'A+')
+        e = ScriptObject('EdBeacham', catchphrase="lift the house", rating='A+')
+        c = e.copy(catchphrase="i'm beaming up")
+        assert (e.catchphrase, c.catchphrase, c.rating) == ("lift the house", "i'm beaming up", 'A+')
 
         cc = c.copies(
             ('satisfaction', 'catchphrase'),
-            75, 'we no longer care about customer satisfaction',
-            [50, 'and my guys no longer care about the joj and doing the joj right'],
-            25, 'i\'m going to take a sh!t on the house',
+            75, "we no longer care about customer satisfaction",
+            [50, "and my guys no longer care about the joj and doing the joj right"],
+            25, "i'm going to take a sh!t on the house",
             0,
 
             id='(id)_dialogue(i)',
@@ -244,12 +239,14 @@ class ScriptObject:
         assert cc[0].rating == 'A+'
         assert cc[1].id == 'EdBeacham_copy_dialogue1'
         assert '!' in cc[2].catchphrase
-        assert (cc[3].satisfaction, cc[3].catchphrase) == (0, 'i\'m beaming up')
+        assert (cc[3].satisfaction, cc[3].catchphrase) == (0, "i'm beaming up")
 
         we = w.with_friends(e)
         wer = w.with_friends(c)
-        assert len(we.friends.list) == 2
+        assert len(we.friends.list) == len(wer.friends.list) == 2
 
 
 if __name__ == '__main__':
     ScriptObject.tests()
+
+__all__ = ['ScriptObject']

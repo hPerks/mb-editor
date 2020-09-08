@@ -1,4 +1,4 @@
-from amble.mapping import *
+from amble.interior.mapping import Brush, Texture
 
 
 floor_textures = {
@@ -30,7 +30,7 @@ wall_textures = {
 }
 
 
-def trim_cube(slope=None, **kwargs):
+def trim_cube(slope=None):
     slope = slope or 0
     return lambda: Brush.make_cube(
         center=(0, 0, -0.25 - slope / 100 * 0.25),
@@ -42,7 +42,7 @@ def trim_cube(slope=None, **kwargs):
     )
 
 
-def trim(axis=None, length=None, slope=None, part=None, **kwargs):
+def trim(axis=None, length=None, slope=None, part=None):
     slope = slope or 0
     if part is None:
         return lambda: Brush.make_cube(
@@ -78,7 +78,7 @@ def trim(axis=None, length=None, slope=None, part=None, **kwargs):
         return make
 
 
-def ring(x, y, **kwargs):
+def ring(x, y):
     return lambda: Brush.make_slices(
         axis='y',
         center=(0, 0, y),
@@ -90,7 +90,7 @@ def ring(x, y, **kwargs):
     )
 
 
-def halfring(x, y, **kwargs):
+def halfring(x, y):
     return lambda: Brush.make_slices(
         axis='y',
         center=(0, 0, y),
@@ -103,7 +103,7 @@ def halfring(x, y, **kwargs):
     )
 
 
-def quarterring(x, y, **kwargs):
+def quarterring(x, y):
     return lambda: Brush.make_slices(
         axis='x',
         center=(0, 0, x),
@@ -116,7 +116,7 @@ def quarterring(x, y, **kwargs):
     )
 
 
-def platform(texture, x, y, **kwargs):
+def platform(texture, x, y):
     return lambda: Brush.make_cube(
         center='0 0 -0.25',
         size=(x * 2, y * 2, 0.5),
@@ -127,7 +127,7 @@ def platform(texture, x, y, **kwargs):
     )
 
 
-def wall(texture, x, z, **kwargs):
+def wall(texture, x, z):
     return lambda: Brush.make_cube(
         center=(0, 0, -z),
         size=(
@@ -142,7 +142,7 @@ def wall(texture, x, z, **kwargs):
     )
 
 
-def ramp(texture, x, y, slope, part=None, **kwargs):
+def ramp(texture, x, y, slope, part=None):
     if part is None:
         return lambda: Brush.make_cube(
             center=(0, 0, -0.25 - slope / 100 * y),
@@ -182,7 +182,7 @@ def ramp(texture, x, y, slope, part=None, **kwargs):
         return make
 
 
-def cube(texture, x, y, z, **kwargs):
+def cube(texture, x, y, z):
     return lambda: Brush.make_cube(
         center=(0, 0, -z),
         size=(x * 2, y * 2, z * 2),
@@ -190,7 +190,7 @@ def cube(texture, x, y, z, **kwargs):
     )
 
 
-def circle(texture, x, y, hole_x=None, hole_y=None, **kwargs):
+def circle(texture, x, y, hole_x=None, hole_y=None):
     if hole_x is None:
         return lambda: Brush.make_prism(
             sides=40,
@@ -225,7 +225,7 @@ def circle(texture, x, y, hole_x=None, hole_y=None, **kwargs):
         )
 
 
-def halfcircle(texture, x, y, hole_x=None, hole_y=None, **kwargs):
+def halfcircle(texture, x, y, hole_x=None, hole_y=None):
     if hole_x is None:
         return lambda: Brush.make_prism(
             sides=40,
@@ -264,7 +264,7 @@ def halfcircle(texture, x, y, hole_x=None, hole_y=None, **kwargs):
         )
 
 
-def quartercircle(texture, x, y, hole_x=None, hole_y=None, **kwargs):
+def quartercircle(texture, x, y, hole_x=None, hole_y=None):
     if hole_x is None:
         return lambda: Brush.make_prism(
             sides=40,
@@ -303,7 +303,7 @@ def quartercircle(texture, x, y, hole_x=None, hole_y=None, **kwargs):
         )
 
 
-def pipe(texture, x, y, z, part=None, direction=None, **kwargs):
+def pipe(texture, x, y, z, part=None, direction=None):
     if part is None:
         return lambda: Brush.make_slices(
             axis='y',
@@ -347,7 +347,7 @@ def pipe(texture, x, y, z, part=None, direction=None, **kwargs):
         return make
 
 
-def halfpipe(texture, x, y, z, part=None, direction=None, **kwargs):
+def halfpipe(texture, x, y, z, part=None, direction=None):
     if part is None:
         return lambda: Brush.make_slices(
             axis='y',
@@ -395,7 +395,7 @@ def halfpipe(texture, x, y, z, part=None, direction=None, **kwargs):
         return make
 
 
-def quarterpipe(texture, x, y, z, **kwargs):
+def quarterpipe(texture, x, y, z):
     return lambda: Brush.make_slices(
         axis='x',
         center=(0, 0, x),
@@ -410,3 +410,22 @@ def quarterpipe(texture, x, y, z, **kwargs):
         },
         justify=1
     )
+
+
+__all__ = [
+    'circle',
+    'cube',
+    'halfcircle',
+    'halfpipe',
+    'halfring',
+    'pipe',
+    'platform',
+    'quartercircle',
+    'quarterpipe',
+    'quarterring',
+    'ramp',
+    'ring',
+    'trim',
+    'trim_cube',
+    'wall',
+]

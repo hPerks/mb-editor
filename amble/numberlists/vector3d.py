@@ -67,6 +67,9 @@ class Vector3D(NumberList):
         assert v.dot(v.tangent()) == 0 and v.dot(v.cotangent()) == 0
 
 
+    none, i, j, k, zero, one = tuple(range(6))
+
+
 Vector3D.none = Vector3D()
 
 Vector3D.i = Vector3D(1, 0, 0)
@@ -79,3 +82,5 @@ Vector3D.one = Vector3D(1, 1, 1)
 
 if __name__ == '__main__':
     Vector3D.tests()
+
+__all__ = ['Vector3D']

@@ -6,5 +6,8 @@ class Implicit:
         self.value = value
         self.type = typeof(value) if type is None else type
 
-    def __repr__(self):
-        return repr(self.value)
+    def __str__(self):
+        return str(self.value)
+
+
+__all__ = ['Implicit']

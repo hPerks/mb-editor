@@ -1,4 +1,4 @@
-from amble.numberlists.vector2d import Vector2D
+from amble.numberlists import Vector2D
 
 
 class Texture:
@@ -16,7 +16,7 @@ class Texture:
     def size(self):
         return self.dimensions * self.scale
 
-    def __repr__(self):
+    def __str__(self):
         return self.file
 
     def __len__(self):
@@ -28,6 +28,9 @@ class Texture:
         t = Texture('bricks', [2, 3], '0.5 0.5')
         assert t.size == (1, 1.5)
         assert t and not Texture('black')
+
+
+    none, edge, hot1 = tuple(range(3))
 
 
 Texture.none = Texture('black', [0.5, 0.5])

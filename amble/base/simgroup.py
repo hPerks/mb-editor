@@ -1,4 +1,4 @@
-from amble.scriptobject import ScriptObject
+from amble.base.scriptobject import ScriptObject
 from amble.utils.lists import flatlist
 
 
@@ -51,7 +51,7 @@ class SimGroup(ScriptObject):
         return self.children + flatlist([child.descendants() for child in self.children])
 
     def inner_str(self):
-        return super().inner_str() + '\n' + '\n\n'.join(map(repr, self.children))
+        return super().inner_str() + '\n' + '\n\n'.join(map(str, self.children))
 
     def __setattr__(self, key, value):
         super().__setattr__(key, value)
@@ -115,7 +115,7 @@ class SimGroup(ScriptObject):
         assert not g.children[-2].isDone
         assert g.children[-1].isDone
 
-        from amble.id import ID
+        from amble import ID
 
         class Person(ScriptObject):
             defaults = dict(
@@ -144,3 +144,5 @@ class SimGroup(ScriptObject):
 
 if __name__ == '__main__':
     SimGroup.tests()
+
+__all__ = ['SimGroup']

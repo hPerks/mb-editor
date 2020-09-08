@@ -1,4 +1,4 @@
-from amble.utils.numbers import int_or_float, repr_float, approx_eq
+from amble.utils.numbers import int_or_float, str_float, approx_eq
 
 from operator import add, sub, mul
 
@@ -34,8 +34,8 @@ class NumberList:
     def __copy__(self):
         return NumberList(self)
 
-    def __repr__(self):
-        return ' '.join(map(repr_float, self))
+    def __str__(self):
+        return ' '.join(map(str_float, self))
 
     def map(self, function, *others):
         return self.__class__(map(function, *([self] + [NumberList(other, size=len(self.values)) for other in others])))
@@ -139,3 +139,6 @@ class NumberList:
 
 if __name__ == '__main__':
     NumberList.tests()
+
+
+__all__ = ['NumberList']

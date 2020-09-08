@@ -3,17 +3,17 @@ from factories import *
 import exporting
 
 mission = Mission.normal(
-    name='IAMBIC Showcase',
-    artist='hPerks',
-    desc='A comprehensive look at the interiors available for use in IAMBIC: the Itemized Auxiliary Marble Blast Interiors Collection.',
-    startHelpText='',
+    name="IAMBIC Showcase",
+    artist="hPerks",
+    desc="A comprehensive look at the interiors available for use in IAMBIC: the Itemized Auxiliary Marble Blast Interiors Collection.",
+    starthelptext="",
 ).add(StartPad(position='-4 0 0', rotation='0 0 1 90'))
 mission.cursor = Vector3D(0, 0, 0)
-mission._saved_cursors = {}
+mission.saved_cursors = {}
 
 
-def advance_cursor(v=Vector3D.zero, x=0.0, y=0.0, z=0.0):
-    mission.cursor += Vector3D(v) + (x, y, z)
+def advance_cursor(*args, v=Vector3D.zero):
+    mission.cursor += Vector3D(v) + args
 
 
 def set_cursor(*args):
@@ -21,24 +21,24 @@ def set_cursor(*args):
 
 
 def save_cursor(name=''):
-    mission._saved_cursors[name] = Vector3D(mission.cursor)
+    mission.saved_cursors[name] = Vector3D(mission.cursor)
 
 
 def load_cursor(name=''):
-    mission.cursor = Vector3D(mission._saved_cursors[name])
+    mission.cursor = Vector3D(mission.saved_cursors[name])
 
 
 def add(factory, position=None, offset=Vector3D.zero, offset_x=0.0, offset_y=0.0, offset_z=0.0, advance=Vector3D.zero, advance_x=0.0, advance_y=0.0, advance_z=0.0, rotation=Rotation3D.identity, **kwargs):
     offset = Vector3D(offset) + (offset_x, offset_y, offset_z)
     mission.add(Interior.local('iambic/' + exporting.name(factory, **kwargs), position=mission.cursor + offset if position is None else position, rotation=rotation))
-    advance_cursor(v=advance, x=advance_x, y=advance_y, z=advance_z)
+    advance_cursor(*(advance_x, advance_y, advance_z), v=advance)
 
 
 gap = 1.5
 max_diameter = 12
 max_exterior_diameter = 13
 
-advance_cursor(x=0, y=-0.25, z=0.5)
+advance_cursor(0, -0.25, 0.5)
 save_cursor('platforms')
 
 add(trim_cube, offset_y=0.25, advance_y=0.5 + gap)
@@ -55,7 +55,7 @@ add(trim, axis='y', length=1, slope=75, offset_y=1, offset_z=-75 / 100, advance_
 add(trim, slope=75, part='bottom', offset_y=0, offset_z=0, rotation='0 0 1 180')
 
 load_cursor('platforms')
-advance_cursor(y=-0.25 - gap)
+advance_cursor(0, -0.25 - gap, 0)
 
 for height in [1, 2, 3, 4, 6]:
     save_cursor()
@@ -67,17 +67,17 @@ for height in [1, 2, 3, 4, 6]:
 
     load_cursor()
     if height < 6:
-        advance_cursor(y=-0.5 - gap)
+        advance_cursor(0, -0.5 - gap, 0)
 
 min_x = mission.cursor.x
 min_y = mission.cursor.y
 
 load_cursor('platforms')
-advance_cursor(x=0.25 + gap)
+advance_cursor(0.25 + gap, 0, 0)
 
 for width in [1, 2, 3, 4, 6]:
     for texture in ['red', 'yellow', 'blue']:
-        advance_cursor(x=width)
+        advance_cursor(width, 0, 0)
         save_cursor()
 
         add(trim, axis='x', length=width, offset_y=0.25, advance_y=0.5 + gap)
@@ -133,7 +133,7 @@ for width in [1, 2, 3, 4, 6]:
 
         if not (texture == 'blue' and width == 6):
             load_cursor()
-            advance_cursor(x=width + gap)
+            advance_cursor(width + gap, 0, 0)
 
 max_x = mission.cursor.x + 6
 max_y = mission.cursor.y + 12

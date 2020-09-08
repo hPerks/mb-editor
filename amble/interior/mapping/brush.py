@@ -1,16 +1,14 @@
 from textwrap import indent
 
-from amble.mapping.faces import Faces
-from amble.scriptobject import ScriptObject
-from amble.mapping.texture import Texture
-from amble.numberlists.vector3d import Vector3D
-from amble.numberlists.vector2d import Vector2D
-from amble.numberlists.rotation3d import Rotation3D
+import amble
+from amble.numberlists import *
+from amble.interior.mapping.faces import Faces
+from amble.interior.mapping.texture import Texture
 from amble.utils.lists import drange
 from amble.utils.numbers import mean_of_angles
 
 
-class Brush(ScriptObject):
+class Brush(amble.ScriptObject):
     classname = 'Brush'
 
     defaults = dict(
@@ -36,8 +34,8 @@ class Brush(ScriptObject):
             self.faces[name] = Faces(self, name)
         return self.faces[name]
 
-    def __repr__(self):
-        return '{\n' + indent('\n'.join(repr(face) for face in self.face('all')), '   ') + '\n}'
+    def __str__(self):
+        return '{\n' + indent('\n'.join(str(face) for face in self.face('all')), '   ') + '\n}'
 
     def _set_face_attributes(self, **face_attributes):
         self.face('all').texture = Texture.none
@@ -84,6 +82,22 @@ class Brush(ScriptObject):
             with face.cached:
                 face.origin = face.from_uvw(face._offset_uvw) - face.origin + face.vertices[0]
             del face._offset_uvw
+
+        return self
+
+    def rotate_to_axis(self, axis, center):
+        if axis != 'z':
+            self.rotate(
+                Rotation3D.towards + (0, 0, -1, 90 if axis == 'x' else 0),
+                center=center
+            )
+
+            for face in self.face('side'):
+                face.reset_rotation()
+                if axis == 'x':
+                    face.tangent = '1 0 0'
+                else:
+                    face.cotangent = '0 -1 0'
 
         return self
 
@@ -155,13 +169,13 @@ class Brush(ScriptObject):
 
             face_groups={
                 'z': ['top', 'bottom'],
-                'side': ['side{}'.format(side) for side in range(effective_sides)],
-                'all': ['side{}'.format(side) for side in range(effective_sides)] + ['top', 'bottom'],
+                'side': [f'side{side}' for side in range(effective_sides)],
+                'all': [f'side{side}' for side in range(effective_sides)] + ['top', 'bottom'],
             }
         )
 
         for side in range(effective_sides):
-            prism.face('side{}'.format(side)).vertex_indices = [
+            prism.face(f'side{side}').vertex_indices = [
                 (2 * side + 2) % (2 * effective_sides),
                 2 * side,
                 2 * side + 1,
@@ -174,7 +188,7 @@ class Brush(ScriptObject):
                 angle = start_angle + 270
             else:
                 angle = start_angle + (side + 0.5) * 360 / sides
-            prism.face('side{}'.format(side)).normal = ((Rotation3D.k(angle) * Vector3D.i) / size).normalized()
+            prism.face(f'side{side}').normal = ((Rotation3D.k(angle) * Vector3D.i) / size).normalized()
 
         prism.face('top').vertex_indices = [2 * side for side in range(effective_sides)]
         prism.face('bottom').vertex_indices = [2 * side + 1 for side in range(effective_sides - 1, -1, -1)]
@@ -183,24 +197,11 @@ class Brush(ScriptObject):
         prism.face('z').origin = center
         prism.face('z').skew = '0 0'
 
-        prism._set_face_attributes(**face_attributes)
-
-        if axis != 'z':
-            prism.rotate(
-                Rotation3D.towards + (0, 0, -1, 90 if axis == 'x' else 0),
-                center=center
-            )
-
-            for face in prism.face('side'):
-                face.reset_rotation()
-                if axis == 'x':
-                    face.tangent = '1 0 0'
-                else:
-                    face.cotangent = '0 -1 0'
+        prism.rotate_to_axis(axis, center)
 
         prism.face('side0').align('bottom left' if axis == 'x' else 'top left' if axis == 'y' else 'top right')
         Faces.unify(
-            [prism.face('side{}'.format(side)) for side in range(sides * delta_angle // 360)],
+            [prism.face(f'side{side}') for side in range(sides * delta_angle // 360)],
             justify=face_attributes['justify'] if 'justify' in face_attributes else True
         )
 
@@ -284,23 +285,12 @@ class Brush(ScriptObject):
         slice.face('z').skew = '0 0'
         slice._set_face_attributes(**face_attributes)
 
-        if axis != 'z':
-            slice.rotate(
-                Rotation3D.towards + (0, 0, -1, 90 if axis == 'x' else 0),
-                center=center
-            )
-
-            for face in slice.face('side'):
-                face.reset_rotation()
-                if axis == 'x':
-                    face.tangent = '1 0 0'
-                else:
-                    face.cotangent = '0 -1 0'
+        slice.rotate_to_axis(axis, center)
 
         return slice
 
     @classmethod
-    def make_slices(cls, axis='z', center=Vector3D.zero, size=Vector3D.one, inner_size=Vector3D.zero, start_angle=0, end_angle=360, step_angle=90, unify=False, justify=False, **face_attributes):
+    def make_slices(cls, axis='z', center=Vector3D.zero, size=Vector3D.one, inner_size=Vector3D.zero, start_angle=0, end_angle=360, step_angle=90, justify=False, **face_attributes):
         inner_size = Vector3D(inner_size)
 
         slices = [
@@ -414,8 +404,10 @@ class Brush(ScriptObject):
         assert len(ss.vertices) == 6
         assert ss.vertices[4] == '0 0 0'
 
-        sss = Brush.make_slices(axis='y', center='0 -0.5 0', size='4 1 2', inner_size='2 1 1', step_angle=15, texture=scaled_edge)
+        Brush.make_slices(axis='y', center='0 -0.5 0', size='4 1 2', inner_size='2 1 1', step_angle=15, texture=scaled_edge)
 
 
 if __name__ == '__main__':
     Brush.tests()
+
+__all__ = ['Brush']

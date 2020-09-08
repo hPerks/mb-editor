@@ -8,14 +8,14 @@ NUM_GEMS = 12
 GEM_OFFSET = 0.5
 
 mission = Mission.laps(
-    name='Chasetrack',
-    artist='hPerks',
-    desc='Chase after the gems around the track. Can you get them all in 3 laps?',
-    startHelpText='No cheating - you still have to do 3 laps!',
-    parTime=150000,
-    platinumTime=90000,
-    ultimateTime=70000,
-    awesomeTime=55000,
+    name="Chasetrack",
+    artist="hPerks",
+    desc="Chase after the gems around the track. Can you get them all in 3 laps?",
+    starthelptext="No cheating - you still have to do 3 laps!",
+    partime=150000,
+    platinumtime=90000,
+    ultimatetime=70000,
+    awesometime=55000,
 
     sky=Sky.wave,
 ).add(
@@ -34,8 +34,8 @@ mission = Mission.laps(
 
     [
         MovingInterior.make(
-            PathedInterior.local('chasetrack', 0, basePosition=(0, y, 0), initialTargetPosition=0),
-            TriggerGotoTarget(position='7 1 0', scale='2 2 1', targetTime=-1),
+            PathedInterior.local('chasetrack', 0, baseposition=(0, y, 0), initialtargetposition=0),
+            TriggerGotoTarget(position='7 1 0', scale='2 2 1', targettime=-1),
         ).set(path=Path.make_linear(
             (0, y, 0), 62.5 * (40 - y),
             (0, 40, 0), 0,
@@ -56,7 +56,7 @@ mission = Mission.laps(
     LapsCounterTrigger(position='-0.5 5.5 0', scale='7 0.5 10'),
 
     TimeTravel().copies(
-        ('position', 'timeBonus'),
+        ('position', 'timebonus'),
         '-9 14.75 0.5', 2000,
         '-19 15 -1.25', 2000,
         '-19 3 -1.25', 2000,
@@ -77,18 +77,18 @@ mission = Mission.laps(
     Anvil(position='-42.5 49 1'),
     GravityModifier(position='-42.5 51.5 -6', scale='2.5 2.5 2.5'),
     DuctFan(rotation=rot.towards).copies('position', '5 82 -15', '7 82 -15'),
-    GravityWellTrigger(position='-7 -146 -43', scale='20 30 30', customPoint='3 -116 -13'),
+    GravityWellTrigger(position='-7 -146 -43', scale='20 30 30', custompoint='3 -116 -13'),
     Anvil(position='2 -127 -3', rotation=rot.towards),
     GravityModifier(position='2 -124.5 -1', rotation=rot.down),
 
-    FadePlatform(fadeStyle='fade', permanent=1).copies('position', [(p % 4, p, -0.5) for p in range(-29, -13, 2)]),
+    FadePlatform(fadestyle='fade', permanent=1).copies('position', [(p % 4, p, -0.5) for p in range(-29, -13, 2)]),
 
-    HelpBubble(triggerRadius=5, displayOnce=1).copies(
+    HelpBubble(triggerradius=5, displayonce=1).copies(
         ('position', 'rotation', 'text'),
-        ['-42.5 45 4', rot.up, 'Use the Anvil to shoot down the chute!'],
-        ['-33 77 -19', rot.down, 'The path splits here - follow the gem, if you see one!'],
-        ['6 36 -25', rot.down, 'Your marble is too heavy to walk on this tightrope!'],
-        ['2.5 -130 -7', rot.towards, 'You know what to do with this Anvil!'],
+        ['-42.5 45 4', rot.up, "Use the Anvil to shoot down the chute!"],
+        ['-33 77 -19', rot.down, "The path splits here - follow the gem, if you see one!"],
+        ['6 36 -25', rot.down, "Your marble is too heavy to walk on this tightrope!"],
+        ['2.5 -130 -7', rot.towards, "You know what to do with this Anvil!"],
     )
 
 )
@@ -164,9 +164,9 @@ mission.add(
 
     PathNode(
         'CameraPath1',
-        position='10 -12 10', rotation='0.57 0.2 -0.8 45', timeToNext=5500
+        position='10 -12 10', rotation='0.57 0.2 -0.8 45', timetonext=5500
     ).with_path_of_copies(
-        ('position', 'rotation', 'timeToNext'),
+        ('position', 'rotation', 'timetonext'),
         '-22 -5 2', '0.65 0.1 -0.75 25', 1,
         '-22 60 -33', '-0.95 -0.1 -0.3 45', 3500,
         '-12 56 -33', '-0.5 0.25 0.8 65', 3000,

@@ -8,57 +8,57 @@ from amble.utils import path
 
 
 class App(style.StyledApp):
-    version = '1.1'
+    version = '1.2'
 
     def __init__(self):
         super().__init__()
 
-        self.title('CLIMB v{}'.format(self.version))
+        self.title(f"CLIMB v{self.version}")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
         self.frame = ttk.Frame(self)
 
-        self.label_title = ttk.Label(self.frame, text='CLIMB v{}'.format(self.version), font=('Roboto', 24, 'bold'), foreground='#da0', justify=tk.CENTER)
+        self.label_title = ttk.Label(self.frame, text=f"CLIMB v{self.version}", font=('Roboto', 24, 'bold'), foreground='#da0', justify=tk.CENTER)
 
         self.tabs = ttk.Notebook(self.frame)
         self.tab_install = ttk.Frame(self.tabs)
         self.tab_bundle = ttk.Frame(self.tabs)
 
-        self.tabs.add(self.tab_install, text='Install')
-        self.tabs.add(self.tab_bundle, text='Bundle')
+        self.tabs.add(self.tab_install, text="Install")
+        self.tabs.add(self.tab_bundle, text="Bundle")
 
-        self.label_source_zip = ttk.Label(self.tab_install, text='Install from:', justify=tk.CENTER)
+        self.label_source_zip = ttk.Label(self.tab_install, text="Install from:", justify=tk.CENTER)
         self.entry_source_zip = self.Entry(self.tab_install)
-        self.button_source_zip = ttk.Button(self.tab_install, text='Browse', command=self.press_button_source_zip)
+        self.button_source_zip = ttk.Button(self.tab_install, text="Browse", command=self.press_button_source_zip)
 
         self.label_arrow_install = ttk.Label(self.tab_install, text='\u21e9', justify=tk.CENTER, font=('Roboto', 36))
 
-        self.label_missions_dir = ttk.Label(self.tab_install, text='Missions folder:')
+        self.label_missions_dir = ttk.Label(self.tab_install, text="Missions folder:")
         self.entry_missions_dir = self.Entry(self.tab_install)
         self.entry_missions_dir.insert(0, path.platinum('data/missions/custom'))
         self.entry_missions_dir.xview(tk.END)
-        self.button_missions_dir = ttk.Button(self.tab_install, text='Browse', command=self.press_button_missions_dir)
+        self.button_missions_dir = ttk.Button(self.tab_install, text="Browse", command=self.press_button_missions_dir)
 
-        self.button_install = ttk.Button(self.tab_install, text='Install!', command=self.press_button_install)
+        self.button_install = ttk.Button(self.tab_install, text="Install!", command=self.press_button_install)
 
-        self.label_mission_file = ttk.Label(self.tab_bundle, text='Your mission:', justify=tk.CENTER)
+        self.label_mission_file = ttk.Label(self.tab_bundle, text="Your mission:", justify=tk.CENTER)
         self.entry_mission_file = self.Entry(self.tab_bundle)
         self.button_mission_file = ttk.Button(self.tab_bundle, text='Browse', command=self.press_button_mission_file)
 
         self.label_arrow_bundle = ttk.Label(self.tab_bundle, text='\u21e9', justify=tk.CENTER, font=('Roboto', 36))
 
-        self.label_dest_dir = ttk.Label(self.tab_bundle, text='Destination:')
+        self.label_dest_dir = ttk.Label(self.tab_bundle, text="Destination:")
         self.entry_dest_dir = self.Entry(self.tab_bundle)
-        self.button_dest_dir = ttk.Button(self.tab_bundle, text='Browse', command=self.press_button_dest_dir)
+        self.button_dest_dir = ttk.Button(self.tab_bundle, text="Browse", command=self.press_button_dest_dir)
 
-        self.button_bundle = ttk.Button(self.tab_bundle, text='Bundle!', command=self.press_button_bundle)
+        self.button_bundle = ttk.Button(self.tab_bundle, text="Bundle!", command=self.press_button_bundle)
 
         self.frame_status = ttk.Frame(self.frame)
         self.scrollbar_status_v = ttk.Scrollbar(self.frame_status, orient='vertical')
         self.text_status = self.Text(self.frame_status, state='disabled', width=0, height=0, yscrollcommand=self.scrollbar_status_v.set)
 
-        self.label_credits = ttk.Label(self.frame, text='made with \u2665 by hPerks, using AMBLE (github.com/omaitzen/amble)', font=('Roboto', 10), foreground='#525252')
+        self.label_credits = ttk.Label(self.frame, text="made with \u2665 by hPerks, using AMBLE (github.com/omaitzen/amble)", font=('Roboto', 10), foreground='#525252')
 
         self.frame.grid(row=0, column=0, sticky='news')
         self.frame.grid_columnconfigure(0, weight=1, uniform='joj')
@@ -114,24 +114,24 @@ class App(style.StyledApp):
         self.job = None
 
     def press_button_source_zip(self):
-        zip = tk.filedialog.askopenfilename(title='Select File', filetypes=(('Zip files', '*.zip'),)).replace('\\', '/')
-        if zip == '':
+        source_zip = tk.filedialog.askopenfilename(title="Select File", filetypes=(("Zip files", '*.zip'),)).replace('\\', '/')
+        if source_zip == '':
             return
 
         self.entry_source_zip.delete(0, tk.END)
-        self.entry_source_zip.insert(0, zip)
+        self.entry_source_zip.insert(0, source_zip)
         self.entry_source_zip.xview(tk.END)
 
     def press_button_missions_dir(self):
-        directory = tk.filedialog.askdirectory(
-            title='Select Directory',
+        missions_dir = tk.filedialog.askdirectory(
+            title="Select Directory",
             initialdir=self.entry_missions_dir.get()
         ).replace('\\', '/')
-        if directory == '':
+        if missions_dir == '':
             return
 
         self.entry_missions_dir.delete(0, tk.END)
-        self.entry_missions_dir.insert(0, directory)
+        self.entry_missions_dir.insert(0, missions_dir)
         self.entry_missions_dir.xview(tk.END)
 
     def press_button_install(self):
@@ -146,25 +146,25 @@ class App(style.StyledApp):
         self.update()
     
     def press_button_mission_file(self):
-        file = tk.filedialog.askopenfilename(
-            title='Select File',
+        mission_file = tk.filedialog.askopenfilename(
+            title="Select File",
             initialdir=path.platinum('data/missions/custom'),
             filetypes=(('Mission files', '*.mis'),)
         ).replace('\\', '/')
-        if file == '':
+        if mission_file == '':
             return
 
         self.entry_mission_file.delete(0, tk.END)
-        self.entry_mission_file.insert(0, file)
+        self.entry_mission_file.insert(0, mission_file)
         self.entry_mission_file.xview(tk.END)
     
     def press_button_dest_dir(self):
-        directory = tk.filedialog.askdirectory(title='Select Directory').replace('\\', '/')
-        if directory == '':
+        dest_dir = tk.filedialog.askdirectory(title="Select Directory").replace('\\', '/')
+        if dest_dir == '':
             return
 
         self.entry_dest_dir.delete(0, tk.END)
-        self.entry_dest_dir.insert(0, directory)
+        self.entry_dest_dir.insert(0, dest_dir)
         self.entry_dest_dir.xview(tk.END)
     
     def press_button_bundle(self):
@@ -180,12 +180,20 @@ class App(style.StyledApp):
 
     def update(self):
         if self.job:
+            status = None
+            while type(status) != str:
+                try:
+                    status = next(self.job)
+                except StopIteration:
+                    self.job = None
+                    return
+
             self.text_status.config(state='normal')
-            try:
-                self.text_status.insert(tk.END, next(self.job))
-            except StopIteration:
-                self.job = None
+            self.text_status.insert(tk.END, status)
             self.text_status.see(tk.END)
             self.text_status.config(state='disabled')
 
             self.after(10, self.update)
+
+
+__all__ = ['App']

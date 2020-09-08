@@ -1,12 +1,5 @@
-from amble.numberlists.vector3d import Vector3D
-from amble.numberlists.rotation3d import Rotation3D
-
-from amble.field import Field
-from amble.fields import Fields
-from amble.implicit import Implicit
-
-from amble.sceneobject import BoundedObject
-from amble.id import ID
+from amble.base import BoundedObject, Field, Fields, ID, Implicit
+from amble.numberlists import Rotation3D, Vector3D
 from amble.tsstatics import TeleportPad
 
 
@@ -14,7 +7,7 @@ class Trigger(BoundedObject):
     classname = 'Trigger'
 
     defaults = dict(
-        triggerOnce=Implicit(0)
+        triggeronce=Implicit(0)
     )
 
 
@@ -84,7 +77,7 @@ class LapsCounterTrigger(Trigger):
 class TriggerGotoTarget(Trigger):
     defaults = dict(
         datablock='TriggerGotoTarget',
-        targetTime=-1,
+        targettime=-1,
     )
 
 
@@ -92,7 +85,7 @@ class GravityWellTrigger(Trigger):
     defaults = dict(
         datablock='GravityWellTrigger',
         axis=Vector3D.zero,
-        customPoint=Vector3D.none,
+        custompoint=Vector3D.none,
         invert=Implicit(0),
         restoreGravity=Implicit(Rotation3D.none),
         useRadius=Implicit(0),
@@ -106,8 +99,8 @@ class PhysModTrigger(Trigger):
     )
 
     physics_field_names = [
-        'maxRollVelocity', 'angularAcceleration', 'brakingAcceleration', 'airAcceleration', 'gravity', 'staticFriction',
-        'kineticFriction', 'bounceKineticFriction', 'maxDotSlide', 'bounceRestitution', 'jumpImpulse', 'maxForceRadius',
+        'maxrollvelocity', 'angularacceleration', 'brakingacceleration', 'airacceleration', 'gravity', 'staticfriction',
+        'kineticfriction', 'bouncekineticfriction', 'maxdotslide', 'bouncerestitution', 'jumpimpulse', 'maxforceradius',
         'mass'
     ]
 
@@ -122,8 +115,8 @@ class PhysModTrigger(Trigger):
             value = self.fields.get(name)
             if value is not None:
                 fields_list += [
-                    Field('marbleAttribute{}'.format(index), name, str),
-                    Field('value{}'.format(index), value, type(value))
+                    Field(f'marbleattribute{index}', name, str),
+                    Field(f'value{index}', value, type(value))
                 ]
 
                 index += 1
@@ -133,19 +126,35 @@ class PhysModTrigger(Trigger):
 
     @staticmethod
     def tests():
-        t = PhysModTrigger(gravity=4, jumpImpulse=20)
+        t = PhysModTrigger(gravity=4, jumpimpulse=20)
         assert t.gravity == 4
-        assert t.written_fields().get('jumpImpulse') is None
+        assert t.written_fields().get('jumpimpulse') is None
         assert t.written_fields().get('value1') == 20
 
 
 class PathTrigger(Trigger):
     defaults = dict(
         datablock='PathTrigger',
-        triggerOnce=Implicit(1),
+        triggeronce=Implicit(1),
     )
 
 
 if __name__ == '__main__':
     TeleportTrigger.tests()
     PhysModTrigger.tests()
+
+__all__ = [
+    'DestinationTrigger',
+    'GravityWellTrigger',
+    'HelpTrigger',
+    'InBoundsTrigger',
+    'LapsCheckpointTrigger',
+    'LapsCounterTrigger',
+    'PathTrigger',
+    'PhysModTrigger',
+    'RelativeTPTrigger',
+    'SpawnTrigger',
+    'TeleportTrigger',
+    'Trigger',
+    'TriggerGotoTarget',
+]

@@ -1,5 +1,4 @@
 class ID:
-
     def __init__(self, arg):
         if isinstance(arg, str):
             self._id = arg
@@ -10,7 +9,7 @@ class ID:
     def id(self):
         return self._id
 
-    def __repr__(self):
+    def __str__(self):
         return self.id
 
     def __eq__(self, other):
@@ -19,5 +18,9 @@ class ID:
         except AttributeError:
             return self.id == other
 
+    none = None
+
 
 ID.none = ID('')
+
+__all__ = ['ID']

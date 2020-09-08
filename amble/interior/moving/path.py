@@ -1,23 +1,13 @@
-from amble.simgroup import SimGroup
-from amble.sceneobject import SceneObject
+import amble
+from amble.interior.moving.marker import Marker
 from amble.utils.lists import flatlist
 
 
-class Marker(SceneObject):
-    classname = 'Marker'
-
-    defaults = dict(
-        seqNum=0,
-        msToNext=0,
-        smoothingType='Linear'
-    )
-
-
-class Path(SimGroup):
+class Path(amble.SimGroup):
     classname = 'Path'
 
     def __init__(self, *markers, **fields):
-        super().__init__([marker.copy(seqNum=seqNum) for seqNum, marker in enumerate(flatlist(*markers))], **fields)
+        super().__init__([marker.copy(seqnum=seqnum) for seqnum, marker in enumerate(flatlist(*markers))], **fields)
 
     @property
     def markers(self):
@@ -27,7 +17,7 @@ class Path(SimGroup):
     def make(cls, *args, **fields):
         return cls(
             Marker(**fields).copies(
-                ('position', 'msToNext', 'smoothingType'),
+                ('position', 'mstonext', 'smoothingtype'),
                 *args
             )
         )
@@ -35,8 +25,8 @@ class Path(SimGroup):
     @classmethod
     def make_linear(cls, *args, **fields):
         return cls(
-            Marker(smoothingType='Linear', **fields).copies(
-                ('position', 'msToNext'),
+            Marker(smoothingtype='Linear', **fields).copies(
+                ('position', 'mstonext'),
                 *args
             )
         )
@@ -44,8 +34,8 @@ class Path(SimGroup):
     @classmethod
     def make_accelerate(cls, *args, **fields):
         return cls(
-            Marker(smoothingType='Accelerate', **fields).copies(
-                ('position', 'msToNext'),
+            Marker(smoothingtype='Accelerate', **fields).copies(
+                ('position', 'mstonext'),
                 *args
             )
         )
@@ -75,5 +65,8 @@ class Path(SimGroup):
         assert q.markers[2].position == '0 0 0'
         assert q.markers[2].seqNum == 2
 
+
 if __name__ == '__main__':
     Path.tests()
+
+__all__ = ['Path']

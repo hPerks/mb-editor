@@ -1,18 +1,14 @@
-from amble.numberlists.vector2d import Vector2D
-from amble.numberlists.vector3d import Vector3D
-from amble.numberlists.rotation3d import Rotation3D
-from amble.utils.numbers import repr_float, approx_div
+from amble.numberlists import Rotation3D, Vector2D, Vector3D
 from amble.utils.cached import Cached
 from amble.utils.lists import flatlist
+from amble.utils.numbers import str_float, approx_div
 
 
 class Faces(Cached):
     copied_attrs = ['vertex_indices', 'normal', 'texture', 'rotation', 'scale', '_origin', '_tangent', '_cotangent', '_skew']
     cached_attrs = [
-        'vertices', 'center_bisector', 'middle_bisector', 'tangent',
-        'cotangent', 'alignment_vertices', 'tangent_bisector',
-        'cotangent_bisector', 'origin', 'skew', 'rotation', 'scale', 'u', 'v',
-        'shift'
+        'vertices', 'center_bisector', 'middle_bisector', 'tangent', 'cotangent', 'alignment_vertices',
+        'tangent_bisector', 'cotangent_bisector', 'origin', 'skew', 'rotation', 'scale', 'u', 'v', 'shift',
     ]
 
     def __init__(self, brush, name):
@@ -47,15 +43,15 @@ class Faces(Cached):
     def __getitem__(self, item):
         return self.list()[item]
 
-    def __repr__(self):
+    def __str__(self):
         with self.cached:
             return (
                 ' '.join(
-                    '( ' + repr(vertex * 32) + ' )' for vertex in self.vertices[:3]
-                ) + ' ' + repr(self.texture) +
-                ' [ ' + repr(self.u) + ' ' + repr_float(self.shift.x * 32 / self.texture.scale.x) +
-                ' ] [ ' + repr(self.v) + ' ' + repr_float(self.shift.y * 32 / self.texture.scale.y) +
-                ' ] 0 ' + repr(self.scale * self.texture.scale)
+                    '( ' + str(vertex * 32) + ' )' for vertex in self.vertices[:3]
+                ) + ' ' + str(self.texture) +
+                ' [ ' + str(self.u) + ' ' + str_float(self.shift.x * 32 / self.texture.scale.x) +
+                ' ] [ ' + str(self.v) + ' ' + str_float(self.shift.y * 32 / self.texture.scale.y) +
+                ' ] 0 ' + str(self.scale * self.texture.scale)
             )
 
     @property
@@ -253,3 +249,6 @@ class Faces(Cached):
     def unify(cls, *faces, justify=False):
         faces = flatlist(*faces)
         return faces[0].unify_with(faces[1:], justify=justify)
+
+
+__all__ = ['Faces']

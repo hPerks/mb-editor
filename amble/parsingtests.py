@@ -1,10 +1,10 @@
-from amble import *
+from amble.base import Implicit, SimGroup, ScriptObject
 
 
 def tests():
     class JoJite(ScriptObject):
         classname = 'JoJite'
-        defaults = dict(home='Planet JoJ')
+        defaults = dict(home="Planet JoJ")
 
     class Infomercial(ScriptObject):
         defaults = dict(datablock='Infomercial', creator='cs188', index=Implicit(0))
@@ -14,9 +14,11 @@ def tests():
             new JoJite(WesleySeeton) {
                 catchphrase = "do it all over again";
             };
-            new JoJite(RichardSwiney) {
-                catchphrase = "100% unsatisfied";
-            };
+            new    jojite ( RichardSwiney
+            ){
+                CatchPhrase="100% \\\"unsatisfied\\\";\\n"
+                ;
+            } ;
 
             new SimGroup(Infomercials) {
                 new ScriptObject() {
@@ -26,13 +28,13 @@ def tests():
                 };
 
                 new ScriptObject() {
-                    datablock = "Infomercial";
+                    datablock = "infomercial";
                     index = "1";
                     title = "He's Got The House Completely Covered";
                 };
 
                 new ScriptObject() {
-                    datablock = "Infomercial";
+                    dataBlock = "Infomercial";
                     index = "2";
                     title = "Escape from HoH SiS";
                 };
@@ -44,11 +46,18 @@ def tests():
     assert len(group.children) == 3
 
     wesley = group.children[0]
-    assert (type(wesley), wesley.home, wesley.catchphrase) == (JoJite, 'Planet JoJ', 'do it all over again')
+    assert (type(wesley), wesley.home, wesley.catchPhrase) == (JoJite, "Planet JoJ", "do it all over again")
+
+    richard = group.children[1]
+    print(richard)
+    assert (type(richard), richard.home, richard.catchphrase) == (JoJite, "Planet JoJ", "100% \"unsatisfied\";\n")
 
     vid = group.children[2].children[0]
-    assert (type(vid), vid.creator, vid.index, vid.title) == (Infomercial, 'cs188', 0, 'No one needs foundation repair')
+    assert (type(vid), vid.creator, vid.index, vid.title) == (Infomercial, 'cs188', 0, "No one needs foundation repair")
+    assert all(type(child) == Infomercial for child in group.children[2].children)
 
 
 if __name__ == '__main__':
     tests()
+
+__all__ = ['tests']

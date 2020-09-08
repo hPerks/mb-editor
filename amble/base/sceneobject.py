@@ -1,12 +1,9 @@
 from operator import mul
 
-from amble.numberlists.polyhedron3d import Polyhedron3D
-from amble.numberlists.rotation3d import Rotation3D
-from amble.numberlists.vector3d import Vector3D
-
-from amble.scriptobject import ScriptObject
-from amble.implicit import Implicit
-from amble.id import ID
+from amble.base.fields import Implicit
+from amble.base.id import ID
+from amble.base.scriptobject import ScriptObject
+from amble.numberlists import Rotation3D, Vector3D
 
 
 class SceneObject(ScriptObject):
@@ -14,7 +11,7 @@ class SceneObject(ScriptObject):
         position=Vector3D.zero,
         rotation=Rotation3D.identity,
         scale=Vector3D.one,
-        path=Implicit(ID.none)
+        path=Implicit(ID.none),
     )
 
     def __add__(self, other):
@@ -38,7 +35,6 @@ class SceneObject(ScriptObject):
         return self * (1 / other)
 
 
-
     @staticmethod
     def tests():
         cc = SceneObject().copies(
@@ -50,11 +46,7 @@ class SceneObject(ScriptObject):
         assert cc[0].position == '1 3'
 
 
-class BoundedObject(SceneObject):
-    defaults = dict(
-        polyhedron=Polyhedron3D.identity
-    )
-
-
 if __name__ == '__main__':
     SceneObject.tests()
+
+__all__ = ['SceneObject']

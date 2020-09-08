@@ -1,6 +1,4 @@
-from amble.id import ID
-from amble.implicit import Implicit
-from amble.sceneobject import SceneObject
+from amble.base import ID, Implicit, SceneObject
 
 
 class StaticShape(SceneObject):
@@ -45,7 +43,7 @@ class Tornado(StaticShape):
 class FadePlatform(StaticShape):
     defaults = dict(
         datablock='FadePlatform',
-        fadeStyle=Implicit('fade'),
+        fadestyle=Implicit('fade'),
         functionality=Implicit('trapdoor'),
         permanent=Implicit(0),
     )
@@ -55,52 +53,71 @@ class HelpBubble(StaticShape):
     defaults = dict(
         datablock='HelpBubble',
         text='',
-        triggerRadius=Implicit(3),
-        persistTime=Implicit(2000),
-        displayOnce=Implicit(0),
+        triggerradius=Implicit(3),
+        persisttime=Implicit(2000),
+        displayonce=Implicit(0),
     )
 
 
 class PushButton(StaticShape):
     defaults = dict(
         datablock='PushButton_PQ',
-        triggerOnce=Implicit(0),
-        resetTime=Implicit(5000),
-        triggerObject=Implicit(ID.none),
-        objectMethod=Implicit(''),
+        triggeronce=Implicit(0),
+        resettime=Implicit(5000),
+        triggerobject=Implicit(ID.none),
+        objectmethod=Implicit(''),
     )
 
 
 class TriggerButton(PushButton):
     defaults = dict(
-        objectMethod='onEnterTrigger()'
+        objectmethod='onentertrigger()'
     )
 
 
 class Cannon(StaticShape):
     defaults = dict(
         datablock='DefaultCannon',
-        aimSize=0.25,
-        aimTriggers=0,
-        chargeTime=2000,
+        aimsize=0.25,
+        aimtriggers=0,
+        chargetime=2000,
         force=25,
         instant=0,
-        instantDelayTime=0,
-        lockCam=0,
-        lockTime=0,
+        instantdelaytime=0,
+        lockcam=0,
+        locktime=0,
         pitch=0,
-        pitchBoundHigh=0,
-        pitchBoundLow=0,
-        showAim=1,
-        showReticle=0,
-        useBase=1,
-        useCharge=0,
+        pitchboundhigh=0,
+        pitchboundlow=0,
+        showaim=1,
+        showreticle=0,
+        usebase=1,
+        usecharge=0,
         yaw=0,
-        yawBoundLeft=0,
-        yawBoundRight=0,
-        yawLimit=0,
+        yawboundleft=0,
+        yawboundright=0,
+        yawlimit=0,
     )
 
 
 class Checkpoint(StaticShape):
     defaults = dict(datablock='CheckPoint_PQ')
+
+
+__all__ = [
+    'Bumper',
+    'Cannon',
+    'Checkpoint',
+    'DuctFan',
+    'EndPad',
+    'FadePlatform',
+    'FinishSign',
+    'HelpBubble',
+    'Mine',
+    'PushButton',
+    'StartPad',
+    'StaticShape',
+    'Tornado',
+    'TrapDoor',
+    'TriggerButton',
+]

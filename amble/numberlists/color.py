@@ -34,3 +34,6 @@ class Color(NumberList):
     @a.setter
     def a(self, value):
         self[3] = value
+
+
+__all__ = ['Color']

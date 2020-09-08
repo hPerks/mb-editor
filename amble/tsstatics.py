@@ -1,4 +1,4 @@
-from amble.sceneobject import SceneObject
+from amble.base import SceneObject
 
 
 class TSStatic(SceneObject):
@@ -6,4 +6,7 @@ class TSStatic(SceneObject):
 
 
 class TeleportPad(TSStatic):
-    defaults = dict(shapeName='~/data/shapes/teleportpad.dts')
+    defaults = dict(shapename='~/data/shapes/teleportpad.dts')
+
+
+__all__ = ['TeleportPad', 'TSStatic']

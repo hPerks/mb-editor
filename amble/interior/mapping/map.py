@@ -3,16 +3,16 @@ import platform
 import shutil
 from textwrap import indent
 
-from amble.interior import Interior
-from amble.mapping.brush import Brush
-from amble.simgroup import SimGroup
+import amble
+from amble.interior.mapping.brush import Brush
+from amble.interior.mapping.texture import Texture
 from amble.utils import path
 
 
-class Map(SimGroup):
+class Map(amble.SimGroup):
     classname = 'Map'
 
-    def __repr__(self):
+    def __str__(self):
         output = (
             '{\n'
             '   "classname" "worldspawn"\n'
@@ -24,7 +24,7 @@ class Map(SimGroup):
             '   "emergency_ambient_color" "0 0 0"\n'
             '   "mapversion" "220"\n'
             '\n' + indent('\n'.join(
-                repr(brush) for brush in self.children if not isinstance(brush, Map)
+                str(brush) for brush in self.children if not isinstance(brush, Map)
             ), '   ') + '\n}\n'
         )
 
@@ -33,10 +33,10 @@ class Map(SimGroup):
                 output += (
                     '{\n'
                     '   "classname" "Door_Elevator"\n'
-                    '   "initialTargetPosition" "-1"\n'
+                    '   "initialtargetposition" "-1"\n'
                     '   "datablock" "PathedDefault"\n'
                     '\n' + indent('\n'.join(
-                        repr(brush) for brush in submap.children if not isinstance(brush, Map)
+                        str(brush) for brush in submap.children if not isinstance(brush, Map)
                     ), '   ') + '\n}\n'
                 )
 
@@ -46,9 +46,9 @@ class Map(SimGroup):
         if not filename.endswith('.map'):
             filename += '.map'
         with open(path.platinum('data/interiors_pq', filename), 'w') as f:
-            f.write(repr(self))
+            f.write(str(self))
 
-    def to_interior(self, name, subdir='', keep_map=None, verbose=False, **fields):
+    def to_interior(self, name, subdir='', keep_map=None, verbose=False):
         if name.endswith('.dif'):
             name = name[:-4]
 
@@ -57,12 +57,12 @@ class Map(SimGroup):
             keep_map = os.path.exists(name + '.map')
 
         with open(name + '.map', 'w') as f:
-            f.write(repr(self))
+            f.write(str(self))
 
         if platform.system() == 'Windows':
-            os.system('map2dif.exe {}.map'.format(name) + ('' if verbose else ' > nul'))
+            os.system(f'map2dif.exe {name}.map' + ('' if verbose else ' > nul'))
         else:
-            os.system('./map2dif -t . -o . "{}.map"'.format(name) + ('' if verbose else ' > /dev/null'))
+            os.system(f'./map2dif -t . -o . "{name}.map"' + ('' if verbose else ' > /dev/null'))
 
         os.makedirs(path.join('custom', subdir), 0o777, True)
         shutil.copy(name + '.dif', path.join('custom', subdir))
@@ -70,13 +70,11 @@ class Map(SimGroup):
         if not keep_map:
             os.remove(name + '.map')
 
-        return Interior.local(path.join(subdir, name + '.dif'))
+        return amble.Interior.local(path.join(subdir, name + '.dif'))
 
 
     @staticmethod
     def tests():
-        from amble.mapping.brush import Brush
-        from amble.mapping.texture import Texture
         m = Map()
         m.add(
             Brush.make_cube(
@@ -91,25 +89,19 @@ class Map(SimGroup):
 
         import timeit
         assert timeit.timeit(
-            'repr(Map(Brush.make_cube(texture=Texture.edge)))',
-            setup=(
-                'from amble.mapping.map import Map\n'
-                'from amble.mapping.brush import Brush\n'
-                'from amble.mapping.texture import Texture\n'
-            ),
+            'str(Map(Brush.make_cube(texture=Texture.edge)))',
+            setup='from amble import Brush, Map, Texture',
             number=100
         ) < 2
 
         assert timeit.timeit(
-            'repr(Map(Brush.make_prism(sides=16, texture=Texture.edge)))',
-            setup=(
-                'from amble.mapping.map import Map\n'
-                'from amble.mapping.brush import Brush\n'
-                'from amble.mapping.texture import Texture\n'
-            ),
+            'str(Map(Brush.make_prism(sides=16, texture=Texture.edge)))',
+            setup='from amble import Brush, Map, Texture',
             number=100
         ) < 12
 
 
 if __name__ == '__main__':
     Map.tests()
+
+__all__ = ['Map']

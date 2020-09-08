@@ -64,7 +64,13 @@ class Polyhedron3D(NumberList):
         assert q == '-1 0 -1 3 0 0 0 1 0 0 1 2'
 
 
+    identity = None
+
+
 Polyhedron3D.identity = Polyhedron3D.make()
+
 
 if __name__ == '__main__':
     Polyhedron3D.tests()
+
+__all__ = ['Polyhedron3D']
