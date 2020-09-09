@@ -5,6 +5,9 @@ class Fields:
     def __init__(self, fields_list=None):
         self.list = [] if fields_list is None else fields_list
 
+    def __repr__(self):
+        return f'Fields({self.list!r})'
+
     def __str__(self):
         return '\n'.join(map(str, filter(lambda field: field.is_explicit(), self.list)))
 

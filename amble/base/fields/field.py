@@ -15,6 +15,10 @@ class Field:
 
         self.value = value
 
+    def __repr__(self):
+        value = repr(self.value) if self.is_explicit() else f'Implicit({self.value!r})'
+        return f'Field({self.key!r}, {value}, {self.type.__name__})'
+
     def __str__(self):
         return f'{self.key} = "{escape(self.value) if self.type == str else self.value}";'
 

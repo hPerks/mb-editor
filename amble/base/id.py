@@ -5,9 +5,8 @@ class ID:
         else:
             self._id = arg.id
 
-    @property
-    def id(self):
-        return self._id
+    def __repr__(self):
+        return f'ID({self.id!r})'
 
     def __str__(self):
         return self.id
@@ -17,6 +16,10 @@ class ID:
             return self.id == other.id
         except AttributeError:
             return self.id == other
+
+    @property
+    def id(self):
+        return self._id
 
     none = None
 

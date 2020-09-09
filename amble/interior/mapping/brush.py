@@ -197,6 +197,8 @@ class Brush(amble.ScriptObject):
         prism.face('z').origin = center
         prism.face('z').skew = '0 0'
 
+        prism._set_face_attributes(**face_attributes)
+
         prism.rotate_to_axis(axis, center)
 
         prism.face('side0').align('bottom left' if axis == 'x' else 'top left' if axis == 'y' else 'top right')

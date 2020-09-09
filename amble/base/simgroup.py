@@ -1,3 +1,5 @@
+from textwrap import indent
+
 from amble.base.scriptobject import ScriptObject
 from amble.utils.lists import flatlist
 
@@ -10,6 +12,44 @@ class SimGroup(ScriptObject):
         super().__init__(**fields)
         self.add(*children)
 
+    def __setattr__(self, key, value):
+        super().__setattr__(key, value)
+
+        if key[0] == '_':
+            return
+
+        if isinstance(value, ScriptObject):
+            for child in self.children:
+                if isinstance(value, type(child)):
+                    self.remove(child)
+            self.add(value)
+
+    def __repr__(self):
+        if not self.children:
+            return super().__repr__()
+
+        defaults = self.all_defaults()
+
+        args_string = ',\n'.join(indent(repr(child), '    ') for child in self.children)
+        id_string = f'id={self.id!r}' if self.id else ''
+        fields_string = ', '.join(
+            f'{field.key}={field.value!r}'
+            for field in self.fields.list
+            if defaults.get(field.key, None) != field.value
+            and not isinstance(field.value, ScriptObject)
+        )
+        kwargs_string = ', '.join(
+            ([id_string] if id_string else []) +
+            ([fields_string] if fields_string else [])
+        )
+
+        params_string = ',\n'.join(
+            [args_string] +
+            ([indent(kwargs_string, '    ')] if kwargs_string else [])
+        )
+
+        return f'{self.__class__.__name__}(\n{params_string}\n)'
+
     @property
     def children(self):
         return list(self._children)
@@ -20,14 +60,14 @@ class SimGroup(ScriptObject):
                 if isinstance(child, type(value)) and child != value:
                     self.__setattr__(key, child)
                     break
+            else:
+                self._children.append(child)
+                child._group = self
 
-            self._children.append(child)
-            child._group = self
-
-            for friend in child.friends.list:
-                if friend.group != self:
-                    self._children.append(friend)
-                    friend._group = self
+                for friend in child.friends.list:
+                    if friend.group != self:
+                        self._children.append(friend)
+                        friend._group = self
 
         return self
 
@@ -50,20 +90,14 @@ class SimGroup(ScriptObject):
     def descendants(self):
         return self.children + flatlist([child.descendants() for child in self.children])
 
+    def inner_repr(self):
+        return '\n' + indent(',\n'.join(
+            [repr(child) for child in self.children] +
+            [f'{field.key}={field.value!r}' for field in self.fields.list if field.is_explicit()]
+        ), '    ') + '\n'
+
     def inner_str(self):
         return super().inner_str() + '\n' + '\n\n'.join(map(str, self.children))
-
-    def __setattr__(self, key, value):
-        super().__setattr__(key, value)
-
-        if key[0] == '_':
-            return
-
-        if isinstance(value, ScriptObject):
-            for child in self.children:
-                if isinstance(value, type(child)):
-                    self.remove(child)
-            self.add(value)
 
     def copy(self, id='(id)_copy', **fields):
         return super().copy(id, **fields).add(child.copy(id) for child in self.children)

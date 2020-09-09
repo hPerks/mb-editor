@@ -34,6 +34,10 @@ class NumberList:
     def __copy__(self):
         return NumberList(self)
 
+    def __repr__(self):
+        args_string = ', '.join(map(str_float, self))
+        return f'{self.__class__.__name__}({args_string})'
+
     def __str__(self):
         return ' '.join(map(str_float, self))
 

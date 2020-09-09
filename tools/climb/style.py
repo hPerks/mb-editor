@@ -69,3 +69,6 @@ class StyledApp(tk.Tk):
         self.style.map('TButton', background=[('active', self.colors[3])])
 
         self.configure(background=self.colors[0])
+
+
+__all__ = ['StyledApp']

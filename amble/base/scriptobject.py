@@ -29,6 +29,22 @@ class ScriptObject:
 
         self.fields.set(key, value)
 
+    def __repr__(self):
+        defaults = self.all_defaults()
+
+        id_string = repr(self.id) if self.id else ''
+        fields_string = ', '.join(
+            f'{field.key}={field.value!r}'
+            for field in self.fields.list
+            if defaults.get(field.key, None) != field.value
+        )
+        params_string = ', '.join(
+            ([id_string] if id_string else []) +
+            ([fields_string] if fields_string else [])
+        )
+
+        return f'{self.__class__.__name__}({params_string})'
+
     def __str__(self):
         inner = indent(self.inner_str(), '   ')
         return f'new {self.classname}({self.id}) {{\n{inner}\n}};'
@@ -59,6 +75,14 @@ class ScriptObject:
 
     def written_fields(self):
         return self.fields
+
+    def inner_repr(self):
+        defaults = self.all_defaults()
+        return ', '.join(
+            f'{field.key}={field.value!r}'
+            for field in self.fields.list
+            if defaults.get(field.key, None) != field.value
+        )
 
     def inner_str(self):
         return str(self.written_fields())
